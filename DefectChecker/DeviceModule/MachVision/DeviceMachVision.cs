@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DefectChecker.DeviceModule
+namespace DefectChecker.DeviceModule.MachVision
 {
     class DeviceMachVision
     {
+
+
     }
 }

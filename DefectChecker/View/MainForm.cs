@@ -12,9 +12,19 @@ namespace DefectChecker.View
 {
     public partial class MainForm : Form
     {
+        private ConfigView _uiConfigView = new ConfigView();
+
         public MainForm()
         {
             InitializeComponent();
+            InitDisplay();
+        }
+
+        private void InitDisplay()
+        {
+            _uiConfigView.Dock = DockStyle.Fill;
+            this.panelConfigView.Controls.Add(_uiConfigView);
+            this.tabControl1.SelectedIndex = 2;
         }
     }
 }

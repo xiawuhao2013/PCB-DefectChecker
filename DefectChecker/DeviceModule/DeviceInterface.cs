@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DefectChecker.DeviceModule
 {
-    interface DeviceInterface
+    public interface DeviceInterface
     {
     }
 }
