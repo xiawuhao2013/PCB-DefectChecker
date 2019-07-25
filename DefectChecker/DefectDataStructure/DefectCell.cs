@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DefectChecker.DefectDataStructure
 {
-    class DefectCell
+    public class DefectCell
     {
         public Bitmap DefectImage { get; set; }
         public Bitmap TemplateImage { get; set; }
