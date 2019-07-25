@@ -8,5 +8,7 @@ namespace DefectChecker.DeviceModule
 {
     public interface DeviceInterface
     {
+        void GetCodeList(out Dictionary<int, string> codeList);
+        //void Read
     }
 }

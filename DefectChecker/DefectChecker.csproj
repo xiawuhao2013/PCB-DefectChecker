@@ -51,6 +51,9 @@
   <ItemGroup>
     <Compile Include="DataBase\DataInfo.cs" />
     <Compile Include="DataBase\DataBaseManager.cs" />
+    <Compile Include="DefectDataStructure\DefectCell.cs" />
+    <Compile Include="DefectDataStructure\DefectShapeBase.cs" />
+    <Compile Include="DefectDataStructure\DefectShapeRect.cs" />
     <Compile Include="DeviceModule\DeviceInterface.cs" />
     <Compile Include="DeviceModule\MachVision\DeviceMachVision.cs" />
     <Compile Include="View\ConfigView.cs">
