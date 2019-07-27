@@ -13,6 +13,10 @@ namespace DefectChecker.DeviceModule.MachVision
     class DeviceMachVision : DeviceInterface
     {
         private const string _paramFileName = @"\ParamFile.xml";
+        private const string _sideA = @"SideA";
+        private const string _sideB = @"SideB";
+        private const string _fileName = @"Panel";
+        private const string _fileExtent = @"*.jpg";
         private string _dataDir = default(string);
         private string _modelDir = default(string);
         private PathMap _productMap = new PathMap();
@@ -24,7 +28,7 @@ namespace DefectChecker.DeviceModule.MachVision
             LoadConfig();
         }
 
-        private bool GetChildrenDirMap(string dirPath, out PathMap childrenDirMap)
+        private bool TryGetChildrenDirMap(string dirPath, out PathMap childrenDirMap)
         {
             childrenDirMap = new PathMap();
             //childrenDirMap.Clear();
@@ -39,6 +43,66 @@ namespace DefectChecker.DeviceModule.MachVision
             catch (Exception ex)
             {
                 childrenDirMap.Clear();
+                MessageBox.Show(ex.Message);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool TryGetChildrenFileMap(string dirPath, string ext, out PathMap childrenFileMap)
+        {
+            childrenFileMap = new PathMap();
+            try
+            {
+                var dir = new DirectoryInfo(dirPath);
+                foreach (var fileInfo in dir.GetFiles(ext))
+                {
+                    childrenFileMap.Add(fileInfo.Name, fileInfo.FullName);
+                }
+            }
+            catch (Exception ex)
+            {
+                childrenFileMap.Clear();
+                MessageBox.Show(ex.Message);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool TryGetTemplateImg(string side, string fileName, string fileExtent, out Bitmap wholeImg)
+        {
+            wholeImg = null;
+            try
+            {
+                if (!TryGetChildrenDirMap(_modelDir, out var pathMap))
+                {
+                    return false;
+                }
+                if (!pathMap.TryGetValue(side, out var path))
+                {
+                    return false;
+                }
+                if (!TryGetChildrenFileMap(path, fileExtent, out var fileMap))
+                {
+                    return false;
+                }
+                if (!fileMap.TryGetValue(fileName, out var filePath))
+                {
+                    return false;
+                }
+                if (!File.Exists(filePath))
+                {
+                    return false;
+                }
+                wholeImg = new Bitmap(filePath);
+            }
+            catch (Exception ex)
+            {
+                wholeImg = null;
                 MessageBox.Show(ex.Message);
 
                 return false;
@@ -64,7 +128,7 @@ namespace DefectChecker.DeviceModule.MachVision
             try
             {
                 _productMap.Clear();
-                if (!GetChildrenDirMap(_dataDir, out _productMap))
+                if (!TryGetChildrenDirMap(_dataDir, out _productMap))
                 {
                     return;
                 }
@@ -97,7 +161,7 @@ namespace DefectChecker.DeviceModule.MachVision
                 {
                     return;
                 }
-                if (!GetChildrenDirMap(productPath, out _batchMap))
+                if (!TryGetChildrenDirMap(productPath, out _batchMap))
                 {
                     return;
                 }
@@ -129,7 +193,7 @@ namespace DefectChecker.DeviceModule.MachVision
                 {
                     return;
                 }
-                if (!GetChildrenDirMap(batchPath, out _boardMap))
+                if (!TryGetChildrenDirMap(batchPath, out _boardMap))
                 {
                     return;
                 }
@@ -177,12 +241,46 @@ namespace DefectChecker.DeviceModule.MachVision
 
         public void GetTemplateWholeImgA(out Bitmap wholeImg)
         {
-            throw new NotImplementedException();
+            wholeImg = null;
+            try
+            {
+                if (!TryGetTemplateImg(_sideA, _fileName, _fileExtent, out var image))
+                {
+                    return;
+                }
+                wholeImg = image.Clone() as Bitmap;
+            }
+            catch(Exception ex)
+            {
+                wholeImg = null;
+                MessageBox.Show(ex.Message);
+
+                return;
+            }
+
+            return;
         }
 
         public void GetTemplateWholeImgB(out Bitmap wholeImg)
         {
-            throw new NotImplementedException();
+            wholeImg = null;
+            try
+            {
+                if (!TryGetTemplateImg(_sideB, _fileName, _fileExtent, out var image))
+                {
+                    return;
+                }
+                wholeImg = image.Clone() as Bitmap;
+            }
+            catch (Exception ex)
+            {
+                wholeImg = null;
+                MessageBox.Show(ex.Message);
+
+                return;
+            }
+
+            return;
         }
     }
 }
