@@ -57,6 +57,34 @@ namespace DefectChecker.DeviceModule.MachVision
             return;
         }
 
+        public void GetProductList(out List<string> procductList)
+        {
+            procductList = new List<string>();
+            //procductList.Clear();
+            try
+            {
+                _productMap.Clear();
+                if (!GetChildrenDirMap(_dataDir, out _productMap))
+                {
+                    return;
+                }
+                foreach (var product in _productMap)
+                {
+                    procductList.Add(product.Key);
+                }
+            }
+            catch (Exception ex)
+            {
+                procductList.Clear();
+                _productMap.Clear();
+                MessageBox.Show(ex.Message);
+
+                return;
+            }
+
+            return;
+        }
+
         public void GetBatchList(string productName, out List<string> batchList)
         {
             batchList = new List<string>();
@@ -80,8 +108,8 @@ namespace DefectChecker.DeviceModule.MachVision
             }
             catch (Exception ex)
             {
-                _batchMap.Clear();
                 batchList.Clear();
+                _batchMap.Clear();
                 MessageBox.Show(ex.Message);
 
                 return;
@@ -92,7 +120,34 @@ namespace DefectChecker.DeviceModule.MachVision
 
         public void GetBoardList(string productName, string batchName, out List<string> boardList)
         {
-            throw new NotImplementedException();
+            boardList = new List<string>();
+            try
+            {
+                _boardMap.Clear();
+                GetBatchList(productName, out var batchList);
+                if (!_batchMap.TryGetValue(batchName, out var batchPath))
+                {
+                    return;
+                }
+                if (!GetChildrenDirMap(batchPath, out _boardMap))
+                {
+                    return;
+                }
+                foreach (var board in _boardMap)
+                {
+                    boardList.Add(board.Key);
+                }
+            }
+            catch (Exception ex)
+            {
+                boardList.Clear();
+                _batchMap.Clear();
+                MessageBox.Show(ex.Message);
+
+                return;
+            }
+
+            return;
         }
 
         public void GetCodeList(out Dictionary<int, string> codeList)
@@ -118,34 +173,6 @@ namespace DefectChecker.DeviceModule.MachVision
         public void GetGerberWholeImgB(out Bitmap gerberWholeImg)
         {
             throw new NotImplementedException();
-        }
-
-        public void GetProductList(out List<string> procductList)
-        {
-            procductList = new List<string>();
-            //procductList.Clear();
-            try
-            {
-                _productMap.Clear();
-                if (!GetChildrenDirMap(_dataDir, out _productMap))
-                {
-                    return;
-                }
-                foreach (var product in _productMap)
-                {
-                    procductList.Add(product.Key);
-                }
-            }
-            catch (Exception ex)
-            {
-                _productMap.Clear();
-                procductList.Clear();
-                MessageBox.Show(ex.Message);
-
-                return;
-            }
-
-            return;
         }
 
         public void GetTemplateWholeImgA(out Bitmap wholeImg)
