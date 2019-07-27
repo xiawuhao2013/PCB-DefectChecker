@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Aqrose.Framework.Utility.Tools;
 using System.IO;
+using DefectChecker.DeviceModule.MachVision;
 
 namespace DefectChecker.View
 {
@@ -76,6 +77,19 @@ namespace DefectChecker.View
             }
 
             return dataDir;
+        }
+
+        // LABEL: for test.
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DeviceMachVision deviceOfMachVision = new DeviceMachVision();
+
+            deviceOfMachVision.GetProductList(out var productList);
+            deviceOfMachVision.GetBatchList(productList[0], out var batchList);
+            deviceOfMachVision.GetBoardList(productList[0], batchList[0], out var boardList);
+            deviceOfMachVision.GetTemplateWholeImgA(out var bitmapA);
+            deviceOfMachVision.GetTemplateWholeImgB(out var bitmapB);
+            return;
         }
     }
 }

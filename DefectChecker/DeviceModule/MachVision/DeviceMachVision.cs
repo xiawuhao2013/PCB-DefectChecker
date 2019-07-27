@@ -15,7 +15,7 @@ namespace DefectChecker.DeviceModule.MachVision
         private const string _paramFileName = @"\ParamFile.xml";
         private const string _sideA = @"SideA";
         private const string _sideB = @"SideB";
-        private const string _fileName = @"Panel";
+        private const string _fileName = @"Panel.jpg";
         private const string _fileExtent = @"*.jpg";
         private string _dataDir = default(string);
         private string _modelDir = default(string);
@@ -23,7 +23,7 @@ namespace DefectChecker.DeviceModule.MachVision
         private PathMap _batchMap = new PathMap();
         private PathMap _boardMap = new PathMap();
 
-        DeviceMachVision()
+        public DeviceMachVision()
         {
             LoadConfig();
         }
