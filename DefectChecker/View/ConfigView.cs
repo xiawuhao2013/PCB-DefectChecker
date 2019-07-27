@@ -89,6 +89,7 @@ namespace DefectChecker.View
             deviceOfMachVision.GetBoardList(productList[0], batchList[0], out var boardList);
             deviceOfMachVision.GetTemplateWholeImgA(out var bitmapA);
             deviceOfMachVision.GetTemplateWholeImgB(out var bitmapB);
+
             return;
         }
     }

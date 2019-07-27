@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using Aqrose.Framework.Utility.Tools;
+using DefectChecker.Common;
 using DefectChecker.DefectDataStructure;
 
 using PathMap = System.Collections.Generic.Dictionary<string, string>;
@@ -16,7 +17,7 @@ namespace DefectChecker.DeviceModule.MachVision
         private const string _sideA = @"SideA";
         private const string _sideB = @"SideB";
         private const string _fileName = @"Panel.jpg";
-        private const string _fileExtent = @"*.jpg";
+        private FolderHelper folder = new FolderHelper();
         private string _dataDir = default(string);
         private string _modelDir = default(string);
         private PathMap _productMap = new PathMap();
@@ -25,60 +26,16 @@ namespace DefectChecker.DeviceModule.MachVision
 
         public DeviceMachVision()
         {
+            folder.FileExtension = @"*.jpg";
             LoadConfig();
         }
 
-        private bool TryGetChildrenDirMap(string dirPath, out PathMap childrenDirMap)
-        {
-            childrenDirMap = new PathMap();
-            //childrenDirMap.Clear();
-            try
-            {
-                var dir = new DirectoryInfo(dirPath);
-                foreach (var dirInfo in dir.GetDirectories())
-                {
-                    childrenDirMap.Add(dirInfo.Name, dirInfo.FullName);
-                }
-            }
-            catch (Exception ex)
-            {
-                childrenDirMap.Clear();
-                MessageBox.Show(ex.Message);
-
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool TryGetChildrenFileMap(string dirPath, string ext, out PathMap childrenFileMap)
-        {
-            childrenFileMap = new PathMap();
-            try
-            {
-                var dir = new DirectoryInfo(dirPath);
-                foreach (var fileInfo in dir.GetFiles(ext))
-                {
-                    childrenFileMap.Add(fileInfo.Name, fileInfo.FullName);
-                }
-            }
-            catch (Exception ex)
-            {
-                childrenFileMap.Clear();
-                MessageBox.Show(ex.Message);
-
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool TryGetTemplateImg(string side, string fileName, string fileExtent, out Bitmap wholeImg)
+        private bool TryGetTemplateImg(string side, string fileName, out Bitmap wholeImg)
         {
             wholeImg = null;
             try
             {
-                if (!TryGetChildrenDirMap(_modelDir, out var pathMap))
+                if (!folder.TryGetChildrenDirMap(_modelDir, out var pathMap))
                 {
                     return false;
                 }
@@ -86,7 +43,7 @@ namespace DefectChecker.DeviceModule.MachVision
                 {
                     return false;
                 }
-                if (!TryGetChildrenFileMap(path, fileExtent, out var fileMap))
+                if (!folder.TryGetChildrenFileMap(path, out var fileMap))
                 {
                     return false;
                 }
@@ -128,7 +85,7 @@ namespace DefectChecker.DeviceModule.MachVision
             try
             {
                 _productMap.Clear();
-                if (!TryGetChildrenDirMap(_dataDir, out _productMap))
+                if (!folder.TryGetChildrenDirMap(_dataDir, out _productMap))
                 {
                     return;
                 }
@@ -161,7 +118,7 @@ namespace DefectChecker.DeviceModule.MachVision
                 {
                     return;
                 }
-                if (!TryGetChildrenDirMap(productPath, out _batchMap))
+                if (!folder.TryGetChildrenDirMap(productPath, out _batchMap))
                 {
                     return;
                 }
@@ -193,7 +150,7 @@ namespace DefectChecker.DeviceModule.MachVision
                 {
                     return;
                 }
-                if (!TryGetChildrenDirMap(batchPath, out _boardMap))
+                if (!folder.TryGetChildrenDirMap(batchPath, out _boardMap))
                 {
                     return;
                 }
@@ -244,7 +201,7 @@ namespace DefectChecker.DeviceModule.MachVision
             wholeImg = null;
             try
             {
-                if (!TryGetTemplateImg(_sideA, _fileName, _fileExtent, out var image))
+                if (!TryGetTemplateImg(_sideA, _fileName, out var image))
                 {
                     return;
                 }
@@ -266,7 +223,7 @@ namespace DefectChecker.DeviceModule.MachVision
             wholeImg = null;
             try
             {
-                if (!TryGetTemplateImg(_sideB, _fileName, _fileExtent, out var image))
+                if (!TryGetTemplateImg(_sideB, _fileName, out var image))
                 {
                     return;
                 }
