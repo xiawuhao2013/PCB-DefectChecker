@@ -63,6 +63,7 @@ namespace DefectChecker.DeviceModule.MachVision
             //batchList.Clear();
             try
             {
+                _batchMap.Clear();
                 GetProductList(out var procductList);
                 if (!_productMap.TryGetValue(productName, out var productPath))
                 {
@@ -79,6 +80,7 @@ namespace DefectChecker.DeviceModule.MachVision
             }
             catch (Exception ex)
             {
+                _batchMap.Clear();
                 batchList.Clear();
                 MessageBox.Show(ex.Message);
 
@@ -124,6 +126,7 @@ namespace DefectChecker.DeviceModule.MachVision
             //procductList.Clear();
             try
             {
+                _productMap.Clear();
                 if (!GetChildrenDirMap(_dataDir, out _productMap))
                 {
                     return;
@@ -135,6 +138,7 @@ namespace DefectChecker.DeviceModule.MachVision
             }
             catch (Exception ex)
             {
+                _productMap.Clear();
                 procductList.Clear();
                 MessageBox.Show(ex.Message);
 
