@@ -10,15 +10,20 @@ namespace DefectChecker.DeviceModule
 {
     public interface DeviceInterface
     {
-        void GetProductList(out List<string> procductList);
-        void GetBatchList(string productName, out List<string> batchList);
-        void GetBoardList(string productName, string batchName, out List<string> boardList);
+        void GetDefectCell(string productName, string batchName, string boardName, string sideName, string shotName, string defectName, out DefectCell defectCell);
+        void GetDefectInShot(string productName, string batchName, string boardName, string sideName, string shotName, out List<string> defectList);
+        void GetShotList(string productName, string batchName, string boardName, string sideName, out List<string> shotList);
         void GetDefetInBoard(string productName, string batchName, string boardName, out List<string> defectImgList);
+        void GetSideList(string productName, string batchName, string boardName, out List<string> sideList);
+        void GetBoardList(string productName, string batchName, out List<string> boardList);
+        void GetBatchList(string productName, out List<string> batchList);
         void GetCodeList(out Dictionary<int, string> codeList);
-        void GetDefectCell(string batchName, string boardName, string defectImgName, out DefectCell defectCell);
+        void GetProductList(out List<string> procductList);
         void GetTemplateWholeImgA(out Bitmap wholeImg);
         void GetTemplateWholeImgB(out Bitmap wholeImg);
         void GetGerberWholeImgA(out Bitmap gerberWholeImg);
         void GetGerberWholeImgB(out Bitmap gerberWholeImg);
+
+        // Label: lack of GetDefectPositionListOfxxx() GetDefectPositionOfDefect()
     }
 }
