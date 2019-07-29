@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows.Forms;
 using Aqrose.Framework.Utility.Tools;
 using DefectChecker.Common;
@@ -17,9 +19,9 @@ namespace DefectChecker.DeviceModule.MachVision
         private const string _sideA = @"SideA";
         private const string _sideB = @"SideB";
         private const string _fileName = @"Panel.jpg";
-        private FolderHelper folder = new FolderHelper();
         private string _dataDir = default(string);
         private string _modelDir = default(string);
+        private FolderHelper folder = new FolderHelper();
         private PathMap _productMap = new PathMap();
         private PathMap _batchMap = new PathMap();
         private PathMap _boardMap = new PathMap();
@@ -78,26 +80,40 @@ namespace DefectChecker.DeviceModule.MachVision
             return;
         }
 
-        public void GetProductList(out List<string> procductList)
+        public void GetDefetInBoard(string productName, string batchName, string boardName, out List<string> defectImgList)
         {
-            procductList = new List<string>();
-            //procductList.Clear();
+            throw new NotImplementedException();
+        }
+
+        public void GetDefectCell(string batchName, string boardName, string defectImgName, out DefectCell defectCell)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetBoardList(string productName, string batchName, out List<string> boardList)
+        {
+            boardList = new List<string>();
             try
             {
-                _productMap.Clear();
-                if (!folder.TryGetChildrenDirMap(_dataDir, out _productMap))
+                _boardMap.Clear();
+                GetBatchList(productName, out var batchList);
+                if (!_batchMap.TryGetValue(batchName, out var batchPath))
                 {
                     return;
                 }
-                foreach (var product in _productMap)
+                if (!folder.TryGetChildrenDirMap(batchPath, out _boardMap))
                 {
-                    procductList.Add(product.Key);
+                    return;
+                }
+                foreach (var board in _boardMap)
+                {
+                    boardList.Add(board.Key);
                 }
             }
             catch (Exception ex)
             {
-                procductList.Clear();
-                _productMap.Clear();
+                boardList.Clear();
+                _batchMap.Clear();
                 MessageBox.Show(ex.Message);
 
                 return;
@@ -139,30 +155,31 @@ namespace DefectChecker.DeviceModule.MachVision
             return;
         }
 
-        public void GetBoardList(string productName, string batchName, out List<string> boardList)
+        public void GetCodeList(out Dictionary<int, string> codeList)
         {
-            boardList = new List<string>();
+            throw new NotImplementedException();
+        }
+
+        public void GetProductList(out List<string> procductList)
+        {
+            procductList = new List<string>();
+            //procductList.Clear();
             try
             {
-                _boardMap.Clear();
-                GetBatchList(productName, out var batchList);
-                if (!_batchMap.TryGetValue(batchName, out var batchPath))
+                _productMap.Clear();
+                if (!folder.TryGetChildrenDirMap(_dataDir, out _productMap))
                 {
                     return;
                 }
-                if (!folder.TryGetChildrenDirMap(batchPath, out _boardMap))
+                foreach (var product in _productMap)
                 {
-                    return;
-                }
-                foreach (var board in _boardMap)
-                {
-                    boardList.Add(board.Key);
+                    procductList.Add(product.Key);
                 }
             }
             catch (Exception ex)
             {
-                boardList.Clear();
-                _batchMap.Clear();
+                procductList.Clear();
+                _productMap.Clear();
                 MessageBox.Show(ex.Message);
 
                 return;
@@ -171,20 +188,7 @@ namespace DefectChecker.DeviceModule.MachVision
             return;
         }
 
-        public void GetCodeList(out Dictionary<int, string> codeList)
-        {
-            throw new NotImplementedException();
-        }
 
-        public void GetDefectCell(string batchName, string boardName, string defectImgName, out DefectCell defectCell)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void GetDefetInBoard(string productName, string batchName, string boardName, out List<string> defectImgList)
-        {
-            throw new NotImplementedException();
-        }
 
         public void GetGerberWholeImgA(out Bitmap gerberWholeImg)
         {
@@ -239,5 +243,49 @@ namespace DefectChecker.DeviceModule.MachVision
 
             return;
         }
+
+
+        /******************************************************/
+
+        [DllImport("kernel32")]
+        private static extern long WritePrivateProfileString(string section, string key, string val, string filepath);
+        [DllImport("kernel32")]
+        private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retval, int size, string filePath);
+
+        public bool TryWriteValue(string section, string key, string value, string path)
+        {
+            try
+            {
+                WritePrivateProfileString(section, key, value, path);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;
+            }
+
+            return true;
+        }
+
+        public void ReadValue(string section, string key, string path, out string value)
+        {
+            try
+            {
+                StringBuilder temp = new StringBuilder(1024);
+                GetPrivateProfileString(section, key, "", temp, 1024, path);
+                value = temp.ToString();
+            }
+            catch (Exception ex)
+            {
+                value = default(string);
+                MessageBox.Show(ex.Message);
+
+                return;
+            }
+
+            return;
+        }
+
+
     }
 }
