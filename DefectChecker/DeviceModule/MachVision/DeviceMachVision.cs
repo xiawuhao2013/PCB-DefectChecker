@@ -19,6 +19,7 @@ namespace DefectChecker.DeviceModule.MachVision
         private const string _sideA = @"SideA";
         private const string _sideB = @"SideB";
         private const string _fileName = @"Panel.jpg";
+        private const string _defectFileExtent = @"*.bmp";
         private string _dataDir = default(string);
         private string _modelDir = default(string);
         private FolderHelper folder = new FolderHelper();
@@ -118,8 +119,73 @@ namespace DefectChecker.DeviceModule.MachVision
             return;
         }
 
+        private PathMap GetDefectInfoOfBoard(string productName, string batchName, string boardName)
+        {
+            PathMap defectCellOfBoard = new PathMap();
+            foreach (var side in GetSideInfo(productName, batchName, boardName))
+            {
+                foreach (var shot in GetShotInfo(side.Value))
+                {
+                    foreach (var defectCellOfShot in GetDefectInfoOfShot(shot.Value))
+                    {
+                        defectCellOfBoard.Add(defectCellOfShot.Key, defectCellOfShot.Value);
+                    }
+                }
+            }
+
+            return defectCellOfBoard;
+        }
+
+        private PathMap GetSideInfo(string productName, string batchName, string boardName)
+        {
+            PathMap side = new PathMap();
+            if (!GetBoardPathInfo(productName, batchName).TryGetValue(boardName, out var boardPath))
+            {
+                side.Clear();
+            }
+            if (!folder.TryGetChildrenDirMap(boardName, out side))
+            {
+                side.Clear();
+            }
+
+            return side;
+        }
+
+        private PathMap GetShotInfo(string sidePath)
+        {
+            PathMap shot = new PathMap();
+            if (!folder.TryGetChildrenDirMap(sidePath, out shot))
+            {
+                shot.Clear();
+            }
+
+            return shot;
+        }
+
+        private PathMap GetDefectInfoOfShot(string shotPath)
+        {
+            PathMap defectCell = new PathMap();
+            folder.FileExtension = _defectFileExtent;
+            if (!folder.TryGetChildrenFileMap(shotPath, out defectCell))
+            {
+                defectCell.Clear();
+            }
+
+            return defectCell;
+        }
+
         public void GetDefetInBoard(string productName, string batchName, string boardName, out List<string> defectImgList)
         {
+            defectImgList = new List<string>();
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
             throw new NotImplementedException();
         }
 
