@@ -57,7 +57,7 @@
     <Compile Include="DefectDataStructure\DefectShapeRect.cs" />
     <Compile Include="DeviceModule\DeviceInterface.cs" />
     <Compile Include="DeviceModule\MachVision\DeviceMachVision.cs" />
-    <Compile Include="DeviceModule\MachVision\FolderHelper.cs" />
+    <Compile Include="Common\FolderHelper.cs" />
     <Compile Include="View\ConfigView.cs">
       <SubType>UserControl</SubType>
     </Compile>
