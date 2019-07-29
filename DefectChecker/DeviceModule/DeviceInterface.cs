@@ -11,9 +11,8 @@ namespace DefectChecker.DeviceModule
     public interface DeviceInterface
     {
         void GetDefectCell(string productName, string batchName, string boardName, string sideName, string shotName, string defectName, out DefectCell defectCell);
-        void GetDefectInShot(string productName, string batchName, string boardName, string sideName, string shotName, out List<string> defectList);
+        void GetDefectListInShot(string productName, string batchName, string boardName, string sideName, string shotName, out List<string> defectList);
         void GetShotList(string productName, string batchName, string boardName, string sideName, out List<string> shotList);
-        void GetDefetInBoard(string productName, string batchName, string boardName, out List<string> defectImgList);
         void GetSideList(string productName, string batchName, string boardName, out List<string> sideList);
         void GetBoardList(string productName, string batchName, out List<string> boardList);
         void GetBatchList(string productName, out List<string> batchList);
@@ -24,6 +23,6 @@ namespace DefectChecker.DeviceModule
         void GetGerberWholeImgA(out Bitmap gerberWholeImg);
         void GetGerberWholeImgB(out Bitmap gerberWholeImg);
 
-        // Label: lack of GetDefectPositionListOfxxx() GetDefectPositionOfDefect()
+        // LABEL: lack of GetDefectPositionListOfxxx() GetDefectPositionOfDefect()
     }
 }
