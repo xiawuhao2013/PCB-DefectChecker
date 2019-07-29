@@ -22,9 +22,6 @@ namespace DefectChecker.DeviceModule.MachVision
         private string _dataDir = default(string);
         private string _modelDir = default(string);
         private FolderHelper folder = new FolderHelper();
-        private PathMap _productMap = new PathMap();
-        private PathMap _batchMap = new PathMap();
-        private PathMap _boardMap = new PathMap();
 
         public DeviceMachVision()
         {
@@ -70,6 +67,47 @@ namespace DefectChecker.DeviceModule.MachVision
             return true;
         }
 
+        private PathMap GetBoardPathInfo(string productName, string batchName)
+        {
+            PathMap board = new PathMap();
+            if (!GetBatchPathInfo(productName).TryGetValue(batchName, out var batchPath))
+            {
+                board.Clear();
+            }
+            if (!folder.TryGetChildrenDirMap(batchPath, out board))
+            {
+                board.Clear();
+            }
+
+            return board;
+        }
+
+        private PathMap GetBatchPathInfo(string productName)
+        {
+            PathMap batch = new PathMap();
+            if (!GetProductPathInfo().TryGetValue(productName, out var productPath))
+            {
+                batch.Clear();
+            }
+            if (!folder.TryGetChildrenDirMap(productPath, out batch))
+            {
+                batch.Clear();
+            }
+
+            return batch;
+        }
+
+        private PathMap GetProductPathInfo()
+        {
+            PathMap product = new PathMap();
+            if (!folder.TryGetChildrenDirMap(_dataDir, out product))
+            {
+                product.Clear();
+            }
+
+            return product;
+        }
+
         private void LoadConfig()
         {
             XmlParameter xmlParameter = new XmlParameter();
@@ -95,17 +133,7 @@ namespace DefectChecker.DeviceModule.MachVision
             boardList = new List<string>();
             try
             {
-                _boardMap.Clear();
-                GetBatchList(productName, out var batchList);
-                if (!_batchMap.TryGetValue(batchName, out var batchPath))
-                {
-                    return;
-                }
-                if (!folder.TryGetChildrenDirMap(batchPath, out _boardMap))
-                {
-                    return;
-                }
-                foreach (var board in _boardMap)
+                foreach (var board in GetBoardPathInfo(productName, batchName))
                 {
                     boardList.Add(board.Key);
                 }
@@ -113,7 +141,6 @@ namespace DefectChecker.DeviceModule.MachVision
             catch (Exception ex)
             {
                 boardList.Clear();
-                _batchMap.Clear();
                 MessageBox.Show(ex.Message);
 
                 return;
@@ -125,20 +152,9 @@ namespace DefectChecker.DeviceModule.MachVision
         public void GetBatchList(string productName, out List<string> batchList)
         {
             batchList = new List<string>();
-            //batchList.Clear();
             try
             {
-                _batchMap.Clear();
-                GetProductList(out var procductList);
-                if (!_productMap.TryGetValue(productName, out var productPath))
-                {
-                    return;
-                }
-                if (!folder.TryGetChildrenDirMap(productPath, out _batchMap))
-                {
-                    return;
-                }
-                foreach (var batch in _batchMap)
+                foreach (var batch in GetBatchPathInfo(productName))
                 {
                     batchList.Add(batch.Key);
                 }
@@ -146,7 +162,6 @@ namespace DefectChecker.DeviceModule.MachVision
             catch (Exception ex)
             {
                 batchList.Clear();
-                _batchMap.Clear();
                 MessageBox.Show(ex.Message);
 
                 return;
@@ -163,15 +178,9 @@ namespace DefectChecker.DeviceModule.MachVision
         public void GetProductList(out List<string> procductList)
         {
             procductList = new List<string>();
-            //procductList.Clear();
             try
             {
-                _productMap.Clear();
-                if (!folder.TryGetChildrenDirMap(_dataDir, out _productMap))
-                {
-                    return;
-                }
-                foreach (var product in _productMap)
+                foreach (var product in GetProductPathInfo())
                 {
                     procductList.Add(product.Key);
                 }
@@ -179,7 +188,6 @@ namespace DefectChecker.DeviceModule.MachVision
             catch (Exception ex)
             {
                 procductList.Clear();
-                _productMap.Clear();
                 MessageBox.Show(ex.Message);
 
                 return;
@@ -187,8 +195,6 @@ namespace DefectChecker.DeviceModule.MachVision
 
             return;
         }
-
-
 
         public void GetGerberWholeImgA(out Bitmap gerberWholeImg)
         {
