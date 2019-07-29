@@ -174,22 +174,23 @@ namespace DefectChecker.DeviceModule.MachVision
             return defectCell;
         }
 
-        public void GetDefetInBoard(string productName, string batchName, string boardName, out List<string> defectImgList)
+
+        public void GetDefectCell(string productName, string batchName, string boardName, string sideName, string shotName, string defectName, out DefectCell defectCell)
         {
-            defectImgList = new List<string>();
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-
-            }
-
             throw new NotImplementedException();
         }
 
-        public void GetDefectCell(string batchName, string boardName, string defectImgName, out DefectCell defectCell)
+        public void GetDefectListInShot(string productName, string batchName, string boardName, string sideName, string shotName, out List<string> defectList)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetShotList(string productName, string batchName, string boardName, string sideName, out List<string> shotList)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetSideList(string productName, string batchName, string boardName, out List<string> sideList)
         {
             throw new NotImplementedException();
         }
@@ -358,6 +359,6 @@ namespace DefectChecker.DeviceModule.MachVision
             return;
         }
 
-
+        
     }
 }
