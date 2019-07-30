@@ -29,14 +29,15 @@ namespace DefectChecker.DataBase
 
         public List<DefectCell> GetCurDefectGroup(int num) { return null; }
         public void NextDefectGroup(int num) { }
+        public void NextCell() { }
         public void PreviousCell() { }
-        public void SelectCell() { }
+        public void SelectCell(int index) { }
         public void NextBoard() { }
         public void PreviousBoard() { }
-        public void SelectBoard() { }
+        public void SelectBoard(int index) { }
         public void NextBatch() { }
         public void PreviousBatch() { }
-        public void SelectBatch() { }
+        public void SelectBatch(int index) { }
 
         public void GetDefectInfo() { }
         public void Mark(int type) { }
