@@ -24,11 +24,15 @@ namespace DefectChecker.DeviceModule.MachVision
         private string _modelDir = default(string);
         private FolderHelper folder = new FolderHelper();
 
+        //
+
         public DeviceMachVision()
         {
             folder.FileExtension = @"*.jpg";
             LoadConfig();
         }
+
+        //
 
         private PathMap GetDefectPathInfo(string productName, string batchName, string boardName, string sideName, string shotName)
         {
