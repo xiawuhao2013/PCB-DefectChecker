@@ -21,6 +21,9 @@ namespace DefectChecker.DeviceModule.MachVision
         private const string _fileName = @"Panel.jpg";
         private const string _defectFileExtent = @"*.bmp";
         private const string _codeFileExtent = @"*.par";
+        private const string _shotResultFileExtent = @"*.ini";
+        private const string _shot0ResultFileName = @"ResultShot_0.ini";
+        private const string _shot1ResultFileName = @"ResultShot_1.ini";
         private const string _section = "Info";
         private const string _keyOfName = "Name";
         private const string _keyOfID = "ParamID";
@@ -434,5 +437,35 @@ namespace DefectChecker.DeviceModule.MachVision
             return;
         }
 
+
+        private Dictionary<string, string> GetDefectPositionInfoOfShot(string productName, string batchName, string boardName, string sideName, string shotName, string shotResultFileName)
+        {
+            Dictionary<string, string> defectPositionOfShot = new Dictionary<string, string>();
+            IniHelper iniHelper = IniHelper.GetInstance();
+            if (!GetShotPathInfo(productName, batchName, boardName, sideName).TryGetValue(shotName, out var shotPath))
+            {
+                return defectPositionOfShot;
+            }
+            FolderHelper.GetInstance().SetFileExtension(_shotResultFileExtent);
+            if (!FolderHelper.GetInstance().TryGetChildrenFileMap(shotPath, out var shotResultFile))
+            {
+                return defectPositionOfShot;
+            }
+            if (1 != shotResultFile.Count)
+            {
+                return defectPositionOfShot;
+            }
+            if (!shotResultFile.TryGetValue(shotResultFileName, out var shotResultFilePath))
+            {
+                return defectPositionOfShot;
+            }
+            foreach (var defect in GetDefectPathInfo(productName, batchName, boardName, sideName, shotName))
+            {
+                iniHelper.ReadValue(defect.Key, @"SD_0000", shotResultFilePath, out var position);
+                defectPositionOfShot.Add(defect.Key, position);
+            }
+
+            return defectPositionOfShot;
+        }
     }
 }
