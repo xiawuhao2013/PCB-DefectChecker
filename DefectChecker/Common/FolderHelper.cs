@@ -12,11 +12,39 @@ namespace DefectChecker.Common
 {
     public class FolderHelper
     {
-        public string FileExtension { get; set; }
+        private static FolderHelper _instance = new FolderHelper();
+        private string _fileExtension = @"*.*";
 
-        public FolderHelper()
+        //
+
+        private FolderHelper()
         {
-            FileExtension= @"*.*";
+        }
+
+        //
+
+        public static FolderHelper GetInstance()
+        {
+            if (null == _instance)
+            {
+                _instance = new FolderHelper();
+            }
+
+            return _instance;
+        }
+
+        public void ResetFileExtension()
+        {
+            _fileExtension = @"*.*";
+
+            return;
+        }
+
+        public void SetFileExtension(string extension)
+        {
+            _fileExtension = extension;
+
+            return;
         }
 
         public bool TryGetChildrenDirMap(string dirPath, out PathMap childrenDirMap)
@@ -47,7 +75,7 @@ namespace DefectChecker.Common
             try
             {
                 var dir = new DirectoryInfo(dirPath);
-                foreach (var fileInfo in dir.GetFiles(FileExtension))
+                foreach (var fileInfo in dir.GetFiles(_fileExtension))
                 {
                     childrenFileMap.Add(fileInfo.Name, fileInfo.FullName);
                 }

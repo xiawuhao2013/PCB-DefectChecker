@@ -22,13 +22,11 @@ namespace DefectChecker.DeviceModule.MachVision
         private const string _defectFileExtent = @"*.bmp";
         private string _dataDir = default(string);
         private string _modelDir = default(string);
-        private FolderHelper folder = new FolderHelper();
 
         //
 
         public DeviceMachVision()
         {
-            folder.FileExtension = @"*.jpg";
             LoadConfig();
         }
 
@@ -41,8 +39,8 @@ namespace DefectChecker.DeviceModule.MachVision
             {
                 defect.Clear();
             }
-            folder.FileExtension = _defectFileExtent;
-            if (!folder.TryGetChildrenFileMap(shotPath, out defect))
+            FolderHelper.GetInstance().SetFileExtension(_defectFileExtent);
+            if (!FolderHelper.GetInstance().TryGetChildrenFileMap(shotPath, out defect))
             {
                 defect.Clear();
             }
@@ -57,7 +55,7 @@ namespace DefectChecker.DeviceModule.MachVision
             {
                 shot.Clear();
             }
-            if (!folder.TryGetChildrenDirMap(sidePath, out shot))
+            if (!FolderHelper.GetInstance().TryGetChildrenDirMap(sidePath, out shot))
             {
                 shot.Clear();
             }
@@ -72,7 +70,7 @@ namespace DefectChecker.DeviceModule.MachVision
             {
                 side.Clear();
             }
-            if (!folder.TryGetChildrenDirMap(boardPath, out side))
+            if (!FolderHelper.GetInstance().TryGetChildrenDirMap(boardPath, out side))
             {
                 side.Clear();
             }
@@ -85,7 +83,7 @@ namespace DefectChecker.DeviceModule.MachVision
             wholeImg = null;
             try
             {
-                if (!folder.TryGetChildrenDirMap(_modelDir, out var pathMap))
+                if (!FolderHelper.GetInstance().TryGetChildrenDirMap(_modelDir, out var pathMap))
                 {
                     return false;
                 }
@@ -93,7 +91,8 @@ namespace DefectChecker.DeviceModule.MachVision
                 {
                     return false;
                 }
-                if (!folder.TryGetChildrenFileMap(path, out var fileMap))
+                FolderHelper.GetInstance().ResetFileExtension();
+                if (!FolderHelper.GetInstance().TryGetChildrenFileMap(path, out var fileMap))
                 {
                     return false;
                 }
@@ -125,7 +124,7 @@ namespace DefectChecker.DeviceModule.MachVision
             {
                 board.Clear();
             }
-            if (!folder.TryGetChildrenDirMap(batchPath, out board))
+            if (!FolderHelper.GetInstance().TryGetChildrenDirMap(batchPath, out board))
             {
                 board.Clear();
             }
@@ -140,7 +139,7 @@ namespace DefectChecker.DeviceModule.MachVision
             {
                 batch.Clear();
             }
-            if (!folder.TryGetChildrenDirMap(productPath, out batch))
+            if (!FolderHelper.GetInstance().TryGetChildrenDirMap(productPath, out batch))
             {
                 batch.Clear();
             }
@@ -151,7 +150,7 @@ namespace DefectChecker.DeviceModule.MachVision
         private PathMap GetProductPathInfo()
         {
             PathMap product = new PathMap();
-            if (!folder.TryGetChildrenDirMap(_dataDir, out product))
+            if (!FolderHelper.GetInstance().TryGetChildrenDirMap(_dataDir, out product))
             {
                 product.Clear();
             }
