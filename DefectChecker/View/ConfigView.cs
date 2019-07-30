@@ -92,7 +92,6 @@ namespace DefectChecker.View
             deviceOfMachVision.GetShotList(productList[0], batchList[0], boardList[0], sideList[0], out var shotList);
             deviceOfMachVision.GetDefectListInShot(productList[0], batchList[0], boardList[0], sideList[0], shotList[0], out var defectList);
             deviceOfMachVision.GetDefectCell(productList[0], batchList[0], boardList[0], sideList[0], shotList[0], defectList[0], out var defectCell);
-            var res = deviceOfMachVision.GetDefectPositionInfoOfShot(productList[0], batchList[0], boardList[0], sideList[0], shotList[0], @"ResultShot_0.ini");
             defectCell.DefectImage.Save("E:\\x.bmp");
             deviceOfMachVision.GetTemplateWholeImgA(out var bitmapA);
             bitmapA.Save("E:\\xA.bmp");
