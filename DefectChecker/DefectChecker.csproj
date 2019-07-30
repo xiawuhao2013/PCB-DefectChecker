@@ -11,6 +11,21 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,9 +48,21 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AqPanelDoubleBuffered, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\AqPcbCheckerPlus\Release\AqPanelDoubleBuffered.dll</HintPath>
+    </Reference>
     <Reference Include="Aqrose.Framework.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Release\Aqrose.Framework.Utility.dll</HintPath>
+    </Reference>
+    <Reference Include="AqVision.Controls, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Release\AqVision.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="AqVision.Graphic, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\AqPcbCheckerPlus\Release\AqVision.Graphic.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -59,11 +86,29 @@
     <Compile Include="DeviceModule\DeviceInterface.cs" />
     <Compile Include="DeviceModule\MachVision\DeviceMachVision.cs" />
     <Compile Include="Common\FolderHelper.cs" />
+    <Compile Include="View\ChangeDisplayNumForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\ChangeDisplayNumForm.designer.cs">
+      <DependentUpon>ChangeDisplayNumForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\ConfigView.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\ConfigView.Designer.cs">
       <DependentUpon>ConfigView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DispalyViewOfCells.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\DispalyViewOfCells.Designer.cs">
+      <DependentUpon>DispalyViewOfCells.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DisplayView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\DisplayView.Designer.cs">
+      <DependentUpon>DisplayView.cs</DependentUpon>
     </Compile>
     <Compile Include="View\MainForm.cs">
       <SubType>Form</SubType>
@@ -82,8 +127,17 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="View\ChangeDisplayNumForm.resx">
+      <DependentUpon>ChangeDisplayNumForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\ConfigView.resx">
       <DependentUpon>ConfigView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DispalyViewOfCells.resx">
+      <DependentUpon>DispalyViewOfCells.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DisplayView.resx">
+      <DependentUpon>DisplayView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -101,6 +155,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
