@@ -30,6 +30,52 @@ namespace DefectChecker.DeviceModule.MachVision
             LoadConfig();
         }
 
+        private PathMap GetDefectPathInfo(string productName, string batchName, string boardName, string sideName, string shotName)
+        {
+            PathMap defect = new PathMap();
+            if (!GetShotPathInfo(productName, batchName, boardName, sideName).TryGetValue(shotName, out var shotPath))
+            {
+                defect.Clear();
+            }
+            folder.FileExtension = _defectFileExtent;
+            if (!folder.TryGetChildrenFileMap(shotPath, out defect))
+            {
+                defect.Clear();
+            }
+
+            return defect;
+        }
+
+        private PathMap GetShotPathInfo(string productName, string batchName, string boardName, string sideName)
+        {
+            PathMap shot = new PathMap();
+            if (!GetSidePathInfo(productName, batchName, boardName).TryGetValue(sideName, out var sidePath))
+            {
+                shot.Clear();
+            }
+            if (!folder.TryGetChildrenDirMap(sidePath, out shot))
+            {
+                shot.Clear();
+            }
+
+            return shot;
+        }
+
+        private PathMap GetSidePathInfo(string productName, string batchName, string boardName)
+        {
+            PathMap side = new PathMap();
+            if (!GetBoardPathInfo(productName, batchName).TryGetValue(boardName, out var boardPath))
+            {
+                side.Clear();
+            }
+            if (!folder.TryGetChildrenDirMap(boardPath, out side))
+            {
+                side.Clear();
+            }
+
+            return side;
+        }
+
         private bool TryGetTemplateImg(string side, string fileName, out Bitmap wholeImg)
         {
             wholeImg = null;
@@ -119,80 +165,95 @@ namespace DefectChecker.DeviceModule.MachVision
             return;
         }
 
-        private PathMap GetDefectInfoOfBoard(string productName, string batchName, string boardName)
-        {
-            PathMap defectCellOfBoard = new PathMap();
-            foreach (var side in GetSideInfo(productName, batchName, boardName))
-            {
-                foreach (var shot in GetShotInfo(side.Value))
-                {
-                    foreach (var defectCellOfShot in GetDefectInfoOfShot(shot.Value))
-                    {
-                        defectCellOfBoard.Add(defectCellOfShot.Key, defectCellOfShot.Value);
-                    }
-                }
-            }
-
-            return defectCellOfBoard;
-        }
-
-        private PathMap GetSideInfo(string productName, string batchName, string boardName)
-        {
-            PathMap side = new PathMap();
-            if (!GetBoardPathInfo(productName, batchName).TryGetValue(boardName, out var boardPath))
-            {
-                side.Clear();
-            }
-            if (!folder.TryGetChildrenDirMap(boardName, out side))
-            {
-                side.Clear();
-            }
-
-            return side;
-        }
-
-        private PathMap GetShotInfo(string sidePath)
-        {
-            PathMap shot = new PathMap();
-            if (!folder.TryGetChildrenDirMap(sidePath, out shot))
-            {
-                shot.Clear();
-            }
-
-            return shot;
-        }
-
-        private PathMap GetDefectInfoOfShot(string shotPath)
-        {
-            PathMap defectCell = new PathMap();
-            folder.FileExtension = _defectFileExtent;
-            if (!folder.TryGetChildrenFileMap(shotPath, out defectCell))
-            {
-                defectCell.Clear();
-            }
-
-            return defectCell;
-        }
-
+        //
 
         public void GetDefectCell(string productName, string batchName, string boardName, string sideName, string shotName, string defectName, out DefectCell defectCell)
         {
-            throw new NotImplementedException();
+            try
+            {
+                defectCell = new DefectCell();
+                if (!GetDefectPathInfo(productName, batchName, boardName, sideName, shotName).TryGetValue(defectName, out var defectPath))
+                {
+                    return;
+                }
+                if (!File.Exists(defectPath))
+                {
+                    return;
+                }
+                defectCell.DefectImage = new Bitmap(defectPath);
+            }
+            catch (Exception ex)
+            {
+                defectCell = new DefectCell();
+                MessageBox.Show(ex.Message);
+
+                return;
+            }
+
+            return;
         }
 
         public void GetDefectListInShot(string productName, string batchName, string boardName, string sideName, string shotName, out List<string> defectList)
         {
-            throw new NotImplementedException();
+            defectList = new List<string>();
+            try
+            {
+                foreach (var defect in GetDefectPathInfo(productName, batchName, boardName, sideName, shotName))
+                {
+                    defectList.Add(defect.Key);
+                }
+            }
+            catch (Exception ex)
+            {
+                defectList.Clear();
+                MessageBox.Show(ex.Message);
+
+                return;
+            }
+
+            return;
         }
 
         public void GetShotList(string productName, string batchName, string boardName, string sideName, out List<string> shotList)
         {
-            throw new NotImplementedException();
+            shotList = new List<string>();
+            try
+            {
+                foreach (var shot in GetShotPathInfo(productName, batchName, boardName, sideName))
+                {
+                    shotList.Add(shot.Key);
+                }
+            }
+            catch (Exception ex)
+            {
+                shotList.Clear();
+                MessageBox.Show(ex.Message);
+
+                return;
+            }
+
+            return;
         }
 
         public void GetSideList(string productName, string batchName, string boardName, out List<string> sideList)
         {
-            throw new NotImplementedException();
+            sideList = new List<string>();
+            try
+            {
+                foreach (var side in GetSidePathInfo(productName, batchName, boardName))
+                {
+                    sideList.Add(side.Key);
+                }
+            }
+            catch (Exception ex)
+            {
+                sideList = new List<string>();
+                MessageBox.Show(ex.Message);
+
+                return;
+            }
+
+            return;
         }
 
         public void GetBoardList(string productName, string batchName, out List<string> boardList)
