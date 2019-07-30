@@ -340,8 +340,14 @@ namespace DefectChecker.DeviceModule.MachVision
                 {
                     if (File.Exists(codeFile.Value))
                     {
+                        var encodingType = EncodingHelper.GetInstance().GetEncodingType(codeFile.Value);
                         iniHelper.ReadValue(_section, _keyOfName, codeFile.Value, out string valueOfName);
                         iniHelper.ReadValue(_section, _keyOfID, codeFile.Value, out string valueOfID);
+                        if (Encoding.UTF8 == encodingType)
+                        {
+                            valueOfName = EncodingHelper.GetInstance().UTF8ToUnicode(valueOfName);
+                            valueOfID= EncodingHelper.GetInstance().UTF8ToUnicode(valueOfID);
+                        }
                         if (default(string) == valueOfName || default(string) == valueOfID || "" == valueOfName || "" == valueOfID)
                         {
                             continue;
@@ -437,7 +443,6 @@ namespace DefectChecker.DeviceModule.MachVision
             return;
         }
 
-
         private Dictionary<string, string> GetDefectPositionInfoOfShot(string productName, string batchName, string boardName, string sideName, string shotName, string shotResultFileName)
         {
             Dictionary<string, string> defectPositionOfShot = new Dictionary<string, string>();
@@ -459,6 +464,7 @@ namespace DefectChecker.DeviceModule.MachVision
             {
                 return defectPositionOfShot;
             }
+            var encodingType = EncodingHelper.GetInstance().GetEncodingType(shotResultFilePath);
             foreach (var defect in GetDefectPathInfo(productName, batchName, boardName, sideName, shotName))
             {
                 iniHelper.ReadValue(defect.Key, @"SD_0000", shotResultFilePath, out var position);

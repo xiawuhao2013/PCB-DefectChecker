@@ -35,13 +35,13 @@
             this.ToolStripMenuItemOfAAA = new System.Windows.Forms.ToolStripMenuItem();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panelOfInfo = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.aqDisplay1 = new AqVision.Controls.AqDisplay();
             this.aqDisplay2 = new AqVision.Controls.AqDisplay();
+            this.panelOfInfo = new System.Windows.Forms.Panel();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -80,14 +80,14 @@
             // ToolStripMenuItemOfchangeDisplayNum
             // 
             this.ToolStripMenuItemOfchangeDisplayNum.Name = "ToolStripMenuItemOfchangeDisplayNum";
-            this.ToolStripMenuItemOfchangeDisplayNum.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemOfchangeDisplayNum.Size = new System.Drawing.Size(148, 22);
             this.ToolStripMenuItemOfchangeDisplayNum.Text = "设置显示数量";
             this.ToolStripMenuItemOfchangeDisplayNum.Click += new System.EventHandler(this.ToolStripMenuItemOfchangeDisplayNum_Click);
             // 
             // ToolStripMenuItemOfAAA
             // 
             this.ToolStripMenuItemOfAAA.Name = "ToolStripMenuItemOfAAA";
-            this.ToolStripMenuItemOfAAA.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemOfAAA.Size = new System.Drawing.Size(148, 22);
             this.ToolStripMenuItemOfAAA.Text = "显示侧边栏";
             this.ToolStripMenuItemOfAAA.Click += new System.EventHandler(this.ToolStripMenuItemOfAAA_Click);
             // 
@@ -97,23 +97,17 @@
             this.panel1.Controls.Add(this.panelOfInfo);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 24);
+            this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1248, 676);
             this.panel1.TabIndex = 1;
-            // 
-            // panelOfInfo
-            // 
-            this.panelOfInfo.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panelOfInfo.Location = new System.Drawing.Point(1148, 0);
-            this.panelOfInfo.Name = "panelOfInfo";
-            this.panelOfInfo.Size = new System.Drawing.Size(100, 676);
-            this.panelOfInfo.TabIndex = 0;
             // 
             // panel2
             // 
             this.panel2.Controls.Add(this.splitContainer1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Margin = new System.Windows.Forms.Padding(0);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1148, 676);
             this.panel2.TabIndex = 1;
@@ -122,6 +116,7 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(0);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -135,6 +130,7 @@
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Margin = new System.Windows.Forms.Padding(0);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -153,6 +149,7 @@
             // 
             this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer3.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer3.Margin = new System.Windows.Forms.Padding(0);
             this.splitContainer3.Name = "splitContainer3";
             // 
             // splitContainer3.Panel2
@@ -179,7 +176,7 @@
             this.aqDisplay1.IsTransformRGB = false;
             this.aqDisplay1.IsUsedEraser = false;
             this.aqDisplay1.Location = new System.Drawing.Point(0, 0);
-            this.aqDisplay1.Margin = new System.Windows.Forms.Padding(2);
+            this.aqDisplay1.Margin = new System.Windows.Forms.Padding(0);
             this.aqDisplay1.Name = "aqDisplay1";
             this.aqDisplay1.OriginMaskImage = null;
             this.aqDisplay1.Radius = 1F;
@@ -203,12 +200,21 @@
             this.aqDisplay2.IsTransformRGB = false;
             this.aqDisplay2.IsUsedEraser = false;
             this.aqDisplay2.Location = new System.Drawing.Point(0, 0);
-            this.aqDisplay2.Margin = new System.Windows.Forms.Padding(2);
+            this.aqDisplay2.Margin = new System.Windows.Forms.Padding(0);
             this.aqDisplay2.Name = "aqDisplay2";
             this.aqDisplay2.OriginMaskImage = null;
             this.aqDisplay2.Radius = 1F;
             this.aqDisplay2.Size = new System.Drawing.Size(476, 396);
             this.aqDisplay2.TabIndex = 0;
+            // 
+            // panelOfInfo
+            // 
+            this.panelOfInfo.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panelOfInfo.Location = new System.Drawing.Point(1148, 0);
+            this.panelOfInfo.Margin = new System.Windows.Forms.Padding(0);
+            this.panelOfInfo.Name = "panelOfInfo";
+            this.panelOfInfo.Size = new System.Drawing.Size(100, 676);
+            this.panelOfInfo.TabIndex = 0;
             // 
             // DisplayView
             // 
@@ -216,6 +222,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
+            this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "DisplayView";
             this.Size = new System.Drawing.Size(1248, 700);
             this.menuStrip1.ResumeLayout(false);
