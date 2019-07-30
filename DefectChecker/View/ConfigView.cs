@@ -84,6 +84,7 @@ namespace DefectChecker.View
         {
             DeviceMachVision deviceOfMachVision = new DeviceMachVision();
 
+            deviceOfMachVision.GetCodeList(out var codeList);
             deviceOfMachVision.GetProductList(out var productList);
             deviceOfMachVision.GetBatchList(productList[0], out var batchList);
             deviceOfMachVision.GetBoardList(productList[0], batchList[0], out var boardList);

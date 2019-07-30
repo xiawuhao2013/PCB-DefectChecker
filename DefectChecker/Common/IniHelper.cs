@@ -56,8 +56,10 @@ namespace DefectChecker.Common
         {
             try
             {
+                Encoding utf8 = Encoding.UTF8;
+                Encoding unicode = Encoding.Unicode;
                 StringBuilder temp = new StringBuilder(1024);
-                GetPrivateProfileString(section, key, "", temp, 1024, path);
+                GetPrivateProfileString(section, key, null, temp, 1024, path);
                 value = temp.ToString();
             }
             catch (Exception ex)

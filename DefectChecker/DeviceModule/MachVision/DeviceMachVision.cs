@@ -20,12 +20,12 @@ namespace DefectChecker.DeviceModule.MachVision
         private const string _sideB = @"SideB";
         private const string _fileName = @"Panel.jpg";
         private const string _defectFileExtent = @"*.bmp";
-        private const string _section = @"Info";
-        private const string _keyOfName = @"Name";
-        private const string _keyOfID = @"ParamID";
-        private const string _keyOfType = @"ParamType";
-        private string _dataDir = default(string);
-        private string _modelDir = default(string);
+        private const string _codeFileExtent = @"*.par";
+        private const string _section = "Info";
+        private const string _keyOfName = "Name";
+        private const string _keyOfID = "ParamID";
+        private string _dataDir = "";
+        private string _modelDir = "";
 
         //
 
@@ -168,7 +168,7 @@ namespace DefectChecker.DeviceModule.MachVision
             PathMap codeFile = new PathMap();
             try
             {
-                FolderHelper.GetInstance().SetFileExtension(@"*.par");
+                FolderHelper.GetInstance().SetFileExtension(_codeFileExtent);
                 if (!FolderHelper.GetInstance().TryGetChildrenFileMap(_modelDir, out codeFile))
                 {
                     codeFile.Clear();
@@ -338,6 +338,10 @@ namespace DefectChecker.DeviceModule.MachVision
                     {
                         iniHelper.ReadValue(_section, _keyOfName, codeFile.Value, out string valueOfName);
                         iniHelper.ReadValue(_section, _keyOfID, codeFile.Value, out string valueOfID);
+                        if (default(string) == valueOfName || default(string) == valueOfID || "" == valueOfName || "" == valueOfID)
+                        {
+                            continue;
+                        }
                         var id = Convert.ToInt32(valueOfID);
                         codeList.Add(id, valueOfName);
                     }
