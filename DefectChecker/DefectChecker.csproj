@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\IniHelper.cs" />
     <Compile Include="DataBase\DataInfo.cs" />
     <Compile Include="DataBase\DataBaseManager.cs" />
     <Compile Include="DefectDataStructure\DefectCell.cs" />

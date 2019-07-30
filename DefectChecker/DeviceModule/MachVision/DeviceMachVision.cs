@@ -20,6 +20,10 @@ namespace DefectChecker.DeviceModule.MachVision
         private const string _sideB = @"SideB";
         private const string _fileName = @"Panel.jpg";
         private const string _defectFileExtent = @"*.bmp";
+        private const string _section = @"Info";
+        private const string _keyOfName = @"Name";
+        private const string _keyOfID = @"ParamID";
+        private const string _keyOfType = @"ParamType";
         private string _dataDir = default(string);
         private string _modelDir = default(string);
 
@@ -156,6 +160,27 @@ namespace DefectChecker.DeviceModule.MachVision
             }
 
             return product;
+        }
+
+        // LABEL: need product name?
+        private PathMap GetCodeFileList()
+        {
+            PathMap codeFile = new PathMap();
+            try
+            {
+                FolderHelper.GetInstance().SetFileExtension(@"*.par");
+                if (!FolderHelper.GetInstance().TryGetChildrenFileMap(_modelDir, out codeFile))
+                {
+                    codeFile.Clear();
+                }
+            }
+            catch (Exception ex)
+            {
+                codeFile.Clear();
+                MessageBox.Show(ex.Message);
+            }
+
+            return codeFile;
         }
 
         private void LoadConfig()
@@ -303,7 +328,30 @@ namespace DefectChecker.DeviceModule.MachVision
 
         public void GetCodeList(out Dictionary<int, string> codeList)
         {
-            throw new NotImplementedException();
+            codeList = new Dictionary<int, string>();
+            try
+            {
+                IniHelper iniHelper = IniHelper.GetInstance();
+                foreach (var codeFile in GetCodeFileList())
+                {
+                    if (File.Exists(codeFile.Value))
+                    {
+                        iniHelper.ReadValue(_section, _keyOfName, codeFile.Value, out string valueOfName);
+                        iniHelper.ReadValue(_section, _keyOfID, codeFile.Value, out string valueOfID);
+                        var id = Convert.ToInt32(valueOfID);
+                        codeList.Add(id, valueOfName);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                codeList.Clear();
+                MessageBox.Show(ex.Message);
+
+                return;
+            }
+
+            return;
         }
 
         public void GetProductList(out List<string> procductList)
@@ -381,48 +429,5 @@ namespace DefectChecker.DeviceModule.MachVision
             return;
         }
 
-
-        /******************************************************/
-
-        [DllImport("kernel32")]
-        private static extern long WritePrivateProfileString(string section, string key, string val, string filepath);
-        [DllImport("kernel32")]
-        private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retval, int size, string filePath);
-
-        public bool TryWriteValue(string section, string key, string value, string path)
-        {
-            try
-            {
-                WritePrivateProfileString(section, key, value, path);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                return false;
-            }
-
-            return true;
-        }
-
-        public void ReadValue(string section, string key, string path, out string value)
-        {
-            try
-            {
-                StringBuilder temp = new StringBuilder(1024);
-                GetPrivateProfileString(section, key, "", temp, 1024, path);
-                value = temp.ToString();
-            }
-            catch (Exception ex)
-            {
-                value = default(string);
-                MessageBox.Show(ex.Message);
-
-                return;
-            }
-
-            return;
-        }
-
-        
     }
 }
