@@ -326,6 +326,7 @@ namespace DefectChecker.DeviceModule.MachVision
             return;
         }
 
+        // LABEL: some bugs to fix.
         public void GetCodeList(out Dictionary<int, string> codeList)
         {
             codeList = new Dictionary<int, string>();
