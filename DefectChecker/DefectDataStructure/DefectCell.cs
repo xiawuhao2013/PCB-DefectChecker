@@ -12,14 +12,14 @@ namespace DefectChecker.DefectDataStructure
         public Bitmap DefectImage { get; set; }
         public Bitmap TemplateImage { get; set; }
         public Bitmap GerberImage { get; set; }
-        public List<DefectShapeBase> DefectList { get; set; }
+        public DefectInfo Info { get; set; }
 
         public DefectCell()
         {
             DefectImage = null;
             TemplateImage = null;
             GerberImage = null;
-            DefectList = new List<DefectShapeBase>();
+            Info = new DefectInfo();
         }
     }
 }

@@ -84,7 +84,7 @@ namespace DefectChecker.View
         {
             DeviceMachVision deviceOfMachVision = new DeviceMachVision();
 
-            //deviceOfMachVision.GetCodeList(out var codeList);
+            deviceOfMachVision.GetCodeList(out var codeList);
             deviceOfMachVision.GetProductList(out var productList);
             deviceOfMachVision.GetBatchList(productList[0], out var batchList);
             deviceOfMachVision.GetBoardList(productList[0], batchList[0], out var boardList);
@@ -92,11 +92,11 @@ namespace DefectChecker.View
             deviceOfMachVision.GetShotList(productList[0], batchList[0], boardList[0], sideList[0], out var shotList);
             deviceOfMachVision.GetDefectListInShot(productList[0], batchList[0], boardList[0], sideList[0], shotList[0], out var defectList);
             deviceOfMachVision.GetDefectCell(productList[0], batchList[0], boardList[0], sideList[0], shotList[0], defectList[0], out var defectCell);
-            defectCell.DefectImage.Save("E:\\x.bmp");
+            //defectCell.DefectImage.Save("E:\\x.bmp");
             deviceOfMachVision.GetTemplateWholeImgA(out var bitmapA);
-            bitmapA.Save("E:\\xA.bmp");
+            //bitmapA.Save("E:\\xA.bmp");
             deviceOfMachVision.GetTemplateWholeImgB(out var bitmapB);
-            bitmapB.Save("E:\\xB.bmp");
+            //bitmapB.Save("E:\\xB.bmp");
 
             return;
         }

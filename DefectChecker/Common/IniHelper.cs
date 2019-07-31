@@ -10,11 +10,7 @@ namespace DefectChecker.Common
 {
     public class IniHelper
     {
-        private static IniHelper _instance = new IniHelper();
-
-        //
-
-        private IniHelper()
+        public IniHelper()
         {
         }
 
@@ -24,19 +20,7 @@ namespace DefectChecker.Common
         private static extern long WritePrivateProfileString(string section, string key, string val, string filepath);
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retval, int size, string filePath);
-
-        //
-
-        public static IniHelper GetInstance()
-        {
-            if (null ==_instance)
-            {
-                _instance = new IniHelper();
-            }
-
-            return _instance;
-        }
-
+        
         public bool TryWriteValue(string section, string key, string value, string path)
         {
             try
@@ -52,14 +36,13 @@ namespace DefectChecker.Common
             return true;
         }
 
-        public void ReadValue(string section, string key, string path, out string value)
+        public int ReadValue(string section, string key, string path, out string value)
         {
+            int strLen;
             try
             {
-                Encoding utf8 = Encoding.UTF8;
-                Encoding unicode = Encoding.Unicode;
                 StringBuilder temp = new StringBuilder(1024);
-                GetPrivateProfileString(section, key, null, temp, 1024, path);
+                strLen = GetPrivateProfileString(section, key, null, temp, 1024, path);
                 value = temp.ToString();
             }
             catch (Exception ex)
@@ -67,10 +50,10 @@ namespace DefectChecker.Common
                 value = default(string);
                 MessageBox.Show(ex.Message);
 
-                return;
+                return 0;
             }
 
-            return;
+            return strLen;
         }
     }
 }

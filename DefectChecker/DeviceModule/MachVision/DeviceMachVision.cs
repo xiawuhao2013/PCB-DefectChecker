@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Aqrose.Framework.Utility.Tools;
 using DefectChecker.Common;
@@ -200,28 +201,17 @@ namespace DefectChecker.DeviceModule.MachVision
 
         public void GetDefectCell(string productName, string batchName, string boardName, string sideName, string shotName, string defectName, out DefectCell defectCell)
         {
-            try
-            {
-                defectCell = new DefectCell();
-                if (!GetDefectPathInfo(productName, batchName, boardName, sideName, shotName).TryGetValue(defectName, out var defectPath))
-                {
-                    return;
-                }
-                if (!File.Exists(defectPath))
-                {
-                    return;
-                }
-                defectCell.DefectImage = new Bitmap(defectPath);
-            }
-            catch (Exception ex)
-            {
-                defectCell = new DefectCell();
-                MessageBox.Show(ex.Message);
-
-                return;
-            }
-
-            return;
+            defectCell = new DefectCell();
+            string defectPath = _dataDir +"\\" + productName + "\\" + batchName + "\\" + 
+                                boardName + "\\" + sideName + "\\" + shotName;
+            MachVisionFile machVisionFile = new MachVisionFile(defectPath, shotName);
+            defectName = Regex.Replace(defectName, @"(.bmp)$", "");
+            machVisionFile.ReadDefectInfo(defectName, out var defectInfo);
+            defectCell.Info = defectInfo;
+            defectCell.DefectImage = new Bitmap(defectPath+"\\"+defectName+".bmp");
+            Bitmap templateBitmap;
+            GetTemplateWholeImgA(out templateBitmap);
+            defectCell.TemplateImage = templateBitmap;
         }
 
         public void GetDefectListInShot(string productName, string batchName, string boardName, string sideName, string shotName, out List<string> defectList)
@@ -335,7 +325,7 @@ namespace DefectChecker.DeviceModule.MachVision
             codeList = new Dictionary<int, string>();
             try
             {
-                IniHelper iniHelper = IniHelper.GetInstance();
+                IniHelper iniHelper = new IniHelper();
                 foreach (var codeFile in GetCodeFileList())
                 {
                     if (File.Exists(codeFile.Value))
@@ -446,7 +436,7 @@ namespace DefectChecker.DeviceModule.MachVision
         private Dictionary<string, string> GetDefectPositionInfoOfShot(string productName, string batchName, string boardName, string sideName, string shotName, string shotResultFileName)
         {
             Dictionary<string, string> defectPositionOfShot = new Dictionary<string, string>();
-            IniHelper iniHelper = IniHelper.GetInstance();
+            IniHelper iniHelper = new IniHelper();
             if (!GetShotPathInfo(productName, batchName, boardName, sideName).TryGetValue(shotName, out var shotPath))
             {
                 return defectPositionOfShot;

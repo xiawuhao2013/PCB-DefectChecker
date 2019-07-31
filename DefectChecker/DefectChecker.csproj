@@ -82,11 +82,13 @@
     <Compile Include="DataBase\DataInfo.cs" />
     <Compile Include="DataBase\DataBaseManager.cs" />
     <Compile Include="DefectDataStructure\DefectCell.cs" />
-    <Compile Include="DefectDataStructure\DefectShapeBase.cs" />
-    <Compile Include="DefectDataStructure\DefectShapeRect.cs" />
+    <Compile Include="DefectDataStructure\DefectInfo.cs" />
+    <Compile Include="DefectDataStructure\ShapeBase.cs" />
+    <Compile Include="DefectDataStructure\RectShape.cs" />
     <Compile Include="DeviceModule\DeviceInterface.cs" />
     <Compile Include="DeviceModule\MachVision\DeviceMachVision.cs" />
     <Compile Include="Common\FolderHelper.cs" />
+    <Compile Include="DeviceModule\MachVision\MachVisionFile.cs" />
     <Compile Include="View\ChangeDisplayNumForm.cs">
       <SubType>Form</SubType>
     </Compile>

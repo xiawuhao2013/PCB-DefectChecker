@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DefectChecker.DefectDataStructure
 {
-    public class DefectShapeBase
+    public class ShapeBase
     {
 
     }
