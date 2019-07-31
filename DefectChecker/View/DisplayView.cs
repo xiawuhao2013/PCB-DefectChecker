@@ -12,6 +12,7 @@ namespace DefectChecker.View
         private DataBaseManager _dataBaseManager = new DataBaseManager();
         private DispalyViewOfCells _displayViewOfCells = new DispalyViewOfCells();
         // LABEL: temporary variables.
+        private List<DefectCell> _curDefectGroup = new List<DefectCell>();
         private int _typeOfMark = 0;
         private int _indexOfSelectedBatch = 0;
         private int _indexOfSelectedBoard = 0;
@@ -26,7 +27,7 @@ namespace DefectChecker.View
         {
             InitializeComponent();
             this.panelOfInfo.Visible = false;
-            RefreshDiplayViewCells();
+            InitializeViewCells();
         }
 
         //
@@ -34,7 +35,7 @@ namespace DefectChecker.View
         private void ToolStripMenuItemOfchangeDisplayNum_Click(object sender, EventArgs e)
         {
             _displayViewOfCells.UpdateNumberOfCellDisplay();
-            RefreshDiplayViewCells();
+            InitializeViewCells();
 
             return;
         }
@@ -61,7 +62,7 @@ namespace DefectChecker.View
             return;
         }
 
-        private void RefreshDiplayViewCells()
+        private void InitializeViewCells()
         {
             this.splitContainer1.Panel2.Controls.Clear();
             _displayViewOfCells.Dock = DockStyle.Fill;
@@ -70,79 +71,80 @@ namespace DefectChecker.View
             return;
         }
 
-        private List<DefectCell> GetCurDefectGroup()
+        private void GetFirstDefectGroup()
         {
-            return _dataBaseManager.GetCurDefectGroup(NumberOfCell);
-        }
-
-        private void NextDefectGroup()
-        {
-            _dataBaseManager.NextDefectGroup(NumberOfCell);
+            _dataBaseManager.GetFirstDefectGroup(NumberOfCell, out _curDefectGroup, out var isEnd);
 
             return;
         }
 
-        private void NextCell()
+        private void GetNextDefectGroup()
         {
-            _dataBaseManager.NextCell();
+            _dataBaseManager.GetNextDefectGroup(NumberOfCell, out _curDefectGroup, out var isEnd);
 
             return;
         }
 
-        private void PreviousCell()
+        private void GetPreviousDefectGroup()
         {
-            _dataBaseManager.PreviousCell();
+            _dataBaseManager.GetPreviousDefectGroup(NumberOfCell, out _curDefectGroup, out var isFirst);
 
             return;
         }
 
-        private void SelectCell()
+        private bool TryGetFirstShot()
         {
-            _dataBaseManager.SelectCell(_indexOfSelectedCell);
-
-            return;
+            return _dataBaseManager.TrySelectShot(0);
         }
 
-        private void NextBoard()
+        private bool TryGetNextShot()
         {
-            _dataBaseManager.NextBoard();
-
-            return;
+            return _dataBaseManager.TryGetNextShot(out var isEnd);
         }
 
-        private void PreviousBoard()
+        private bool TryGetPreviousShot()
         {
-            _dataBaseManager.PreviousBoard();
-
-            return;
+            return _dataBaseManager.TryGetPreviousShot(out var isFirst);
         }
 
-        private void SelectBoard()
+        private bool TryGetFirstBoard()
         {
-            _dataBaseManager.SelectBoard(_indexOfSelectedBoard);
-
-            return;
+            return _dataBaseManager.TrySelectBoard(0);
         }
 
-        private void NextBatch()
+        private bool TryGetNextBoard()
         {
-            _dataBaseManager.NextBatch();
-
-            return;
+            return _dataBaseManager.TryGetNextBoard(out var isEnd);
         }
 
-        private void PreviousBatch()
+        private bool TryGetPreviousBoard()
         {
-            _dataBaseManager.PreviousBatch();
-
-            return;
+            return _dataBaseManager.TryGetPreviousBoard(out var isFirst);
         }
 
-        private void SelectBatch()
+        private bool TrySelectBoard(int index)
         {
-            _dataBaseManager.SelectBatch(_indexOfSelectedBatch);
+            return _dataBaseManager.TrySelectBoard(index);
+        }
 
-            return;
+        private bool TryGetFirstBatch()
+        {
+            return _dataBaseManager.TrySelectBatch(0);
+        }
+
+        private bool TryGetNextBatch()
+        {
+            return _dataBaseManager.TryGetNextBatch(out var isEnd);
+        }
+
+        private bool TryGetPreviousBatch()
+        {
+            return _dataBaseManager.TryGetPreviousBatch(out var isFirst);
+        }
+
+        private bool TrySelectBatch(int index)
+        {
+            return _dataBaseManager.TrySelectBatch(index);
         }
 
         private void GetDefectInfo()
@@ -178,6 +180,13 @@ namespace DefectChecker.View
                     return;
                 }
             }
+
+            return;
+        }
+
+        private void DisplayView_Resize(object sender, EventArgs e)
+        {
+            _dataBaseManager.SaveConfig();
 
             return;
         }

@@ -93,20 +93,6 @@ namespace DefectChecker.DataBase
             return;
         }
 
-        private void SaveConfig()
-        {
-            XmlParameter xmlParameter = new XmlParameter();
-            xmlParameter.Add("Product", Product);
-            xmlParameter.Add("Batch", Batch);
-            xmlParameter.Add("Board", Board);
-            xmlParameter.Add("side", _side);
-            xmlParameter.Add("shot", _shot);
-            xmlParameter.Add("defect", _defect);
-            xmlParameter.WriteParameter(Application.StartupPath + _paramFileName);
-
-            return;
-        }
-
         private void LoadProductList()
         {
             _machVision.GetProductList(out var productNameList);
@@ -610,5 +596,20 @@ namespace DefectChecker.DataBase
         //
         public void GetDefectInfo() { }
         public void Mark(int type) { }
+        //
+        public void SaveConfig()
+        {
+            XmlParameter xmlParameter = new XmlParameter();
+            xmlParameter.Add("Product", Product);
+            xmlParameter.Add("Batch", Batch);
+            xmlParameter.Add("Board", Board);
+            xmlParameter.Add("side", _side);
+            xmlParameter.Add("shot", _shot);
+            xmlParameter.Add("defect", _defect);
+            xmlParameter.WriteParameter(Application.StartupPath + _paramFileName);
+
+            return;
+        }
+
     }
 }
