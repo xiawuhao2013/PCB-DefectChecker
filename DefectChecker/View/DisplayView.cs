@@ -365,7 +365,22 @@ namespace DefectChecker.View
                     else
                     {
                         MessageBox.Show("加载下一块板！");
-                        //...
+                        if (TryGetNextBoard())
+                        {
+                        }
+                        else
+                        {
+                            MessageBox.Show("加载下一批次！");
+                            if (TryGetNextBatch())
+                            {
+                            }
+                            else
+                            {
+                                MessageBox.Show("完了！肯定有bug！！！");
+
+                                return;
+                            }
+                        }
                     }
                 }
             }
@@ -396,7 +411,22 @@ namespace DefectChecker.View
                     else
                     {
                         MessageBox.Show("加载上一块板！");
-                        //...
+                        if (TryGetPreviousBoard())
+                        {
+                        }
+                        else
+                        {
+                            MessageBox.Show("加载上一批次！");
+                            if (TryGetPreviousBatch())
+                            {
+                            }
+                            else
+                            {
+                                MessageBox.Show("完了！肯定有bug！！！");
+
+                                return;
+                            }
+                        }
                     }
                 }
             }
