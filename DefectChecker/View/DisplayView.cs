@@ -71,23 +71,84 @@ namespace DefectChecker.View
             return;
         }
 
+        private void GetDefectGroupOfLastExit()
+        {
+            _dataBaseManager.GetDefectGroupOfLastExit(NumberOfCell, out _curDefectGroup);
+            RefreshCellViews(_curDefectGroup);
+
+            return;
+        }
+
         private void GetFirstDefectGroup()
         {
-            _dataBaseManager.GetFirstDefectGroup(NumberOfCell, out _curDefectGroup, out var isEnd);
+            _dataBaseManager.GetFirstDefectGroup(NumberOfCell, out _curDefectGroup, out var isEmpty);
+            if (!isEmpty)
+            {
+                RefreshCellViews(_curDefectGroup);
+
+                return;
+            }
+            MessageBox.Show("这组是空的，继续向下！");
+            if (!TryGetNextShot())
+            {
+                return;
+            }
+
+            return;
+        }
+
+        private void GetLastDefectGroup()
+        {
+            _dataBaseManager.GetLastDefectGroup(NumberOfCell, out _curDefectGroup, out var isEmpty);
+            if (!isEmpty)
+            {
+                RefreshCellViews(_curDefectGroup);
+
+                return;
+            }
+            MessageBox.Show("这组是空的，继续向上！");
+            if (!TryGetPreviousShot())
+            {
+                return;
+            }
 
             return;
         }
 
         private void GetNextDefectGroup()
         {
-            _dataBaseManager.GetNextDefectGroup(NumberOfCell, out _curDefectGroup, out var isEnd);
+            _dataBaseManager.GetNextDefectGroup(NumberOfCell, out _curDefectGroup, out var isEmpty);
+            if (!isEmpty)
+            {
+                RefreshCellViews(_curDefectGroup);
+
+                return;
+            }
+            MessageBox.Show("已经是最后一组了！");
+            if (!TryGetNextShot())
+            {
+                return;
+            }
+            GetFirstDefectGroup();
 
             return;
         }
 
         private void GetPreviousDefectGroup()
         {
-            _dataBaseManager.GetPreviousDefectGroup(NumberOfCell, out _curDefectGroup, out var isFirst);
+            _dataBaseManager.GetPreviousDefectGroup(NumberOfCell, out _curDefectGroup, out var isEmpty);
+            if (!isEmpty)
+            {
+                RefreshCellViews(_curDefectGroup);
+
+                return;
+            }
+            MessageBox.Show("已经是第一组了！");
+            if (!TryGetPreviousShot())
+            {
+                return;
+            }
+            GetFirstDefectGroup();
 
             return;
         }
@@ -196,7 +257,6 @@ namespace DefectChecker.View
         private void button1_Click(object sender, EventArgs e)
         {
             GetFirstDefectGroup();
-            RefreshCellViews(_curDefectGroup);
             _dataBaseManager.SaveConfig();
 
             return;
@@ -205,7 +265,6 @@ namespace DefectChecker.View
         private void button2_Click(object sender, EventArgs e)
         {
             GetNextDefectGroup();
-            RefreshCellViews(_curDefectGroup);
             _dataBaseManager.SaveConfig();
 
             return;
@@ -214,8 +273,14 @@ namespace DefectChecker.View
         private void button3_Click(object sender, EventArgs e)
         {
             GetPreviousDefectGroup();
-            RefreshCellViews(_curDefectGroup);
             _dataBaseManager.SaveConfig();
+
+            return;
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            GetDefectGroupOfLastExit();
 
             return;
         }

@@ -19,6 +19,7 @@ namespace DefectChecker.DataBase
         private string _side = "";
         private string _shot = "";
         private string _defect = "";
+        private int _indexOfDefectGroup = 0;
 
         private DeviceMachVision _machVision = new DeviceMachVision();
 
@@ -43,32 +44,32 @@ namespace DefectChecker.DataBase
             LoadConfig();
             //
             LoadProductList();
-            if ("" == Product && 0 != ProductNameList.Count)
+            if (String.IsNullOrWhiteSpace(Product) && 0 != ProductNameList.Count)
             {
                 Product = ProductNameList[0];
             }
             LoadBatchList();
-            if ("" == Batch && 0 != BatchNameList.Count)
+            if (String.IsNullOrWhiteSpace(Batch) && 0 != BatchNameList.Count)
             {
                 Batch = BatchNameList[0];
             }
             LoadBoardList();
-            if ("" == Board && 0 != BoardNameList.Count)
+            if (String.IsNullOrWhiteSpace(Board) && 0 != BoardNameList.Count)
             {
                 Board = BoardNameList[0];
             }
             LoadSideList();
-            if ("" == _side && 0 != _sideList.Count)
+            if (String.IsNullOrWhiteSpace(_side) && 0 != _sideList.Count)
             {
                 _side = _sideList[0];
             }
             LoadShotList();
-            if ("" == _shot && 0 != _shotList.Count)
+            if (String.IsNullOrWhiteSpace(_shot) && 0 != _shotList.Count)
             {
                 _shot = _shotList[0];
             }
             LoadCellList();
-            if ("" == _defect && 0 != _defectList.Count)
+            if (String.IsNullOrWhiteSpace(_defect) && 0 != _defectList.Count)
             {
                 _defect = _defectList[0];
             }
@@ -86,9 +87,10 @@ namespace DefectChecker.DataBase
             Product = xmlParameter.GetParamData("Product");
             Batch = xmlParameter.GetParamData("Batch");
             Board = xmlParameter.GetParamData("Board");
-            _side = xmlParameter.GetParamData("side");
-            _shot = xmlParameter.GetParamData("shot");
-            _defect = xmlParameter.GetParamData("defect");
+            _side = xmlParameter.GetParamData("Side");
+            _shot = xmlParameter.GetParamData("Shot");
+            _defect = xmlParameter.GetParamData("Defect");
+            _indexOfDefectGroup = String.IsNullOrWhiteSpace(xmlParameter.GetParamData("IndexOfDefectGroup")) ? 0 : Convert.ToInt32(xmlParameter.GetParamData("IndexOfDefectGroup"));
 
             return;
         }
@@ -151,22 +153,14 @@ namespace DefectChecker.DataBase
         //
         // LABLE: select specific image function is not clear now.
         // should i add SelectDefectGroup()?
-        public void GetFirstDefectGroup(int num, out List<DefectCell> defectCells, out bool isEnd)
+        public void GetDefectGroupOfLastExit(int num, out List<DefectCell> defectCells)
         {
             DefectCell defectCell = new DefectCell();
             defectCells = new List<DefectCell>();
-            isEnd = true;   // i think it should be true.
-            if (TrySelectCell(0, out defectCell))
+            var iter = 0;
+            do
             {
-                defectCells.Add(defectCell);
-            }
-            else
-            {
-                defectCells.Add(new DefectCell());
-            }
-            for (var index = 1; index < num; ++index)
-            {
-                if (TryGetNextCell(out defectCell, out isEnd))
+                if (TrySelectCell(_indexOfDefectGroup * num + iter, out defectCell))
                 {
                     defectCells.Add(defectCell);
                 }
@@ -174,44 +168,104 @@ namespace DefectChecker.DataBase
                 {
                     defectCells.Add(new DefectCell());
                 }
+            } while (++iter < num);
+
+            return;
+        }
+        public void GetLastDefectGroup(int num, out List<DefectCell> defectCells, out bool isEmpty)
+        {
+            DefectCell defectCell = new DefectCell();
+            defectCells = new List<DefectCell>();
+            _indexOfDefectGroup = _defectList.Count / num;
+            var iter = 0;
+            var nullCount = 0;
+            do
+            {
+                if (TrySelectCell(_indexOfDefectGroup * num + iter, out defectCell))
+                {
+                    defectCells.Add(defectCell);
+                }
+                else
+                {
+                    ++nullCount;
+                    defectCells.Add(new DefectCell());
+                }
+            } while (++iter < num);
+            isEmpty = nullCount == num;
+
+            return;
+        }
+        public void GetFirstDefectGroup(int num, out List<DefectCell> defectCells, out bool isEmpty)
+        {
+            DefectCell defectCell = new DefectCell();
+            defectCells = new List<DefectCell>();
+            _indexOfDefectGroup = 0;
+            var iter = 0;
+            var nullCount = 0;
+            do
+            {
+                if (TrySelectCell(_indexOfDefectGroup * num + iter, out defectCell))
+                {
+                    defectCells.Add(defectCell);
+                }
+                else
+                {
+                    ++nullCount;
+                    defectCells.Add(new DefectCell());
+                }
+            } while (++iter < num);
+            isEmpty = nullCount == num;
+
+            return;
+        }
+        public void GetNextDefectGroup(int num, out List<DefectCell> defectCells, out bool isEmpty)
+        {
+            DefectCell defectCell = new DefectCell();
+            defectCells = new List<DefectCell>();
+            ++_indexOfDefectGroup;
+            var iter = 0;
+            var nullCount = 0;
+            do
+            {
+                if (TrySelectCell(_indexOfDefectGroup * num + iter, out defectCell))
+                {
+                    defectCells.Add(defectCell);
+                }
+                else
+                {
+                    ++nullCount;
+                    defectCells.Add(new DefectCell());
+                }
+            } while (++iter < num);
+            if (isEmpty = nullCount == num)
+            {
+                --_indexOfDefectGroup;
             }
 
             return;
         }
-        public void GetNextDefectGroup(int num, out List<DefectCell> defectCells, out bool isEnd)
+        public void GetPreviousDefectGroup(int num, out List<DefectCell> defectCells, out bool isEmpty)
         {
             DefectCell defectCell = new DefectCell();
             defectCells = new List<DefectCell>();
-            isEnd = true;
-            for (var index = 0; index < num; ++index)
+            --_indexOfDefectGroup;
+            var iter = 0;
+            var nullCount = 0;
+            do
             {
-                if (TryGetNextCell(out defectCell, out isEnd))
+                if (TrySelectCell(_indexOfDefectGroup * num + iter, out defectCell))
                 {
                     defectCells.Add(defectCell);
                 }
                 else
                 {
+                    ++nullCount;
                     defectCells.Add(new DefectCell());
                 }
-            }
-
-            return;
-        }
-        public void GetPreviousDefectGroup(int num, out List<DefectCell> defectCells, out bool isFirst)
-        {
-            DefectCell defectCell = new DefectCell();
-            defectCells = new List<DefectCell>();
-            isFirst = true;
-            for (var index = 0; index < num; ++index)
+            } while (++iter < num);
+            if (isEmpty = nullCount == num)
             {
-                if (TryGetPreviousCell(out defectCell, out isFirst))
-                {
-                    defectCells.Add(defectCell);
-                }
-                else
-                {
-                    defectCells.Add(new DefectCell());
-                }
+                ++_indexOfDefectGroup;
             }
 
             return;
@@ -600,12 +654,15 @@ namespace DefectChecker.DataBase
         public void SaveConfig()
         {
             XmlParameter xmlParameter = new XmlParameter();
+            xmlParameter.Add("DataDir", _dataDir);
+            xmlParameter.Add("ModelDir", _modelDir);
             xmlParameter.Add("Product", Product);
             xmlParameter.Add("Batch", Batch);
             xmlParameter.Add("Board", Board);
-            xmlParameter.Add("side", _side);
-            xmlParameter.Add("shot", _shot);
-            xmlParameter.Add("defect", _defect);
+            xmlParameter.Add("Side", _side);
+            xmlParameter.Add("Shot", _shot);
+            xmlParameter.Add("Defect", _defect);
+            xmlParameter.Add("IndexOfDefectGroup", _indexOfDefectGroup);
             xmlParameter.WriteParameter(Application.StartupPath + _paramFileName);
 
             return;
