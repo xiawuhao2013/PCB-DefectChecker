@@ -180,12 +180,10 @@ namespace DefectChecker.DataBase
         public bool TrySelectCell(int index, out DefectCell defectCell)
         {
             defectCell = new DefectCell();
-            if (null == DefectNameList || 0 == DefectNameList.Count)
+            if (null == DefectNameList || 0 == DefectNameList.Count || index >= DefectNameList.Count || index < 0)
             {
-                return false;
-            }
-            if (index >= DefectNameList.Count || index < 0)
-            {
+                _defect = "";
+
                 return false;
             }
             _defect = DefectNameList[index];
@@ -305,6 +303,8 @@ namespace DefectChecker.DataBase
             if (null == ShotNameList || 0 == ShotNameList.Count || index >= ShotNameList.Count || index < 0)
             {
                 _hasKilledShot = true;
+                _shot = "";
+                LoadCellList();
 
                 return false;
             }
@@ -348,6 +348,8 @@ namespace DefectChecker.DataBase
             if (null == SideNameList || 0 == SideNameList.Count || index >= SideNameList.Count || index < 0)
             {
                 _hasKilledSide = true;
+                _side = "";
+                LoadShotList();
 
                 return false;
             }
@@ -391,6 +393,8 @@ namespace DefectChecker.DataBase
             if (null == BoardNameList || 0 == BoardNameList.Count || index >= BoardNameList.Count || index < 0)
             {
                 _hasKilledBoard = true;
+                Board = "";
+                LoadSideList();
 
                 return false;
             }
@@ -434,6 +438,8 @@ namespace DefectChecker.DataBase
             if (null == BatchNameList || 0 == BatchNameList.Count || index >= BatchNameList.Count || index < 0)
             {
                 _hasKilledBatch = true;
+                Batch = "";
+                LoadBoardList();
 
                 return false;
             }

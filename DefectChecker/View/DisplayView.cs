@@ -134,7 +134,7 @@ namespace DefectChecker.View
             {
                 MessageBox.Show("下一个Shot！");
                 isStop = _dataBaseManager.TryGetNextShot();
-                isStop &= TryGetFirstDefectGroup();
+                isStop = isStop ? TryGetFirstDefectGroup() : false;
                 isStop |= _dataBaseManager.HasKilledShot;
             } while (!isStop);
 
@@ -148,7 +148,7 @@ namespace DefectChecker.View
             {
                 MessageBox.Show("上一个Shot！");
                 isStop = _dataBaseManager.TryGetPreviousShot();
-                isStop &= TryGetLastDefectGroup();
+                isStop = isStop ? TryGetLastDefectGroup() : false;
                 isStop |= _dataBaseManager.HasKilledShot;
             } while (!isStop);
 
@@ -176,7 +176,7 @@ namespace DefectChecker.View
             {
                 MessageBox.Show("下一个Side！");
                 isStop = _dataBaseManager.TryGetNextSide();
-                isStop &= TryGetFirstShot();
+                isStop = isStop ? TryGetFirstShot() : false;
                 isStop |= _dataBaseManager.HasKilledSide;
             } while (!isStop);
 
@@ -190,7 +190,7 @@ namespace DefectChecker.View
             {
                 MessageBox.Show("上一个Side！");
                 isStop = _dataBaseManager.TryGetPreviousSide();
-                isStop &= TryGetLastShot();
+                isStop = isStop ? TryGetLastShot() : false;
                 isStop |= _dataBaseManager.HasKilledSide;
             } while (!isStop);
 
@@ -218,7 +218,7 @@ namespace DefectChecker.View
             {
                 MessageBox.Show("下一个Board！");
                 isStop = _dataBaseManager.TryGetNextBoard();
-                isStop &= TryGetFirstSide();
+                isStop = isStop ? TryGetFirstSide() : false;
                 isStop |= _dataBaseManager.HasKilledBoard;
             } while (!isStop);
 
@@ -232,7 +232,7 @@ namespace DefectChecker.View
             {
                 MessageBox.Show("上一个Board！");
                 isStop = _dataBaseManager.TryGetPreviousBoard();
-                isStop &= TryGetLastSide();
+                isStop = isStop ? TryGetLastSide() : false;
                 isStop |= _dataBaseManager.HasKilledBoard;
             } while (!isStop);
 
@@ -260,7 +260,7 @@ namespace DefectChecker.View
             {
                 MessageBox.Show("下一个Batch！");
                 isStop = _dataBaseManager.TryGetNextBatch();
-                isStop &= TryGetFirstBoard();
+                isStop = isStop ? TryGetFirstBoard() : false;
                 isStop |= _dataBaseManager.HasKilledBatch;
             } while (!isStop);
 
@@ -274,7 +274,7 @@ namespace DefectChecker.View
             {
                 MessageBox.Show("上一个Batch！");
                 isStop = _dataBaseManager.TryGetPreviousBatch();
-                isStop &= TryGetLastBoard();
+                isStop = isStop ? TryGetLastBoard() : false;
                 isStop |= _dataBaseManager.HasKilledBatch;
             } while (!isStop);
 
