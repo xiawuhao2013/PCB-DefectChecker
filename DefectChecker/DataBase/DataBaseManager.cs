@@ -11,9 +11,12 @@ namespace DefectChecker.DataBase
     public class DataBaseManager
     {
         private const string _paramFileName = @"\ParamFile.xml";
-        private List<string> _sideList = new List<string>();
-        private List<string> _shotList = new List<string>();
-        private List<string> _defectList = new List<string>();
+        private List<string> _defectNameList = new List<string>();
+        private List<string> _shotNameList = new List<string>();
+        private List<string> _sideNameList = new List<string>();
+        private List<string> _boardNameList = new List<string>();
+        private List<string> _batchNameList = new List<string>();
+        private List<string> _productNameList = new List<string>();
         private string _dataDir = "";
         private string _modelDir = "";
         private string _side = "";
@@ -25,11 +28,21 @@ namespace DefectChecker.DataBase
         private int _indexOfBoard = 0;
         private int _indexOfBatch = 0;
 
+        private bool _hasKilledDefect = false;
+        private bool _hasKilledShot = false;
+        private bool _hasKilledSide = false;
+        private bool _hasKilledBoard = false;
+        private bool _hasKilledBatch = false;
+        private bool _hasKilledProduct = false;
+
         private DeviceMachVision _machVision = new DeviceMachVision();
 
-        public List<string> ProductNameList { get; set; }
-        public List<string> BatchNameList { get; set; }
-        public List<string> BoardNameList { get; set; }
+        public List<string> DefectNameList { get { return _defectNameList; } }
+        public List<string> ShotNameList { get { return _shotNameList; } }
+        public List<string> SideNameList { get { return _sideNameList; } }
+        public List<string> BoardNameList { get { return _boardNameList; } }
+        public List<string> BatchNameList { get { return _batchNameList; } }
+        public List<string> ProductNameList { get { return _productNameList; } }
 
         public List<string> ImageNameList { get; set; }
         public string Product { get; set; }
@@ -40,6 +53,13 @@ namespace DefectChecker.DataBase
         public Bitmap WholeImageB { get; set; }
         public Bitmap GerberWholeImageA { get; set; }
         public Bitmap GerberWholeImageB { get; set; }
+
+        public bool HasKilledDefect { get { return _hasKilledDefect; } }
+        public bool HasKilledShot { get { return _hasKilledShot; } }
+        public bool HasKilledSide { get { return _hasKilledSide; } }
+        public bool HasKilledBoard { get { return _hasKilledBoard; } }
+        public bool HasKilledBatch { get { return _hasKilledBatch; } }
+        public bool HasKilledProduct { get { return _hasKilledProduct; } }
 
         //
 
@@ -63,19 +83,19 @@ namespace DefectChecker.DataBase
                 Board = BoardNameList[0];
             }
             LoadSideList();
-            if (String.IsNullOrWhiteSpace(_side) && null != _sideList && 0 != _sideList.Count)
+            if (String.IsNullOrWhiteSpace(_side) && null != _sideNameList && 0 != _sideNameList.Count)
             {
-                _side = _sideList[0];
+                _side = _sideNameList[0];
             }
             LoadShotList();
-            if (String.IsNullOrWhiteSpace(_shot) && null!= _shotList && 0 != _shotList.Count)
+            if (String.IsNullOrWhiteSpace(_shot) && null!= _shotNameList && 0 != _shotNameList.Count)
             {
-                _shot = _shotList[0];
+                _shot = _shotNameList[0];
             }
             LoadCellList();
-            if (String.IsNullOrWhiteSpace(_defect) && null != _defectList && 0 != _defectList.Count)
+            if (String.IsNullOrWhiteSpace(_defect) && null != _defectNameList && 0 != _defectNameList.Count)
             {
-                _defect = _defectList[0];
+                _defect = _defectNameList[0];
             }
 
         }
@@ -106,45 +126,42 @@ namespace DefectChecker.DataBase
 
         private void LoadProductList()
         {
-            _machVision.GetProductList(out var productNameList);
-            ProductNameList = productNameList;
+            _machVision.GetProductList(out _productNameList);
 
             return;
         }
 
         private void LoadBatchList()
         {
-            _machVision.GetBatchList(Product, out var batchNameList);
-            BatchNameList = batchNameList;
+            _machVision.GetBatchList(Product, out _batchNameList);
 
             return;
         }
 
         private void LoadBoardList()
         {
-            _machVision.GetBoardList(Product, Batch, out var boardNameList);
-            BoardNameList = boardNameList;
+            _machVision.GetBoardList(Product, Batch, out _boardNameList);
 
             return;
         }
 
         private void LoadSideList()
         {
-            _machVision.GetSideList(Product, Batch, Board, out _sideList);
+            _machVision.GetSideList(Product, Batch, Board, out _sideNameList);
 
             return;
         }
 
         private void LoadShotList()
         {
-            _machVision.GetShotList(Product, Batch, Board, _side, out _shotList);
+            _machVision.GetShotList(Product, Batch, Board, _side, out _shotNameList);
 
             return;
         }
 
         private void LoadCellList()
         {
-            _machVision.GetDefectListInShot(Product, Batch, Board, _side, _shot, out _defectList);
+            _machVision.GetDefectListInShot(Product, Batch, Board, _side, _shot, out _defectNameList);
 
             return;
         }
@@ -163,15 +180,17 @@ namespace DefectChecker.DataBase
         public bool TrySelectCell(int index, out DefectCell defectCell)
         {
             defectCell = new DefectCell();
-            if (null == _defectList || 0 == _defectList.Count)
+            if (null == DefectNameList || 0 == DefectNameList.Count)
             {
                 return false;
             }
-            if (index >= _defectList.Count || index < 0)
+            if (index >= DefectNameList.Count || index < 0)
             {
+                _hasKilledDefect = true;
+
                 return false;
             }
-            _defect = _defectList[index];
+            _defect = DefectNameList[index];
             defectCell = LoadDefectCell();
 
             return true;
@@ -182,16 +201,16 @@ namespace DefectChecker.DataBase
         {
             defectCell = new DefectCell();
             isEnd = false;
-            if (null == _defectList || 0 == _defectList.Count)
+            if (null == _defectNameList || 0 == _defectNameList.Count)
             {
                 return false;
             }
-            var index = _defectList.FindIndex(x => x.Contains(_defect));
+            var index = _defectNameList.FindIndex(x => x.Contains(_defect));
             if (-1 == index)
             {
                 return false;
             }
-            if (++index >= _defectList.Count)
+            if (++index >= _defectNameList.Count)
             {
                 isEnd = true;
 
@@ -208,11 +227,11 @@ namespace DefectChecker.DataBase
         {
             defectCell = new DefectCell();
             isFirst = false;
-            if (null == _defectList || 0 == _defectList.Count)
+            if (null == _defectNameList || 0 == _defectNameList.Count)
             {
                 return false;
             }
-            var index = _defectList.FindIndex(x => x.Contains(_defect));
+            var index = _defectNameList.FindIndex(x => x.Contains(_defect));
             if (-1 == index)
             {
                 return false;
@@ -264,7 +283,7 @@ namespace DefectChecker.DataBase
         }
         public bool TryGetLastDefectGroup(int num, out List<DefectCell> defectCells)
         {
-            _indexOfDefectGroup = _defectList.Count / num;
+            _indexOfDefectGroup = DefectNameList.Count / num;
 
             return TrySelectDefectGroup(_indexOfDefectGroup, num, out defectCells);
         }
@@ -293,15 +312,17 @@ namespace DefectChecker.DataBase
         //
         public bool TrySelectShot(int index)
         {
-            if (null == _shotList || 0 == _shotList.Count)
+            if (null == ShotNameList || 0 == ShotNameList.Count)
             {
                 return false;
             }
-            if (index >= _shotList.Count || index < 0)
+            if (index >= ShotNameList.Count || index < 0)
             {
+                _hasKilledShot = true;
+
                 return false;
             }
-            _shot = _shotList[index];
+            _shot = ShotNameList[index];
             LoadCellList();
 
             return true;
@@ -318,7 +339,7 @@ namespace DefectChecker.DataBase
         }
         public bool TryGetLastShot()
         {
-            _indexOfShot = null != _shotList ? _shotList.Count - 1 : 0;
+            _indexOfShot = Math.Max(ShotNameList.Count - 1, 0);
 
             return TrySelectShot(_indexOfShot);
         }
@@ -347,15 +368,17 @@ namespace DefectChecker.DataBase
         //
         public bool TrySelectSide(int index)
         {
-            if (null == _sideList || 0 == _sideList.Count)
+            if (null == SideNameList || 0 == SideNameList.Count)
             {
                 return false;
             }
-            if (index >= _sideList.Count || index < 0)
+            if (index >= SideNameList.Count || index < 0)
             {
+                _hasKilledSide = true;
+
                 return false;
             }
-            _side = _sideList[index];
+            _side = SideNameList[index];
             LoadShotList();
 
             return true;
@@ -372,7 +395,7 @@ namespace DefectChecker.DataBase
         }
         public bool TryGetLastSide()
         {
-            _indexOfSide = null != _sideList ? _sideList.Count - 1 : 0;
+            _indexOfSide = Math.Max(SideNameList.Count - 1, 0);
 
             return TrySelectSide(_indexOfSide);
         }
@@ -407,6 +430,8 @@ namespace DefectChecker.DataBase
             }
             if (index >= BoardNameList.Count || index < 0)
             {
+                _hasKilledBoard = true;
+
                 return false;
             }
             Board = BoardNameList[index];
@@ -426,7 +451,7 @@ namespace DefectChecker.DataBase
         }
         public bool TryGetLastBoard()
         {
-            _indexOfBoard = null != BoardNameList ? BoardNameList.Count - 1 : 0;
+            _indexOfBoard = Math.Max(BoardNameList.Count - 1, 0);
 
             return TrySelectBoard(_indexOfBoard);
         }
@@ -461,6 +486,8 @@ namespace DefectChecker.DataBase
             }
             if (index >= BatchNameList.Count || index < 0)
             {
+                _hasKilledBatch = true;
+
                 return false;
             }
             Batch = BatchNameList[index];
@@ -480,7 +507,7 @@ namespace DefectChecker.DataBase
         }
         public bool TryGetLastBatch()
         {
-            _indexOfBatch = null != BatchNameList ? BatchNameList.Count - 1 : 0;
+            _indexOfBatch = Math.Max(BatchNameList.Count - 1, 0);
 
             return TrySelectBatch(_indexOfBatch);
         }
