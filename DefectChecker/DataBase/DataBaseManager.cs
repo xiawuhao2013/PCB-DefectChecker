@@ -186,8 +186,6 @@ namespace DefectChecker.DataBase
             }
             if (index >= DefectNameList.Count || index < 0)
             {
-                _hasKilledDefect = true;
-
                 return false;
             }
             _defect = DefectNameList[index];
@@ -253,6 +251,7 @@ namespace DefectChecker.DataBase
         //
         public bool TrySelectDefectGroup(int index, int num, out List<DefectCell> defectCells)
         {
+            _hasKilledDefect = false;
             DefectCell defectCell = new DefectCell();
             defectCells = new List<DefectCell>();
             var nullCount = 0;
@@ -292,6 +291,7 @@ namespace DefectChecker.DataBase
             if (!TrySelectDefectGroup(++_indexOfDefectGroup, num, out defectCells))
             {
                 --_indexOfDefectGroup;
+                _hasKilledDefect = true;
 
                 return false;
             }
@@ -303,6 +303,7 @@ namespace DefectChecker.DataBase
             if (!TrySelectDefectGroup(--_indexOfDefectGroup, num, out defectCells))
             {
                 ++_indexOfDefectGroup;
+                _hasKilledDefect = true;
 
                 return false;
             }
@@ -312,14 +313,13 @@ namespace DefectChecker.DataBase
         //
         public bool TrySelectShot(int index)
         {
+            _hasKilledShot = false;
             if (null == ShotNameList || 0 == ShotNameList.Count)
             {
                 return false;
             }
             if (index >= ShotNameList.Count || index < 0)
             {
-                _hasKilledShot = true;
-
                 return false;
             }
             _shot = ShotNameList[index];
@@ -348,6 +348,7 @@ namespace DefectChecker.DataBase
             if (!TrySelectShot(++_indexOfShot))
             {
                 --_indexOfShot;
+                _hasKilledShot = true;
 
                 return false;
             }
@@ -359,6 +360,7 @@ namespace DefectChecker.DataBase
             if (!TrySelectShot(--_indexOfShot))
             {
                 ++_indexOfShot;
+                _hasKilledShot = true;
 
                 return false;
             }
@@ -368,14 +370,13 @@ namespace DefectChecker.DataBase
         //
         public bool TrySelectSide(int index)
         {
+            _hasKilledSide = false;
             if (null == SideNameList || 0 == SideNameList.Count)
             {
                 return false;
             }
             if (index >= SideNameList.Count || index < 0)
             {
-                _hasKilledSide = true;
-
                 return false;
             }
             _side = SideNameList[index];
@@ -404,6 +405,7 @@ namespace DefectChecker.DataBase
             if (!TrySelectSide(++_indexOfSide))
             {
                 --_indexOfSide;
+                _hasKilledSide = true;
 
                 return false;
             }
@@ -415,6 +417,7 @@ namespace DefectChecker.DataBase
             if (!TrySelectSide(--_indexOfSide))
             {
                 ++_indexOfSide;
+                _hasKilledSide = true;
 
                 return false;
             }
@@ -424,14 +427,13 @@ namespace DefectChecker.DataBase
         //
         public bool TrySelectBoard(int index)
         {
+            _hasKilledBoard = false;
             if (null == BoardNameList || 0 == BoardNameList.Count)
             {
                 return false;
             }
             if (index >= BoardNameList.Count || index < 0)
             {
-                _hasKilledBoard = true;
-
                 return false;
             }
             Board = BoardNameList[index];
@@ -460,6 +462,7 @@ namespace DefectChecker.DataBase
             if (!TrySelectBoard(++_indexOfBoard))
             {
                 --_indexOfBoard;
+                _hasKilledBoard = true;
 
                 return false;
             }
@@ -471,6 +474,7 @@ namespace DefectChecker.DataBase
             if (!TrySelectBoard(--_indexOfBoard))
             {
                 ++_indexOfBoard;
+                _hasKilledBoard = true;
 
                 return false;
             }
@@ -480,14 +484,13 @@ namespace DefectChecker.DataBase
         //
         public bool TrySelectBatch(int index)
         {
+            _hasKilledBatch = false;
             if (null == BatchNameList || 0 == BatchNameList.Count)
             {
                 return false;
             }
             if (index >= BatchNameList.Count || index < 0)
             {
-                _hasKilledBatch = true;
-
                 return false;
             }
             Batch = BatchNameList[index];
@@ -516,6 +519,7 @@ namespace DefectChecker.DataBase
             if (!TrySelectBatch(++_indexOfBatch))
             {
                 --_indexOfBatch;
+                _hasKilledBatch = true;
 
                 return false;
             }
@@ -527,6 +531,7 @@ namespace DefectChecker.DataBase
             if (!TrySelectBatch(--_indexOfBatch))
             {
                 ++_indexOfBatch;
+                _hasKilledBatch = true;
 
                 return false;
             }
