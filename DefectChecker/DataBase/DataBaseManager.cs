@@ -20,6 +20,7 @@ namespace DefectChecker.DataBase
         private string _shot = "";
         private string _defect = "";
         private int _indexOfDefectGroup = 0;
+        private int _indexOfShot = 0;
 
         private DeviceMachVision _machVision = new DeviceMachVision();
 
@@ -91,6 +92,7 @@ namespace DefectChecker.DataBase
             _shot = xmlParameter.GetParamData("Shot");
             _defect = xmlParameter.GetParamData("Defect");
             _indexOfDefectGroup = String.IsNullOrWhiteSpace(xmlParameter.GetParamData("IndexOfDefectGroup")) ? 0 : Convert.ToInt32(xmlParameter.GetParamData("IndexOfDefectGroup"));
+            _indexOfShot = String.IsNullOrWhiteSpace(xmlParameter.GetParamData("IndexOfShot")) ? 0 : Convert.ToInt32(xmlParameter.GetParamData("IndexOfShot"));
 
             return;
         }
@@ -172,11 +174,84 @@ namespace DefectChecker.DataBase
 
             return;
         }
-        public void GetLastDefectGroup(int num, out List<DefectCell> defectCells, out bool isEmpty)
+        //
+        public bool TrySelectCell(int index, out DefectCell defectCell)
+        {
+            defectCell = new DefectCell();
+            if (null == _defectList || 0 == _defectList.Count)
+            {
+                return false;
+            }
+            if (index >= _defectList.Count || index < 0)
+            {
+                return false;
+            }
+            _defect = _defectList[index];
+            defectCell = LoadDefectCell();
+
+            return true;
+        }
+        // LABEL: refrence these codes temporary.
+        /*
+        public bool TryGetNextCell(out DefectCell defectCell, out bool isEnd)
+        {
+            defectCell = new DefectCell();
+            isEnd = false;
+            if (null == _defectList || 0 == _defectList.Count)
+            {
+                return false;
+            }
+            var index = _defectList.FindIndex(x => x.Contains(_defect));
+            if (-1 == index)
+            {
+                return false;
+            }
+            if (++index >= _defectList.Count)
+            {
+                isEnd = true;
+
+                return false;
+            }
+            if (!TrySelectCell(index, out defectCell))
+            {
+                return false;
+            }
+
+            return true;
+        }
+        public bool TryGetPreviousCell(out DefectCell defectCell, out bool isFirst)
+        {
+            defectCell = new DefectCell();
+            isFirst = false;
+            if (null == _defectList || 0 == _defectList.Count)
+            {
+                return false;
+            }
+            var index = _defectList.FindIndex(x => x.Contains(_defect));
+            if (-1 == index)
+            {
+                return false;
+            }
+            if (--index < 0)
+            {
+                isFirst = true;
+
+                return false;
+            }
+            if (!TrySelectCell(index, out defectCell))
+            {
+                return false;
+            }
+
+            return true;
+        }
+        */
+        //
+        public void GetFirstDefectGroup(int num, out List<DefectCell> defectCells, out bool isEmpty)
         {
             DefectCell defectCell = new DefectCell();
             defectCells = new List<DefectCell>();
-            _indexOfDefectGroup = _defectList.Count / num;
+            _indexOfDefectGroup = 0;
             var iter = 0;
             var nullCount = 0;
             do
@@ -195,11 +270,11 @@ namespace DefectChecker.DataBase
 
             return;
         }
-        public void GetFirstDefectGroup(int num, out List<DefectCell> defectCells, out bool isEmpty)
+        public void GetLastDefectGroup(int num, out List<DefectCell> defectCells, out bool isEmpty)
         {
             DefectCell defectCell = new DefectCell();
             defectCells = new List<DefectCell>();
-            _indexOfDefectGroup = 0;
+            _indexOfDefectGroup = _defectList.Count / num;
             var iter = 0;
             var nullCount = 0;
             do
@@ -269,75 +344,6 @@ namespace DefectChecker.DataBase
             }
 
             return;
-        }
-        //
-        public bool TrySelectCell(int index, out DefectCell defectCell)
-        {
-            defectCell = new DefectCell();
-            if (null == _defectList || 0 == _defectList.Count)
-            {
-                return false;
-            }
-            if (index >= _defectList.Count || index < 0)
-            {
-                return false;
-            }
-            _defect = _defectList[index];
-            defectCell = LoadDefectCell();
-
-            return true;
-        }
-        public bool TryGetNextCell(out DefectCell defectCell, out bool isEnd)
-        {
-            defectCell = new DefectCell();
-            isEnd = false;
-            if (null == _defectList || 0 == _defectList.Count)
-            {
-                return false;
-            }
-            var index = _defectList.FindIndex(x => x.Contains(_defect));
-            if (-1 == index)
-            {
-                return false;
-            }
-            if (++index >= _defectList.Count)
-            {
-                isEnd = true;
-
-                return false;
-            }
-            if (!TrySelectCell(index, out defectCell))
-            {
-                return false;
-            }
-
-            return true;
-        }
-        public bool TryGetPreviousCell(out DefectCell defectCell, out bool isFirst)
-        {
-            defectCell = new DefectCell();
-            isFirst = false;
-            if (null == _defectList || 0 == _defectList.Count)
-            {
-                return false;
-            }
-            var index = _defectList.FindIndex(x => x.Contains(_defect));
-            if (-1 == index)
-            {
-                return false;
-            }
-            if (--index < 0)
-            {
-                isFirst = true;
-
-                return false;
-            }
-            if (!TrySelectCell(index, out defectCell))
-            {
-                return false;
-            }
-
-            return true;
         }
         //
         public bool TrySelectShot(int index)
@@ -663,6 +669,8 @@ namespace DefectChecker.DataBase
             xmlParameter.Add("Shot", _shot);
             xmlParameter.Add("Defect", _defect);
             xmlParameter.Add("IndexOfDefectGroup", _indexOfDefectGroup);
+            xmlParameter.Add("IndexOfShot", _indexOfShot);
+
             xmlParameter.WriteParameter(Application.StartupPath + _paramFileName);
 
             return;
