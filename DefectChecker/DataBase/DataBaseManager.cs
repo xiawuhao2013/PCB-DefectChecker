@@ -251,7 +251,6 @@ namespace DefectChecker.DataBase
         //
         public bool TrySelectDefectGroup(int index, int num, out List<DefectCell> defectCells)
         {
-            _hasKilledDefect = false;
             DefectCell defectCell = new DefectCell();
             defectCells = new List<DefectCell>();
             var nullCount = 0;
@@ -267,8 +266,9 @@ namespace DefectChecker.DataBase
                     defectCells.Add(new DefectCell());
                 }
             }
+            _hasKilledDefect = nullCount != num;
 
-            return nullCount != num;
+            return _hasKilledDefect;
         }
         public bool TryGetDefectGroupOfLastExit(int num, out List<DefectCell> defectCells)
         {
@@ -291,7 +291,6 @@ namespace DefectChecker.DataBase
             if (!TrySelectDefectGroup(++_indexOfDefectGroup, num, out defectCells))
             {
                 --_indexOfDefectGroup;
-                _hasKilledDefect = true;
 
                 return false;
             }
@@ -303,7 +302,6 @@ namespace DefectChecker.DataBase
             if (!TrySelectDefectGroup(--_indexOfDefectGroup, num, out defectCells))
             {
                 ++_indexOfDefectGroup;
-                _hasKilledDefect = true;
 
                 return false;
             }
@@ -320,6 +318,8 @@ namespace DefectChecker.DataBase
             }
             if (index >= ShotNameList.Count || index < 0)
             {
+                _hasKilledShot = true;
+
                 return false;
             }
             _shot = ShotNameList[index];
@@ -348,7 +348,6 @@ namespace DefectChecker.DataBase
             if (!TrySelectShot(++_indexOfShot))
             {
                 --_indexOfShot;
-                _hasKilledShot = true;
 
                 return false;
             }
@@ -360,7 +359,6 @@ namespace DefectChecker.DataBase
             if (!TrySelectShot(--_indexOfShot))
             {
                 ++_indexOfShot;
-                _hasKilledShot = true;
 
                 return false;
             }
@@ -377,6 +375,8 @@ namespace DefectChecker.DataBase
             }
             if (index >= SideNameList.Count || index < 0)
             {
+                _hasKilledSide = true;
+
                 return false;
             }
             _side = SideNameList[index];
@@ -405,7 +405,6 @@ namespace DefectChecker.DataBase
             if (!TrySelectSide(++_indexOfSide))
             {
                 --_indexOfSide;
-                _hasKilledSide = true;
 
                 return false;
             }
@@ -417,7 +416,6 @@ namespace DefectChecker.DataBase
             if (!TrySelectSide(--_indexOfSide))
             {
                 ++_indexOfSide;
-                _hasKilledSide = true;
 
                 return false;
             }
@@ -434,6 +432,8 @@ namespace DefectChecker.DataBase
             }
             if (index >= BoardNameList.Count || index < 0)
             {
+                _hasKilledBoard = true;
+
                 return false;
             }
             Board = BoardNameList[index];
@@ -462,7 +462,6 @@ namespace DefectChecker.DataBase
             if (!TrySelectBoard(++_indexOfBoard))
             {
                 --_indexOfBoard;
-                _hasKilledBoard = true;
 
                 return false;
             }
@@ -474,7 +473,6 @@ namespace DefectChecker.DataBase
             if (!TrySelectBoard(--_indexOfBoard))
             {
                 ++_indexOfBoard;
-                _hasKilledBoard = true;
 
                 return false;
             }
@@ -491,6 +489,8 @@ namespace DefectChecker.DataBase
             }
             if (index >= BatchNameList.Count || index < 0)
             {
+                _hasKilledBatch = true;
+
                 return false;
             }
             Batch = BatchNameList[index];
@@ -519,7 +519,6 @@ namespace DefectChecker.DataBase
             if (!TrySelectBatch(++_indexOfBatch))
             {
                 --_indexOfBatch;
-                _hasKilledBatch = true;
 
                 return false;
             }
@@ -531,7 +530,6 @@ namespace DefectChecker.DataBase
             if (!TrySelectBatch(--_indexOfBatch))
             {
                 ++_indexOfBatch;
-                _hasKilledBatch = true;
 
                 return false;
             }
