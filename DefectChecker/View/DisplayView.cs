@@ -188,49 +188,98 @@ namespace DefectChecker.View
 
             return TryGetLastShot();
         }
-
-        /*****************************************************************************************/
-        #endregion
+        //
+        private bool TryGetBoardOfLastExit()
+        {
+            return _dataBaseManager.TryGetBoardOfLastExit();
+        }
 
         private bool TryGetFirstBoard()
         {
-            return _dataBaseManager.TrySelectBoard(0);
+            if (!_dataBaseManager.TryGetFirstBoard())
+            {
+                return false;
+            }
+
+            return TryGetFirstSide();
+        }
+
+        private bool TryGetLastBoard()
+        {
+            if (!_dataBaseManager.TryGetLastBoard())
+            {
+                return false;
+            }
+
+            return TryGetLastSide();
         }
 
         private bool TryGetNextBoard()
         {
-            return _dataBaseManager.TryGetNextBoard(out var isEnd);
+            if (!_dataBaseManager.TryGetNextBoard())
+            {
+                return false;
+            }
+
+            return TryGetFirstSide();
         }
 
         private bool TryGetPreviousBoard()
         {
-            return _dataBaseManager.TryGetPreviousBoard(out var isFirst);
-        }
+            if (!_dataBaseManager.TryGetPreviousBoard())
+            {
+                return false;
+            }
 
-        private bool TrySelectBoard(int index)
+            return TryGetLastSide();
+        }
+        //
+        private bool TryGetBatchOfLastExit()
         {
-            return _dataBaseManager.TrySelectBoard(index);
+            return _dataBaseManager.TryGetBatchOfLastExit();
         }
 
         private bool TryGetFirstBatch()
         {
-            return _dataBaseManager.TrySelectBatch(0);
+            if (!_dataBaseManager.TryGetFirstBatch())
+            {
+                return false;
+            }
+
+            return TryGetFirstBoard();
+        }
+
+        private bool TryGetLastBatch()
+        {
+            if (!_dataBaseManager.TryGetLastBatch())
+            {
+                return false;
+            }
+
+            return TryGetLastBoard();
         }
 
         private bool TryGetNextBatch()
         {
-            return _dataBaseManager.TryGetNextBatch(out var isEnd);
+            if (!_dataBaseManager.TryGetNextBatch())
+            {
+                return false;
+            }
+
+            return TryGetFirstBoard();
         }
 
         private bool TryGetPreviousBatch()
         {
-            return _dataBaseManager.TryGetPreviousBatch(out var isFirst);
-        }
+            if (!_dataBaseManager.TryGetPreviousBatch())
+            {
+                return false;
+            }
 
-        private bool TrySelectBatch(int index)
-        {
-            return _dataBaseManager.TrySelectBatch(index);
+            return TryGetLastBoard();
         }
+        /*****************************************************************************************/
+        #endregion
 
         private void GetDefectInfo()
         {
