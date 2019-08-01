@@ -22,6 +22,8 @@ namespace DefectChecker.DataBase
         private int _indexOfDefectGroup = 0;
         private int _indexOfShot = 0;
         private int _indexOfSide = 0;
+        private int _indexOfBoard = 0;
+        private int _indexOfBatch = 0;
 
         private DeviceMachVision _machVision = new DeviceMachVision();
 
@@ -96,6 +98,8 @@ namespace DefectChecker.DataBase
             _indexOfDefectGroup = String.IsNullOrWhiteSpace(xmlParameter.GetParamData("IndexOfDefectGroup")) ? 0 : Convert.ToInt32(xmlParameter.GetParamData("IndexOfDefectGroup"));
             _indexOfShot = String.IsNullOrWhiteSpace(xmlParameter.GetParamData("IndexOfShot")) ? 0 : Convert.ToInt32(xmlParameter.GetParamData("IndexOfShot"));
             _indexOfSide = String.IsNullOrWhiteSpace(xmlParameter.GetParamData("IndexOfSide")) ? 0 : Convert.ToInt32(xmlParameter.GetParamData("IndexOfSide"));
+            _indexOfBoard = String.IsNullOrWhiteSpace(xmlParameter.GetParamData("IndexOfBoard")) ? 0 : Convert.ToInt32(xmlParameter.GetParamData("IndexOfBoard"));
+            _indexOfBatch = String.IsNullOrWhiteSpace(xmlParameter.GetParamData("IndexOfBatch")) ? 0 : Convert.ToInt32(xmlParameter.GetParamData("IndexOfBatch"));
 
             return;
         }
@@ -228,8 +232,6 @@ namespace DefectChecker.DataBase
         }
         */
         //
-        // LABLE: select specific image function is not clear now.
-        // should i add SelectDefectGroup()?
         public bool TrySelectDefectGroup(int index, int num, out List<DefectCell> defectCells)
         {
             DefectCell defectCell = new DefectCell();
@@ -396,57 +398,6 @@ namespace DefectChecker.DataBase
 
             return true;
         }
-
-        public bool TryGetNextSide(out bool isEnd)
-        {
-            isEnd = false;
-            if (null == _sideList || 0 == _sideList.Count)
-            {
-                return false;
-            }
-            var index = _sideList.FindIndex(x => x.Contains(_side));
-            if (-1 == index)
-            {
-                return false;
-            }
-            if (++index >= _sideList.Count)
-            {
-                isEnd = true;
-
-                return false;
-            }
-            if (!TrySelectSide(index))
-            {
-                return false;
-            }
-
-            return true;
-        }
-        public bool TryGetPreviousSide(out bool isFirst)
-        {
-            isFirst = false;
-            if (null == _sideList || 0 == _sideList.Count)
-            {
-                return false;
-            }
-            var index = _sideList.FindIndex(x => x.Contains(_side));
-            if (-1 == index)
-            {
-                return false;
-            }
-            if (--index < 0)
-            {
-                isFirst = true;
-
-                return false;
-            }
-            if (!TrySelectSide(index))
-            {
-                return false;
-            }
-
-            return true;
-        }
         //
         public bool TrySelectBoard(int index)
         {
@@ -460,68 +411,42 @@ namespace DefectChecker.DataBase
             }
             Board = BoardNameList[index];
             LoadSideList();
-            if (0 != _sideList.Count)
-            {
-                _side = _sideList[0];
-            }
-            LoadShotList();
-            if (0 != _shotList.Count)
-            {
-                _shot = _shotList[0];
-            }
-            LoadCellList();
-            if (0 != _defectList.Count)
-            {
-                _defect = _defectList[0];
-            }
 
             return true;
         }
-        public bool TryGetNextBoard(out bool isEnd)
+        public bool TryGetBoardOfLastExit()
         {
-            isEnd = false;
-            if (null == BoardNameList || 0 == BoardNameList.Count)
-            {
-                return false;
-            }
-            var index = BoardNameList.FindIndex(x => x.Contains(Board));
-            if (-1 == index)
-            {
-                return false;
-            }
-            if (++index >= BoardNameList.Count)
-            {
-                isEnd = true;
+            return TrySelectBoard(_indexOfBoard);
+        }
+        public bool TryGetFirstBoard()
+        {
+            _indexOfBoard = 0;
 
-                return false;
-            }
-            if (!TrySelectBoard(index))
+            return TrySelectBoard(_indexOfBoard);
+        }
+        public bool TryGetLastBoard()
+        {
+            _indexOfBoard = null != BoardNameList ? BoardNameList.Count - 1 : 0;
+
+            return TrySelectBoard(_indexOfBoard);
+        }
+        public bool TryGetNextBoard()
+        {
+            if (!TrySelectBoard(++_indexOfBoard))
             {
+                --_indexOfBoard;
+
                 return false;
             }
 
             return true;
         }
-        public bool TryGetPreviousBoard(out bool isFirst)
+        public bool TryGetPreviousBoard()
         {
-            isFirst = false;
-            if (null == BoardNameList || 0 == BoardNameList.Count)
+            if (!TrySelectBoard(--_indexOfBoard))
             {
-                return false;
-            }
-            var index = BoardNameList.FindIndex(x => x.Contains(Board));
-            if (-1 == index)
-            {
-                return false;
-            }
-            if (--index < 0)
-            {
-                isFirst = true;
+                ++_indexOfBoard;
 
-                return false;
-            }
-            if (!TrySelectBoard(index))
-            {
                 return false;
             }
 
@@ -540,71 +465,42 @@ namespace DefectChecker.DataBase
             }
             Batch = BatchNameList[index];
             LoadBoardList();
-            if (0 != BoardNameList.Count)
-            {
-                Board = BoardNameList[0];
-            }
-            LoadSideList();
-            if (0 != _sideList.Count)
-            {
-                _side = _sideList[0];
-            }
-            LoadShotList();
-            if (0 != _shotList.Count)
-            {
-                _shot = _shotList[0];
-            }
-            LoadCellList();
-            if (0 != _defectList.Count)
-            {
-                _defect = _defectList[0];
-            }
 
             return true;
         }
-        public bool TryGetNextBatch(out bool isEnd)
+        public bool TryGetBatchOfLastExit()
         {
-            isEnd = false;
-            if (null == BatchNameList || 0 == BatchNameList.Count)
+            return TrySelectBatch(_indexOfBatch);
+        }
+        public bool TryGetFirstBatch()
+        {
+            _indexOfBatch = 0;
+
+            return TrySelectBatch(_indexOfBatch);
+        }
+        public bool TryGetLastBatch()
+        {
+            _indexOfBatch = null != BatchNameList ? BatchNameList.Count - 1 : 0;
+
+            return TrySelectBatch(_indexOfBatch);
+        }
+        public bool TryGetNextBatch()
+        {
+            if (!TrySelectBatch(++_indexOfBatch))
             {
-                return false;
-            }
-            var index = BatchNameList.FindIndex(x => x.Contains(Batch));
-            if (-1 == index)
-            {
-                return false;
-            }
-            if (++index >= BatchNameList.Count)
-            {
-                return false;
-            }
-            if (!TrySelectBatch(index))
-            {
+                --_indexOfBatch;
+
                 return false;
             }
 
             return true;
         }
-        public bool TryGetPreviousBatch(out bool isFirst)
+        public bool TryGetPreviousBatch()
         {
-            isFirst = false;
-            if (null == BatchNameList || 0 == BatchNameList.Count)
+            if (!TrySelectBatch(--_indexOfBatch))
             {
-                return false;
-            }
-            var index = BatchNameList.FindIndex(x => x.Contains(Batch));
-            if (-1 == index)
-            {
-                return false;
-            }
-            if (--index < 0)
-            {
-                isFirst = true;
+                ++_indexOfBatch;
 
-                return false;
-            }
-            if (!TrySelectBatch(index))
-            {
                 return false;
             }
 
@@ -628,6 +524,8 @@ namespace DefectChecker.DataBase
             xmlParameter.Add("IndexOfDefectGroup", _indexOfDefectGroup);
             xmlParameter.Add("IndexOfShot", _indexOfShot);
             xmlParameter.Add("IndexOfSide", _indexOfSide);
+            xmlParameter.Add("IndexOfBoard", _indexOfBoard);
+            xmlParameter.Add("IndexOfBatch", _indexOfBatch);
 
             xmlParameter.WriteParameter(Application.StartupPath + _paramFileName);
 
