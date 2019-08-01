@@ -153,28 +153,6 @@ namespace DefectChecker.DataBase
         private void RemoveMarkResult() { }
 
         //
-        // LABLE: select specific image function is not clear now.
-        // should i add SelectDefectGroup()?
-        public void GetDefectGroupOfLastExit(int num, out List<DefectCell> defectCells)
-        {
-            DefectCell defectCell = new DefectCell();
-            defectCells = new List<DefectCell>();
-            var iter = 0;
-            do
-            {
-                if (TrySelectCell(_indexOfDefectGroup * num + iter, out defectCell))
-                {
-                    defectCells.Add(defectCell);
-                }
-                else
-                {
-                    defectCells.Add(new DefectCell());
-                }
-            } while (++iter < num);
-
-            return;
-        }
-        //
         public bool TrySelectCell(int index, out DefectCell defectCell)
         {
             defectCell = new DefectCell();
@@ -247,6 +225,27 @@ namespace DefectChecker.DataBase
         }
         */
         //
+        // LABLE: select specific image function is not clear now.
+        // should i add SelectDefectGroup()?
+        public void GetDefectGroupOfLastExit(int num, out List<DefectCell> defectCells)
+        {
+            DefectCell defectCell = new DefectCell();
+            defectCells = new List<DefectCell>();
+            var iter = 0;
+            do
+            {
+                if (TrySelectCell(_indexOfDefectGroup * num + iter, out defectCell))
+                {
+                    defectCells.Add(defectCell);
+                }
+                else
+                {
+                    defectCells.Add(new DefectCell());
+                }
+            } while (++iter < num);
+
+            return;
+        }
         public void GetFirstDefectGroup(int num, out List<DefectCell> defectCells, out bool isEmpty)
         {
             DefectCell defectCell = new DefectCell();
