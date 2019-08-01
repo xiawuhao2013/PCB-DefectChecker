@@ -266,9 +266,9 @@ namespace DefectChecker.DataBase
                     defectCells.Add(new DefectCell());
                 }
             }
-            _hasKilledDefect = nullCount != num;
+            _hasKilledDefect = nullCount == num;
 
-            return _hasKilledDefect;
+            return nullCount != num;
         }
         public bool TryGetDefectGroupOfLastExit(int num, out List<DefectCell> defectCells)
         {
