@@ -167,11 +167,18 @@ namespace DefectChecker.View
             foreach (var cell in defectCellList)
             {
                 _displayViewOfCells.CellViewList.TryGetValue(indexOfCellView, out var aqDisplay);
-                if (null == cell.DefectImage)
+                aqDisplay.InteractiveGraphics.Clear();
+                if (null != cell.DefectImage)
                 {
-                    aqDisplay.Image = cell.DefectImage;
+                    aqDisplay.Visible = true;
+                    aqDisplay.Image = cell.DefectImage.Clone() as Bitmap;
+                    aqDisplay.FitToScreen();
+                    aqDisplay.Update();
                 }
-                aqDisplay.Refresh();
+                else
+                {
+                    aqDisplay.Visible = false;
+                }
                 ++indexOfCellView;
                 if (indexOfCellView > NumberOfCell)
                 {
@@ -184,8 +191,30 @@ namespace DefectChecker.View
             return;
         }
 
-        private void DisplayView_Resize(object sender, EventArgs e)
+        /*************************************************************************************/
+
+        private void button1_Click(object sender, EventArgs e)
         {
+            GetFirstDefectGroup();
+            RefreshCellViews(_curDefectGroup);
+            _dataBaseManager.SaveConfig();
+
+            return;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            GetNextDefectGroup();
+            RefreshCellViews(_curDefectGroup);
+            _dataBaseManager.SaveConfig();
+
+            return;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            GetPreviousDefectGroup();
+            RefreshCellViews(_curDefectGroup);
             _dataBaseManager.SaveConfig();
 
             return;
