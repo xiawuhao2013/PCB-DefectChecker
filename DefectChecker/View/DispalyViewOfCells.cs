@@ -16,6 +16,9 @@ namespace DefectChecker.View
     {
         private int _numberOfCell = 4;
         private Dictionary<int, AqDisplay> _cellViewList = new Dictionary<int, AqDisplay>();
+        
+        public Dictionary<int, AqDisplay> CellViewList { get { return _cellViewList; } }
+        public int NumberOfCell { get { return _numberOfCell; } }
 
         public DispalyViewOfCells()
         {
