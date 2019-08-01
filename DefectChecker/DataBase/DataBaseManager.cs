@@ -270,21 +270,11 @@ namespace DefectChecker.DataBase
 
             return nullCount != num;
         }
-        public bool TryGetDefectGroupOfLastExit(int num, out List<DefectCell> defectCells)
+        public void SetIndexOfDefectGroup(int index)
         {
-            return TrySelectDefectGroup(_indexOfDefectGroup, num, out defectCells);
-        }
-        public bool TryGetFirstDefectGroup(int num, out List<DefectCell> defectCells)
-        {
-            _indexOfDefectGroup = 0;
+            _indexOfDefectGroup = index;
 
-            return TrySelectDefectGroup(_indexOfDefectGroup, num, out defectCells);
-        }
-        public bool TryGetLastDefectGroup(int num, out List<DefectCell> defectCells)
-        {
-            _indexOfDefectGroup = DefectNameList.Count / num;
-
-            return TrySelectDefectGroup(_indexOfDefectGroup, num, out defectCells);
+            return;
         }
         public bool TryGetNextDefectGroup(int num, out List<DefectCell> defectCells)
         {
@@ -323,21 +313,11 @@ namespace DefectChecker.DataBase
 
             return true;
         }
-        public bool TryGetShotOfLastExit()
+        public void SetIndexOfShot(int index)
         {
-            return TrySelectShot(_indexOfShot);
-        }
-        public bool TryGetFirstShot()
-        {
-            _indexOfShot = 0;
+            _indexOfShot = index;
 
-            return TrySelectShot(_indexOfShot);
-        }
-        public bool TryGetLastShot()
-        {
-            _indexOfShot = Math.Max(ShotNameList.Count - 1, 0);
-
-            return TrySelectShot(_indexOfShot);
+            return;
         }
         public bool TryGetNextShot()
         {
@@ -376,21 +356,11 @@ namespace DefectChecker.DataBase
 
             return true;
         }
-        public bool TryGetSideOfLastExit()
+        public void SetIndexOfSide(int index)
         {
-            return TrySelectSide(_indexOfSide);
-        }
-        public bool TryGetFirstSide()
-        {
-            _indexOfSide = 0;
+            _indexOfSide = index;
 
-            return TrySelectSide(_indexOfSide);
-        }
-        public bool TryGetLastSide()
-        {
-            _indexOfSide = Math.Max(SideNameList.Count - 1, 0);
-
-            return TrySelectSide(_indexOfSide);
+            return;
         }
         public bool TryGetNextSide()
         {
@@ -429,21 +399,11 @@ namespace DefectChecker.DataBase
 
             return true;
         }
-        public bool TryGetBoardOfLastExit()
+        public void SetIndexOfBoard(int index)
         {
-            return TrySelectBoard(_indexOfBoard);
-        }
-        public bool TryGetFirstBoard()
-        {
-            _indexOfBoard = 0;
+            _indexOfBoard = index;
 
-            return TrySelectBoard(_indexOfBoard);
-        }
-        public bool TryGetLastBoard()
-        {
-            _indexOfBoard = Math.Max(BoardNameList.Count - 1, 0);
-
-            return TrySelectBoard(_indexOfBoard);
+            return;
         }
         public bool TryGetNextBoard()
         {
@@ -482,21 +442,11 @@ namespace DefectChecker.DataBase
 
             return true;
         }
-        public bool TryGetBatchOfLastExit()
+        public void SetIndexOfBatch(int index)
         {
-            return TrySelectBatch(_indexOfBatch);
-        }
-        public bool TryGetFirstBatch()
-        {
-            _indexOfBatch = 0;
+            _indexOfBatch = index;
 
-            return TrySelectBatch(_indexOfBatch);
-        }
-        public bool TryGetLastBatch()
-        {
-            _indexOfBatch = Math.Max(BatchNameList.Count - 1, 0);
-
-            return TrySelectBatch(_indexOfBatch);
+            return;
         }
         public bool TryGetNextBatch()
         {

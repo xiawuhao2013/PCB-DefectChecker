@@ -73,210 +73,212 @@ namespace DefectChecker.View
         #region TestPassed
         /*****************************************************************************************/
 
-        private bool TryGetDefectGroupOfLastExit()
-        {
-            return _dataBaseManager.TryGetDefectGroupOfLastExit(NumberOfCell, out _curDefectGroup);
-        }
-
         private bool TryGetFirstDefectGroup()
         {
-            return _dataBaseManager.TryGetFirstDefectGroup(NumberOfCell, out _curDefectGroup);
+            _dataBaseManager.SetIndexOfDefectGroup(-1);
+
+            return TryGetNextDefectGroup();
         }
 
         private bool TryGetLastDefectGroup()
         {
+            _dataBaseManager.SetIndexOfDefectGroup(_dataBaseManager.DefectNameList.Count / NumberOfCell + 1);
 
-            return _dataBaseManager.TryGetLastDefectGroup(NumberOfCell, out _curDefectGroup);
+            return TryGetPreviousDefectGroup();
         }
 
         private bool TryGetNextDefectGroup()
         {
-            return _dataBaseManager.TryGetNextDefectGroup(NumberOfCell, out _curDefectGroup);
+            var isStop = false;
+            do
+            {
+                MessageBox.Show("下一个Group！");
+                isStop = _dataBaseManager.TryGetNextDefectGroup(NumberOfCell, out _curDefectGroup);
+                isStop |= _dataBaseManager.HasKilledDefect;
+            } while (!isStop);
+
+            return !_dataBaseManager.HasKilledDefect;
         }
 
         private bool TryGetPreviousDefectGroup()
         {
-            return _dataBaseManager.TryGetPreviousDefectGroup(NumberOfCell, out _curDefectGroup);
+            var isStop = false;
+            do
+            {
+                MessageBox.Show("上一个Group！");
+                isStop = _dataBaseManager.TryGetPreviousDefectGroup(NumberOfCell, out _curDefectGroup);
+                isStop |= _dataBaseManager.HasKilledDefect;
+            } while (!isStop);
+
+            return !_dataBaseManager.HasKilledDefect;
         }
         //
-        private bool TryGetShotOfLastExit()
-        {
-            return _dataBaseManager.TryGetShotOfLastExit();
-        }
-
         private bool TryGetFirstShot()
         {
-            if (!_dataBaseManager.TryGetFirstShot())
-            {
-                return false;
-            }
+            _dataBaseManager.SetIndexOfShot(-1);
 
-            return TryGetFirstDefectGroup();
+            return TryGetNextShot();
         }
 
         private bool TryGetLastShot()
         {
-            if (!_dataBaseManager.TryGetLastShot())
-            {
-                return false;
-            }
+            _dataBaseManager.SetIndexOfShot(_dataBaseManager.ShotNameList.Count);
 
-            return TryGetLastDefectGroup();
+            return TryGetPreviousShot();
         }
 
         private bool TryGetNextShot()
         {
-            if (!_dataBaseManager.TryGetNextShot())
+            var isStop = false;
+            do
             {
-                return false;
-            }
+                MessageBox.Show("下一个Shot！");
+                isStop = _dataBaseManager.TryGetNextShot();
+                isStop &= TryGetFirstDefectGroup();
+                isStop |= _dataBaseManager.HasKilledShot;
+            } while (!isStop);
 
-            return TryGetFirstDefectGroup();
+            return !_dataBaseManager.HasKilledShot;
         }
 
         private bool TryGetPreviousShot()
         {
-            if (!_dataBaseManager.TryGetPreviousShot())
+            var isStop = false;
+            do
             {
-                return false;
-            }
+                MessageBox.Show("上一个Shot！");
+                isStop = _dataBaseManager.TryGetPreviousShot();
+                isStop &= TryGetLastDefectGroup();
+                isStop |= _dataBaseManager.HasKilledShot;
+            } while (!isStop);
 
-            return TryGetLastDefectGroup();
+            return !_dataBaseManager.HasKilledShot;
         }
         //
-        private bool TryGetSideOfLastExit()
-        {
-            return _dataBaseManager.TryGetSideOfLastExit();
-        }
-
         private bool TryGetFirstSide()
         {
-            if (!_dataBaseManager.TryGetFirstSide())
-            {
-                return false;
-            }
+            _dataBaseManager.SetIndexOfSide(-1);
 
-            return TryGetFirstShot();
+            return TryGetNextSide();
         }
 
         private bool TryGetLastSide()
         {
-            if(!_dataBaseManager.TryGetLastSide())
-            {
-                return false;
-            }
+            _dataBaseManager.SetIndexOfSide(_dataBaseManager.SideNameList.Count);
 
-            return TryGetLastShot();
+            return TryGetPreviousSide();
         }
 
         private bool TryGetNextSide()
         {
-            if (!_dataBaseManager.TryGetNextSide())
+            var isStop = false;
+            do
             {
-                return false;
-            }
+                MessageBox.Show("下一个Side！");
+                isStop = _dataBaseManager.TryGetNextSide();
+                isStop &= TryGetFirstShot();
+                isStop |= _dataBaseManager.HasKilledSide;
+            } while (!isStop);
 
-            return TryGetFirstShot();
+            return !_dataBaseManager.HasKilledSide;
         }
 
         private bool TryGetPreviousSide()
         {
-            if (!_dataBaseManager.TryGetPreviousSide())
+            var isStop = false;
+            do
             {
-                return false;
-            }
+                MessageBox.Show("上一个Side！");
+                isStop = _dataBaseManager.TryGetPreviousSide();
+                isStop &= TryGetLastShot();
+                isStop |= _dataBaseManager.HasKilledSide;
+            } while (!isStop);
 
-            return TryGetLastShot();
+            return !_dataBaseManager.HasKilledSide;
         }
         //
-        private bool TryGetBoardOfLastExit()
-        {
-            return _dataBaseManager.TryGetBoardOfLastExit();
-        }
-
         private bool TryGetFirstBoard()
         {
-            if (!_dataBaseManager.TryGetFirstBoard())
-            {
-                return false;
-            }
+            _dataBaseManager.SetIndexOfBoard(-1);
 
-            return TryGetFirstSide();
+            return TryGetNextBoard();
         }
 
         private bool TryGetLastBoard()
         {
-            if (!_dataBaseManager.TryGetLastBoard())
-            {
-                return false;
-            }
+            _dataBaseManager.SetIndexOfBoard(_dataBaseManager.BoardNameList.Count);
 
-            return TryGetLastSide();
+            return TryGetPreviousBoard();
         }
 
         private bool TryGetNextBoard()
         {
-            if (!_dataBaseManager.TryGetNextBoard())
+            var isStop = false;
+            do
             {
-                return false;
-            }
+                MessageBox.Show("下一个Board！");
+                isStop = _dataBaseManager.TryGetNextBoard();
+                isStop &= TryGetFirstSide();
+                isStop |= _dataBaseManager.HasKilledBoard;
+            } while (!isStop);
 
-            return TryGetFirstSide();
+            return !_dataBaseManager.HasKilledBoard;
         }
 
         private bool TryGetPreviousBoard()
         {
-            if (!_dataBaseManager.TryGetPreviousBoard())
+            var isStop = false;
+            do
             {
-                return false;
-            }
+                MessageBox.Show("上一个Board！");
+                isStop = _dataBaseManager.TryGetPreviousBoard();
+                isStop &= TryGetLastSide();
+                isStop |= _dataBaseManager.HasKilledBoard;
+            } while (!isStop);
 
-            return TryGetLastSide();
+            return !_dataBaseManager.HasKilledBoard;
         }
         //
-        private bool TryGetBatchOfLastExit()
-        {
-            return _dataBaseManager.TryGetBatchOfLastExit();
-        }
-
         private bool TryGetFirstBatch()
         {
-            if (!_dataBaseManager.TryGetFirstBatch())
-            {
-                return false;
-            }
+            _dataBaseManager.SetIndexOfBatch(-1);
 
-            return TryGetFirstBoard();
+            return TryGetNextBatch();
         }
 
         private bool TryGetLastBatch()
         {
-            if (!_dataBaseManager.TryGetLastBatch())
-            {
-                return false;
-            }
+            _dataBaseManager.SetIndexOfBatch(_dataBaseManager.BatchNameList.Count);
 
-            return TryGetLastBoard();
+            return TryGetPreviousBatch();
         }
 
         private bool TryGetNextBatch()
         {
-            if (!_dataBaseManager.TryGetNextBatch())
+            var isStop = false;
+            do
             {
-                return false;
-            }
+                MessageBox.Show("下一个Batch！");
+                isStop = _dataBaseManager.TryGetNextBatch();
+                isStop &= TryGetFirstBoard();
+                isStop |= _dataBaseManager.HasKilledBatch;
+            } while (!isStop);
 
-            return TryGetFirstBoard();
+            return !_dataBaseManager.HasKilledBatch;
         }
 
         private bool TryGetPreviousBatch()
         {
-            if (!_dataBaseManager.TryGetPreviousBatch())
+            var isStop = false;
+            do
             {
-                return false;
-            }
+                MessageBox.Show("上一个Batch！");
+                isStop = _dataBaseManager.TryGetPreviousBatch();
+                isStop &= TryGetLastBoard();
+                isStop |= _dataBaseManager.HasKilledBatch;
+            } while (!isStop);
 
-            return TryGetLastBoard();
+            return !_dataBaseManager.HasKilledBatch;
         }
         /*****************************************************************************************/
         #endregion
@@ -334,114 +336,42 @@ namespace DefectChecker.View
             {
                 RefreshCellViews(_curDefectGroup);
             }
-            _dataBaseManager.SaveConfig();
+            //_dataBaseManager.SaveConfig();
 
             return;
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            /*
-            if (TryGetNextDefectGroup() || TryGetNextShot() || TryGetNextSide())
-            {
-                RefreshCellViews(_curDefectGroup);
-            }
-            */
-            if (TryGetNextDefectGroup())
+
+            if (TryGetNextDefectGroup() || TryGetNextShot() || TryGetNextSide() || TryGetNextBoard() || TryGetNextBatch())
             {
             }
             else
             {
-                MessageBox.Show("加载下一相机！");
-                if (TryGetNextShot())
-                {
-                }
-                else
-                {
-                    MessageBox.Show("加载下一面！");
-                    if (TryGetNextSide())
-                    {
-                    }
-                    else
-                    {
-                        MessageBox.Show("加载下一块板！");
-                        if (TryGetNextBoard())
-                        {
-                        }
-                        else
-                        {
-                            MessageBox.Show("加载下一批次！");
-                            if (TryGetNextBatch())
-                            {
-                            }
-                            else
-                            {
-                                MessageBox.Show("完了！肯定有bug！！！");
+                MessageBox.Show("完了！");
 
-                                return;
-                            }
-                        }
-                    }
-                }
+                return;
             }
-            
             RefreshCellViews(_curDefectGroup);
-            _dataBaseManager.SaveConfig();
+            //_dataBaseManager.SaveConfig();
 
             return;
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if (TryGetPreviousDefectGroup())
+            if (TryGetPreviousDefectGroup() || TryGetPreviousShot() || TryGetPreviousSide() || TryGetPreviousBoard() || TryGetPreviousBatch())
             {
             }
             else
             {
-                MessageBox.Show("加载上一相机！");
-                if (TryGetPreviousShot())
-                {
-                }
-                else
-                {
-                    MessageBox.Show("加载上一面！");
-                    if (TryGetPreviousSide())
-                    {
-                    }
-                    else
-                    {
-                        MessageBox.Show("加载上一块板！");
-                        if (TryGetPreviousBoard())
-                        {
-                        }
-                        else
-                        {
-                            MessageBox.Show("加载上一批次！");
-                            if (TryGetPreviousBatch())
-                            {
-                            }
-                            else
-                            {
-                                MessageBox.Show("完了！肯定有bug！！！");
+                MessageBox.Show("完了！");
 
-                                return;
-                            }
-                        }
-                    }
-                }
+                return;
             }
             RefreshCellViews(_curDefectGroup);
-            _dataBaseManager.SaveConfig();
-
-            return;
-        }
-
-        private void button10_Click(object sender, EventArgs e)
-        {
-            if (TryGetDefectGroupOfLastExit())
-            {
-                RefreshCellViews(_curDefectGroup);
-            }
+            //_dataBaseManager.SaveConfig();
 
             return;
         }
