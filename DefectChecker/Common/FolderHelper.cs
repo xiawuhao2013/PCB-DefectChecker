@@ -46,6 +46,10 @@ namespace DefectChecker.Common
         public bool TryGetChildrenDirMap(string dirPath, out PathMap childrenDirMap)
         {
             childrenDirMap = new PathMap();
+            if (String.IsNullOrWhiteSpace(dirPath))
+            {
+                return false;
+            }
             try
             {
                 var dir = new DirectoryInfo(dirPath);
@@ -68,6 +72,10 @@ namespace DefectChecker.Common
         public bool TryGetChildrenFileMap(string dirPath, out PathMap childrenFileMap)
         {
             childrenFileMap = new PathMap();
+            if (String.IsNullOrWhiteSpace(dirPath))
+            {
+                return false;
+            }
             try
             {
                 var dir = new DirectoryInfo(dirPath);
