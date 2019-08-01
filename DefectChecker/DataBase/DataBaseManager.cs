@@ -45,32 +45,32 @@ namespace DefectChecker.DataBase
             LoadConfig();
             //
             LoadProductList();
-            if (String.IsNullOrWhiteSpace(Product) && 0 != ProductNameList.Count)
+            if (String.IsNullOrWhiteSpace(Product) && null != ProductNameList && 0 != ProductNameList.Count)
             {
                 Product = ProductNameList[0];
             }
             LoadBatchList();
-            if (String.IsNullOrWhiteSpace(Batch) && 0 != BatchNameList.Count)
+            if (String.IsNullOrWhiteSpace(Batch) && null != BatchNameList && 0 != BatchNameList.Count)
             {
                 Batch = BatchNameList[0];
             }
             LoadBoardList();
-            if (String.IsNullOrWhiteSpace(Board) && 0 != BoardNameList.Count)
+            if (String.IsNullOrWhiteSpace(Board) && null != BoardNameList && 0 != BoardNameList.Count)
             {
                 Board = BoardNameList[0];
             }
             LoadSideList();
-            if (String.IsNullOrWhiteSpace(_side) && 0 != _sideList.Count)
+            if (String.IsNullOrWhiteSpace(_side) && null != _sideList && 0 != _sideList.Count)
             {
                 _side = _sideList[0];
             }
             LoadShotList();
-            if (String.IsNullOrWhiteSpace(_shot) && 0 != _shotList.Count)
+            if (String.IsNullOrWhiteSpace(_shot) && null!= _shotList && 0 != _shotList.Count)
             {
                 _shot = _shotList[0];
             }
             LoadCellList();
-            if (String.IsNullOrWhiteSpace(_defect) && 0 != _defectList.Count)
+            if (String.IsNullOrWhiteSpace(_defect) && null != _defectList && 0 != _defectList.Count)
             {
                 _defect = _defectList[0];
             }
@@ -227,13 +227,12 @@ namespace DefectChecker.DataBase
         //
         // LABLE: select specific image function is not clear now.
         // should i add SelectDefectGroup()?
-        public bool TryGetDefectGroupOfLastExit(int num, out List<DefectCell> defectCells)
+        public bool TrySelectDefectGroup(int index, int num, out List<DefectCell> defectCells)
         {
             DefectCell defectCell = new DefectCell();
             defectCells = new List<DefectCell>();
-            var iter = 0;
             var nullCount = 0;
-            do
+            for (var iter = 0; iter < num; ++iter)
             {
                 if (TrySelectCell(_indexOfDefectGroup * num + iter, out defectCell))
                 {
@@ -241,76 +240,32 @@ namespace DefectChecker.DataBase
                 }
                 else
                 {
+                    ++nullCount;
                     defectCells.Add(new DefectCell());
                 }
-            } while (++iter < num);
+            }
 
             return nullCount != num;
+        }
+        public bool TryGetDefectGroupOfLastExit(int num, out List<DefectCell> defectCells)
+        {
+            return TrySelectDefectGroup(_indexOfDefectGroup, num, out defectCells);
         }
         public bool TryGetFirstDefectGroup(int num, out List<DefectCell> defectCells)
         {
-            DefectCell defectCell = new DefectCell();
-            defectCells = new List<DefectCell>();
             _indexOfDefectGroup = 0;
-            var iter = 0;
-            var nullCount = 0;
-            do
-            {
-                if (TrySelectCell(_indexOfDefectGroup * num + iter, out defectCell))
-                {
-                    defectCells.Add(defectCell);
-                }
-                else
-                {
-                    ++nullCount;
-                    defectCells.Add(new DefectCell());
-                }
-            } while (++iter < num);
 
-            return nullCount != num;
+            return TrySelectDefectGroup(_indexOfDefectGroup, num, out defectCells);
         }
         public bool TryGetLastDefectGroup(int num, out List<DefectCell> defectCells)
         {
-            DefectCell defectCell = new DefectCell();
-            defectCells = new List<DefectCell>();
             _indexOfDefectGroup = _defectList.Count / num;
-            var iter = 0;
-            var nullCount = 0;
-            do
-            {
-                if (TrySelectCell(_indexOfDefectGroup * num + iter, out defectCell))
-                {
-                    defectCells.Add(defectCell);
-                }
-                else
-                {
-                    ++nullCount;
-                    defectCells.Add(new DefectCell());
-                }
-            } while (++iter < num);
 
-            return nullCount != num;
+            return TrySelectDefectGroup(_indexOfDefectGroup, num, out defectCells);
         }
         public bool TryGetNextDefectGroup(int num, out List<DefectCell> defectCells)
         {
-            DefectCell defectCell = new DefectCell();
-            defectCells = new List<DefectCell>();
-            ++_indexOfDefectGroup;
-            var iter = 0;
-            var nullCount = 0;
-            do
-            {
-                if (TrySelectCell(_indexOfDefectGroup * num + iter, out defectCell))
-                {
-                    defectCells.Add(defectCell);
-                }
-                else
-                {
-                    ++nullCount;
-                    defectCells.Add(new DefectCell());
-                }
-            } while (++iter < num);
-            if (nullCount == num)
+            if (!TrySelectDefectGroup(++_indexOfDefectGroup, num, out defectCells))
             {
                 --_indexOfDefectGroup;
 
@@ -321,24 +276,7 @@ namespace DefectChecker.DataBase
         }
         public bool TryGetPreviousDefectGroup(int num, out List<DefectCell> defectCells)
         {
-            DefectCell defectCell = new DefectCell();
-            defectCells = new List<DefectCell>();
-            --_indexOfDefectGroup;
-            var iter = 0;
-            var nullCount = 0;
-            do
-            {
-                if (TrySelectCell(_indexOfDefectGroup * num + iter, out defectCell))
-                {
-                    defectCells.Add(defectCell);
-                }
-                else
-                {
-                    ++nullCount;
-                    defectCells.Add(new DefectCell());
-                }
-            } while (++iter < num);
-            if (nullCount == num)
+            if (!TrySelectDefectGroup(--_indexOfDefectGroup, num, out defectCells))
             {
                 ++_indexOfDefectGroup;
 
@@ -360,58 +298,46 @@ namespace DefectChecker.DataBase
             }
             _shot = _shotList[index];
             LoadCellList();
-            if (0 != _defectList.Count)
+            if (null != _defectList && 0 != _defectList.Count)
             {
                 _defect = _defectList[0];
             }
 
             return true;
         }
-        public bool TryGetNextShot(out bool isEnd)
+        public bool TryGetShotOfLastExit()
         {
-            isEnd = false;
-            if (null == _shotList || 0 == _shotList.Count)
-            {
-                return false;
-            }
-            var index = _shotList.FindIndex(x => x.Contains(_shot));
-            if (-1 == index)
-            {
-                return false;
-            }
-            if (++index >= _shotList.Count)
-            {
-                isEnd = true;
+            return TrySelectShot(_indexOfShot);
+        }
+        public bool TryGetFirstShot()
+        {
+            _indexOfShot = 0;
 
-                return false;
-            }
-            if (!TrySelectShot(index))
+            return TrySelectShot(_indexOfShot);
+        }
+        public bool TryGetLastShot()
+        {
+            _indexOfShot = null != _shotList ? _shotList.Count : 0;
+
+            return TrySelectShot(_indexOfShot);
+        }
+        public bool TryGetNextShot()
+        {
+            if (!TrySelectShot(++_indexOfShot))
             {
+                --_indexOfShot;
+
                 return false;
             }
 
             return true;
         }
-        public bool TryGetPreviousShot(out bool isFirst)
+        public bool TryGetPreviousShot()
         {
-            isFirst = false;
-            if (null == _shotList || 0 == _shotList.Count)
+            if (!TrySelectShot(--_indexOfShot))
             {
-                return false;
-            }
-            var index = _shotList.FindIndex(x => x.Contains(_shot));
-            if (-1 == index)
-            {
-                return false;
-            }
-            if (--index < 0)
-            {
-                isFirst = true;
+                ++_indexOfShot;
 
-                return false;
-            }
-            if (!TrySelectShot(index))
-            {
                 return false;
             }
 

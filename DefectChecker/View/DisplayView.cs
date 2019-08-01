@@ -153,19 +153,29 @@ namespace DefectChecker.View
             return;
         }
 
+        private bool TryGetShotOfLastExit()
+        {
+            return _dataBaseManager.TryGetShotOfLastExit();
+        }
+
         private bool TryGetFirstShot()
         {
             return _dataBaseManager.TrySelectShot(0);
         }
 
+        private bool TryGetLastShot()
+        {
+            return _dataBaseManager.TryGetLastShot();
+        }
+
         private bool TryGetNextShot()
         {
-            return _dataBaseManager.TryGetNextShot(out var isEnd);
+            return _dataBaseManager.TryGetNextShot();
         }
 
         private bool TryGetPreviousShot()
         {
-            return _dataBaseManager.TryGetPreviousShot(out var isFirst);
+            return _dataBaseManager.TryGetPreviousShot();
         }
 
         private bool TryGetFirstBoard()
