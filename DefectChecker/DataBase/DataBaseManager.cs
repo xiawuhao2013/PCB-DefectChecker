@@ -312,11 +312,7 @@ namespace DefectChecker.DataBase
         public bool TrySelectShot(int index)
         {
             _hasKilledShot = false;
-            if (null == ShotNameList || 0 == ShotNameList.Count)
-            {
-                return false;
-            }
-            if (index >= ShotNameList.Count || index < 0)
+            if (null == ShotNameList || 0 == ShotNameList.Count || index >= ShotNameList.Count || index < 0)
             {
                 _hasKilledShot = true;
 
@@ -369,11 +365,7 @@ namespace DefectChecker.DataBase
         public bool TrySelectSide(int index)
         {
             _hasKilledSide = false;
-            if (null == SideNameList || 0 == SideNameList.Count)
-            {
-                return false;
-            }
-            if (index >= SideNameList.Count || index < 0)
+            if (null == SideNameList || 0 == SideNameList.Count || index >= SideNameList.Count || index < 0)
             {
                 _hasKilledSide = true;
 
@@ -426,11 +418,7 @@ namespace DefectChecker.DataBase
         public bool TrySelectBoard(int index)
         {
             _hasKilledBoard = false;
-            if (null == BoardNameList || 0 == BoardNameList.Count)
-            {
-                return false;
-            }
-            if (index >= BoardNameList.Count || index < 0)
+            if (null == BoardNameList || 0 == BoardNameList.Count || index >= BoardNameList.Count || index < 0)
             {
                 _hasKilledBoard = true;
 
@@ -483,11 +471,7 @@ namespace DefectChecker.DataBase
         public bool TrySelectBatch(int index)
         {
             _hasKilledBatch = false;
-            if (null == BatchNameList || 0 == BatchNameList.Count)
-            {
-                return false;
-            }
-            if (index >= BatchNameList.Count || index < 0)
+            if (null == BatchNameList || 0 == BatchNameList.Count || index >= BatchNameList.Count || index < 0)
             {
                 _hasKilledBatch = true;
 
