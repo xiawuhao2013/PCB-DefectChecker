@@ -70,89 +70,35 @@ namespace DefectChecker.View
 
             return;
         }
+        #region TestPassed
+        /*****************************************************************************************/
 
-        private void GetDefectGroupOfLastExit()
+        private bool TryGetDefectGroupOfLastExit()
         {
-            if (_dataBaseManager.TryGetDefectGroupOfLastExit(NumberOfCell, out _curDefectGroup))
-            {
-                RefreshCellViews(_curDefectGroup);
-            }
-
-            return;
+            return _dataBaseManager.TryGetDefectGroupOfLastExit(NumberOfCell, out _curDefectGroup);
         }
 
-        private void GetFirstDefectGroup()
+        private bool TryGetFirstDefectGroup()
         {
-            if (_dataBaseManager.TryGetFirstDefectGroup(NumberOfCell, out _curDefectGroup))
-            {
-                RefreshCellViews(_curDefectGroup);
-
-                return;
-            }
-            MessageBox.Show("这组是空的，继续向下！");
-            if (!TryGetNextShot())
-            {
-                return;
-            }
-
-            return;
+            return _dataBaseManager.TryGetFirstDefectGroup(NumberOfCell, out _curDefectGroup);
         }
 
-        private void GetLastDefectGroup()
-        {
-            if (_dataBaseManager.TryGetLastDefectGroup(NumberOfCell, out _curDefectGroup))
-            {
-                RefreshCellViews(_curDefectGroup);
-
-                return;
-            }
-            MessageBox.Show("这组是空的，继续向上！");
-            if (!TryGetPreviousShot())
-            {
-                return;
-            }
-
-            return;
-        }
-
-        private void GetNextDefectGroup()
+        private bool TryGetLastDefectGroup()
         {
 
-            if (_dataBaseManager.TryGetNextDefectGroup(NumberOfCell, out _curDefectGroup))
-            {
-                RefreshCellViews(_curDefectGroup);
-
-                return;
-            }
-            MessageBox.Show("已经是最后一组了！");
-            if (!TryGetNextShot())
-            {
-                return;
-            }
-            GetFirstDefectGroup();
-
-            return;
+            return _dataBaseManager.TryGetLastDefectGroup(NumberOfCell, out _curDefectGroup);
         }
 
-        private void GetPreviousDefectGroup()
+        private bool TryGetNextDefectGroup()
         {
-            
-            if (_dataBaseManager.TryGetPreviousDefectGroup(NumberOfCell, out _curDefectGroup))
-            {
-                RefreshCellViews(_curDefectGroup);
-
-                return;
-            }
-            MessageBox.Show("已经是第一组了！");
-            if (!TryGetPreviousShot())
-            {
-                return;
-            }
-            GetLastDefectGroup();
-
-            return;
+            return _dataBaseManager.TryGetNextDefectGroup(NumberOfCell, out _curDefectGroup);
         }
 
+        private bool TryGetPreviousDefectGroup()
+        {
+            return _dataBaseManager.TryGetPreviousDefectGroup(NumberOfCell, out _curDefectGroup);
+        }
+        //
         private bool TryGetShotOfLastExit()
         {
             return _dataBaseManager.TryGetShotOfLastExit();
@@ -160,23 +106,91 @@ namespace DefectChecker.View
 
         private bool TryGetFirstShot()
         {
-            return _dataBaseManager.TrySelectShot(0);
+            if (!_dataBaseManager.TryGetFirstShot())
+            {
+                return false;
+            }
+
+            return TryGetFirstDefectGroup();
         }
 
         private bool TryGetLastShot()
         {
-            return _dataBaseManager.TryGetLastShot();
+            if (!_dataBaseManager.TryGetLastShot())
+            {
+                return false;
+            }
+
+            return TryGetLastDefectGroup();
         }
 
         private bool TryGetNextShot()
         {
-            return _dataBaseManager.TryGetNextShot();
+            if (!_dataBaseManager.TryGetNextShot())
+            {
+                return false;
+            }
+
+            return TryGetFirstDefectGroup();
         }
 
         private bool TryGetPreviousShot()
         {
-            return _dataBaseManager.TryGetPreviousShot();
+            if (!_dataBaseManager.TryGetPreviousShot())
+            {
+                return false;
+            }
+
+            return TryGetLastDefectGroup();
         }
+        //
+        private bool TryGetSideOfLastExit()
+        {
+            return _dataBaseManager.TryGetSideOfLastExit();
+        }
+
+        private bool TryGetFirstSide()
+        {
+            if (!_dataBaseManager.TryGetFirstSide())
+            {
+                return false;
+            }
+
+            return TryGetFirstShot();
+        }
+
+        private bool TryGetLastSide()
+        {
+            if(!_dataBaseManager.TryGetLastSide())
+            {
+                return false;
+            }
+
+            return TryGetLastShot();
+        }
+
+        private bool TryGetNextSide()
+        {
+            if (!_dataBaseManager.TryGetNextSide())
+            {
+                return false;
+            }
+
+            return TryGetFirstShot();
+        }
+
+        private bool TryGetPreviousSide()
+        {
+            if (!_dataBaseManager.TryGetPreviousSide())
+            {
+                return false;
+            }
+
+            return TryGetLastShot();
+        }
+
+        /*****************************************************************************************/
+        #endregion
 
         private bool TryGetFirstBoard()
         {
@@ -266,7 +280,11 @@ namespace DefectChecker.View
 
         private void button1_Click(object sender, EventArgs e)
         {
-            GetFirstDefectGroup();
+            
+            if(TryGetFirstDefectGroup())
+            {
+                RefreshCellViews(_curDefectGroup);
+            }
             _dataBaseManager.SaveConfig();
 
             return;
@@ -274,7 +292,36 @@ namespace DefectChecker.View
 
         private void button2_Click(object sender, EventArgs e)
         {
-            GetNextDefectGroup();
+            /*
+            if (TryGetNextDefectGroup() || TryGetNextShot() || TryGetNextSide())
+            {
+                RefreshCellViews(_curDefectGroup);
+            }
+            */
+            if (TryGetNextDefectGroup())
+            {
+            }
+            else
+            {
+                MessageBox.Show("加载下一相机！");
+                if (TryGetNextShot())
+                {
+                }
+                else
+                {
+                    MessageBox.Show("加载下一面！");
+                    if (TryGetNextSide())
+                    {
+                    }
+                    else
+                    {
+                        MessageBox.Show("加载下一块板！");
+                        //...
+                    }
+                }
+            }
+            
+            RefreshCellViews(_curDefectGroup);
             _dataBaseManager.SaveConfig();
 
             return;
@@ -282,7 +329,29 @@ namespace DefectChecker.View
 
         private void button3_Click(object sender, EventArgs e)
         {
-            GetPreviousDefectGroup();
+            if (TryGetPreviousDefectGroup())
+            {
+            }
+            else
+            {
+                MessageBox.Show("加载上一相机！");
+                if (TryGetPreviousShot())
+                {
+                }
+                else
+                {
+                    MessageBox.Show("加载上一面！");
+                    if (TryGetPreviousSide())
+                    {
+                    }
+                    else
+                    {
+                        MessageBox.Show("加载上一块板！");
+                        //...
+                    }
+                }
+            }
+            RefreshCellViews(_curDefectGroup);
             _dataBaseManager.SaveConfig();
 
             return;
@@ -290,7 +359,10 @@ namespace DefectChecker.View
 
         private void button10_Click(object sender, EventArgs e)
         {
-            GetDefectGroupOfLastExit();
+            if (TryGetDefectGroupOfLastExit())
+            {
+                RefreshCellViews(_curDefectGroup);
+            }
 
             return;
         }

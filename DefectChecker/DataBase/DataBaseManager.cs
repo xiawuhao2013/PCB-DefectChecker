@@ -21,6 +21,7 @@ namespace DefectChecker.DataBase
         private string _defect = "";
         private int _indexOfDefectGroup = 0;
         private int _indexOfShot = 0;
+        private int _indexOfSide = 0;
 
         private DeviceMachVision _machVision = new DeviceMachVision();
 
@@ -81,6 +82,7 @@ namespace DefectChecker.DataBase
 
         private void LoadConfig()
         {
+            // LABEL: bug exists. need ensurance of the name match with index.
             XmlParameter xmlParameter = new XmlParameter();
             xmlParameter.ReadParameter(Application.StartupPath + _paramFileName);
             _dataDir = xmlParameter.GetParamData("DataDir");
@@ -93,6 +95,7 @@ namespace DefectChecker.DataBase
             _defect = xmlParameter.GetParamData("Defect");
             _indexOfDefectGroup = String.IsNullOrWhiteSpace(xmlParameter.GetParamData("IndexOfDefectGroup")) ? 0 : Convert.ToInt32(xmlParameter.GetParamData("IndexOfDefectGroup"));
             _indexOfShot = String.IsNullOrWhiteSpace(xmlParameter.GetParamData("IndexOfShot")) ? 0 : Convert.ToInt32(xmlParameter.GetParamData("IndexOfShot"));
+            _indexOfSide = String.IsNullOrWhiteSpace(xmlParameter.GetParamData("IndexOfSide")) ? 0 : Convert.ToInt32(xmlParameter.GetParamData("IndexOfSide"));
 
             return;
         }
@@ -298,10 +301,6 @@ namespace DefectChecker.DataBase
             }
             _shot = _shotList[index];
             LoadCellList();
-            if (null != _defectList && 0 != _defectList.Count)
-            {
-                _defect = _defectList[0];
-            }
 
             return true;
         }
@@ -317,7 +316,7 @@ namespace DefectChecker.DataBase
         }
         public bool TryGetLastShot()
         {
-            _indexOfShot = null != _shotList ? _shotList.Count : 0;
+            _indexOfShot = null != _shotList ? _shotList.Count - 1 : 0;
 
             return TrySelectShot(_indexOfShot);
         }
@@ -356,18 +355,48 @@ namespace DefectChecker.DataBase
             }
             _side = _sideList[index];
             LoadShotList();
-            if (0 != _shotList.Count)
+
+            return true;
+        }
+        public bool TryGetSideOfLastExit()
+        {
+            return TrySelectSide(_indexOfSide);
+        }
+        public bool TryGetFirstSide()
+        {
+            _indexOfSide = 0;
+
+            return TrySelectSide(_indexOfSide);
+        }
+        public bool TryGetLastSide()
+        {
+            _indexOfSide = null != _sideList ? _sideList.Count - 1 : 0;
+
+            return TrySelectSide(_indexOfSide);
+        }
+        public bool TryGetNextSide()
+        {
+            if (!TrySelectSide(++_indexOfSide))
             {
-                _shot = _shotList[0];
-            }
-            LoadCellList();
-            if (0 != _defectList.Count)
-            {
-                _defect = _defectList[0];
+                --_indexOfSide;
+
+                return false;
             }
 
             return true;
         }
+        public bool TryGetPreviousSide()
+        {
+            if (!TrySelectSide(--_indexOfSide))
+            {
+                ++_indexOfSide;
+
+                return false;
+            }
+
+            return true;
+        }
+
         public bool TryGetNextSide(out bool isEnd)
         {
             isEnd = false;
@@ -598,6 +627,7 @@ namespace DefectChecker.DataBase
             xmlParameter.Add("Defect", _defect);
             xmlParameter.Add("IndexOfDefectGroup", _indexOfDefectGroup);
             xmlParameter.Add("IndexOfShot", _indexOfShot);
+            xmlParameter.Add("IndexOfSide", _indexOfSide);
 
             xmlParameter.WriteParameter(Application.StartupPath + _paramFileName);
 
