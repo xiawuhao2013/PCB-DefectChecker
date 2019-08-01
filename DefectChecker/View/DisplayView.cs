@@ -73,16 +73,17 @@ namespace DefectChecker.View
 
         private void GetDefectGroupOfLastExit()
         {
-            _dataBaseManager.GetDefectGroupOfLastExit(NumberOfCell, out _curDefectGroup);
-            RefreshCellViews(_curDefectGroup);
+            if (_dataBaseManager.TryGetDefectGroupOfLastExit(NumberOfCell, out _curDefectGroup))
+            {
+                RefreshCellViews(_curDefectGroup);
+            }
 
             return;
         }
 
         private void GetFirstDefectGroup()
         {
-            _dataBaseManager.GetFirstDefectGroup(NumberOfCell, out _curDefectGroup, out var isEmpty);
-            if (!isEmpty)
+            if (_dataBaseManager.TryGetFirstDefectGroup(NumberOfCell, out _curDefectGroup))
             {
                 RefreshCellViews(_curDefectGroup);
 
@@ -99,8 +100,7 @@ namespace DefectChecker.View
 
         private void GetLastDefectGroup()
         {
-            _dataBaseManager.GetLastDefectGroup(NumberOfCell, out _curDefectGroup, out var isEmpty);
-            if (!isEmpty)
+            if (_dataBaseManager.TryGetLastDefectGroup(NumberOfCell, out _curDefectGroup))
             {
                 RefreshCellViews(_curDefectGroup);
 
@@ -117,8 +117,8 @@ namespace DefectChecker.View
 
         private void GetNextDefectGroup()
         {
-            _dataBaseManager.GetNextDefectGroup(NumberOfCell, out _curDefectGroup, out var isEmpty);
-            if (!isEmpty)
+
+            if (_dataBaseManager.TryGetNextDefectGroup(NumberOfCell, out _curDefectGroup))
             {
                 RefreshCellViews(_curDefectGroup);
 
@@ -136,8 +136,8 @@ namespace DefectChecker.View
 
         private void GetPreviousDefectGroup()
         {
-            _dataBaseManager.GetPreviousDefectGroup(NumberOfCell, out _curDefectGroup, out var isEmpty);
-            if (!isEmpty)
+            
+            if (_dataBaseManager.TryGetPreviousDefectGroup(NumberOfCell, out _curDefectGroup))
             {
                 RefreshCellViews(_curDefectGroup);
 
@@ -148,7 +148,7 @@ namespace DefectChecker.View
             {
                 return;
             }
-            GetFirstDefectGroup();
+            GetLastDefectGroup();
 
             return;
         }

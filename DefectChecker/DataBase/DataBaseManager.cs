@@ -227,11 +227,12 @@ namespace DefectChecker.DataBase
         //
         // LABLE: select specific image function is not clear now.
         // should i add SelectDefectGroup()?
-        public void GetDefectGroupOfLastExit(int num, out List<DefectCell> defectCells)
+        public bool TryGetDefectGroupOfLastExit(int num, out List<DefectCell> defectCells)
         {
             DefectCell defectCell = new DefectCell();
             defectCells = new List<DefectCell>();
             var iter = 0;
+            var nullCount = 0;
             do
             {
                 if (TrySelectCell(_indexOfDefectGroup * num + iter, out defectCell))
@@ -244,9 +245,9 @@ namespace DefectChecker.DataBase
                 }
             } while (++iter < num);
 
-            return;
+            return nullCount != num;
         }
-        public void GetFirstDefectGroup(int num, out List<DefectCell> defectCells, out bool isEmpty)
+        public bool TryGetFirstDefectGroup(int num, out List<DefectCell> defectCells)
         {
             DefectCell defectCell = new DefectCell();
             defectCells = new List<DefectCell>();
@@ -265,11 +266,10 @@ namespace DefectChecker.DataBase
                     defectCells.Add(new DefectCell());
                 }
             } while (++iter < num);
-            isEmpty = nullCount == num;
 
-            return;
+            return nullCount != num;
         }
-        public void GetLastDefectGroup(int num, out List<DefectCell> defectCells, out bool isEmpty)
+        public bool TryGetLastDefectGroup(int num, out List<DefectCell> defectCells)
         {
             DefectCell defectCell = new DefectCell();
             defectCells = new List<DefectCell>();
@@ -288,11 +288,10 @@ namespace DefectChecker.DataBase
                     defectCells.Add(new DefectCell());
                 }
             } while (++iter < num);
-            isEmpty = nullCount == num;
 
-            return;
+            return nullCount != num;
         }
-        public void GetNextDefectGroup(int num, out List<DefectCell> defectCells, out bool isEmpty)
+        public bool TryGetNextDefectGroup(int num, out List<DefectCell> defectCells)
         {
             DefectCell defectCell = new DefectCell();
             defectCells = new List<DefectCell>();
@@ -311,14 +310,16 @@ namespace DefectChecker.DataBase
                     defectCells.Add(new DefectCell());
                 }
             } while (++iter < num);
-            if (isEmpty = nullCount == num)
+            if (nullCount == num)
             {
                 --_indexOfDefectGroup;
+
+                return false;
             }
 
-            return;
+            return true;
         }
-        public void GetPreviousDefectGroup(int num, out List<DefectCell> defectCells, out bool isEmpty)
+        public bool TryGetPreviousDefectGroup(int num, out List<DefectCell> defectCells)
         {
             DefectCell defectCell = new DefectCell();
             defectCells = new List<DefectCell>();
@@ -337,12 +338,14 @@ namespace DefectChecker.DataBase
                     defectCells.Add(new DefectCell());
                 }
             } while (++iter < num);
-            if (isEmpty = nullCount == num)
+            if (nullCount == num)
             {
                 ++_indexOfDefectGroup;
+
+                return false;
             }
 
-            return;
+            return true;
         }
         //
         public bool TrySelectShot(int index)
