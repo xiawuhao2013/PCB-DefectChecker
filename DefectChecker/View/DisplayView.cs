@@ -11,7 +11,7 @@ namespace DefectChecker.View
     {
         private DataBaseManager _dataBaseManager = new DataBaseManager();
         private DispalyViewOfCells _displayViewOfCells = new DispalyViewOfCells();
-        private DataGridView _dataGridView = new DataGridView();
+        private PcbFileMapView _pcbFileMapView = new PcbFileMapView();
         // LABEL: temporary variables.
         private List<DefectCell> _curDefectGroup = new List<DefectCell>();
         private int _typeOfMark = 0;
@@ -76,18 +76,24 @@ namespace DefectChecker.View
         private void InitializeDataGridView()
         {
             this.splitContainer3.Panel1.Controls.Clear();
-            _dataGridView.Dock = DockStyle.Fill;
-            this.splitContainer3.Panel1.Controls.Add(_dataGridView);
+            _pcbFileMapView.Dock = DockStyle.Fill;
+            this.splitContainer3.Panel1.Controls.Add(_pcbFileMapView);
 
             return;
         }
 
-        private void RefreshDataGridView(List<string> info)
+        private void RefreshPcbFileMapView()
         {
-            _dataGridView.DataSource = info;
+            _pcbFileMapView.InfoMap[_pcbFileMapView.Product] = _dataBaseManager.Product;
+            _pcbFileMapView.InfoMap[_pcbFileMapView.Batch] = _dataBaseManager.Batch;
+            _pcbFileMapView.InfoMap[_pcbFileMapView.Board] = _dataBaseManager.Board;
+            _pcbFileMapView.InfoMap[_pcbFileMapView.Side] = _dataBaseManager.Side;
+            _pcbFileMapView.InfoMap[_pcbFileMapView.Defect] = _dataBaseManager.Defect;
+            //_pcbFileMapView.InfoMap[_pcbFileMapView.Product] = _dataBaseManager.Product;
 
-            return;
+            _pcbFileMapView.RefreshInfoMap();
         }
+
         #region TestPassed
         /*****************************************************************************************/
 

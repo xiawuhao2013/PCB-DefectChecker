@@ -41,7 +41,6 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Alignment = System.Windows.Forms.TabAlignment.Left;
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
@@ -60,10 +59,10 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Location = new System.Drawing.Point(34, 4);
+            this.tabPage1.Location = new System.Drawing.Point(4, 34);
             this.tabPage1.Margin = new System.Windows.Forms.Padding(0);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(1246, 753);
+            this.tabPage1.Size = new System.Drawing.Size(1276, 723);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "工作台";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -71,12 +70,12 @@
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.panelOfDisplayView);
-            this.tabPage2.Location = new System.Drawing.Point(34, 4);
+            this.tabPage2.Location = new System.Drawing.Point(4, 34);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(0);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(1246, 753);
+            this.tabPage2.Size = new System.Drawing.Size(1276, 723);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "图像";
+            this.tabPage2.Text = " 图像 ";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // panelOfDisplayView
@@ -85,16 +84,16 @@
             this.panelOfDisplayView.Location = new System.Drawing.Point(0, 0);
             this.panelOfDisplayView.Margin = new System.Windows.Forms.Padding(0);
             this.panelOfDisplayView.Name = "panelOfDisplayView";
-            this.panelOfDisplayView.Size = new System.Drawing.Size(1246, 753);
+            this.panelOfDisplayView.Size = new System.Drawing.Size(1276, 723);
             this.panelOfDisplayView.TabIndex = 0;
             // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.panelConfigView);
-            this.tabPage3.Location = new System.Drawing.Point(34, 4);
+            this.tabPage3.Location = new System.Drawing.Point(4, 34);
             this.tabPage3.Margin = new System.Windows.Forms.Padding(0);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(1246, 753);
+            this.tabPage3.Size = new System.Drawing.Size(1276, 723);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "参数设置";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -105,7 +104,7 @@
             this.panelConfigView.Location = new System.Drawing.Point(0, 0);
             this.panelConfigView.Margin = new System.Windows.Forms.Padding(0);
             this.panelConfigView.Name = "panelConfigView";
-            this.panelConfigView.Size = new System.Drawing.Size(1246, 753);
+            this.panelConfigView.Size = new System.Drawing.Size(1276, 723);
             this.panelConfigView.TabIndex = 0;
             // 
             // MainForm

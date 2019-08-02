@@ -14,6 +14,7 @@ namespace DefectChecker.View
 {
     public partial class DispalyViewOfCells : UserControl
     {
+        private const string _paramFileOfUI = @"\ParamFile-UI.xml";
         private int _numberOfCell = 4;
         private Dictionary<int, AqDisplay> _cellViewList = new Dictionary<int, AqDisplay>();
         
@@ -103,7 +104,7 @@ namespace DefectChecker.View
         private void LoadConfig()
         {
             XmlParameter xmlParameter = new XmlParameter();
-            xmlParameter.ReadParameter(Application.StartupPath + @"\ParamFile.xml");
+            xmlParameter.ReadParameter(Application.StartupPath + _paramFileOfUI);
             var res = xmlParameter.GetParamData(@"numberOfCell");
             if ("" != res)
             {
@@ -117,7 +118,7 @@ namespace DefectChecker.View
         {
             XmlParameter xmlParameter = new XmlParameter();
             xmlParameter.Add(@"numberOfCell", _numberOfCell);
-            xmlParameter.WriteParameter(Application.StartupPath + @"\ParamFile.xml");
+            xmlParameter.WriteParameter(Application.StartupPath + _paramFileOfUI);
 
             return;
         }
