@@ -478,7 +478,11 @@ namespace DefectChecker.DataBase
         }
         //
         public void GetDefectInfo() { }
-        public void Mark(int type) { }
+
+        public void Mark(int type)
+        {
+
+        }
         //
         public void SaveConfig()
         {

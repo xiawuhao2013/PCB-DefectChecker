@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DefectChecker.DataBase
 {
-    class DataInfo
+    class MarkDataBase
     {
     }
 }
