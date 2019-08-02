@@ -10,7 +10,16 @@ namespace DefectChecker.DataBase
 {
     public class DataBaseManager
     {
-        private const string _paramFileName = @"\ParamFile.xml";
+        private const string _paramFileOfDataBaseManager = @"\ParamFile-DataBaseManager.xml";
+        private const string _paramFileOfSetting= @"\ParamFile-Setting.xml";
+        private DeviceMachVision _machVision = new DeviceMachVision();
+        // image-1
+        private List<DefectCell> _defectCellList = new List<DefectCell>();
+        private Bitmap _wholeImageA = null;
+        private Bitmap _wholeImageB = null;
+        private Bitmap _gerberWholeImageA = null;
+        private Bitmap _gerberWholeImageB = null;
+        // name-1
         private List<string> _defectNameList = new List<string>();
         private List<string> _shotNameList = new List<string>();
         private List<string> _sideNameList = new List<string>();
@@ -19,15 +28,13 @@ namespace DefectChecker.DataBase
         private List<string> _productNameList = new List<string>();
         private string _dataDir = "";
         private string _modelDir = "";
-        private string _side = "";
-        private string _shot = "";
         private string _defect = "";
-        private int _indexOfDefectGroup = 0;
-        private int _indexOfShot = 0;
-        private int _indexOfSide = 0;
-        private int _indexOfBoard = 0;
-        private int _indexOfBatch = 0;
-
+        private string _shot = "";
+        private string _side = "";
+        private string _board = "";
+        private string _batch = "";
+        private string _product = "";
+        // skip-1
         private bool _hasKilledDefect = false;
         private bool _hasKilledShot = false;
         private bool _hasKilledSide = false;
@@ -35,25 +42,34 @@ namespace DefectChecker.DataBase
         private bool _hasKilledBatch = false;
         private bool _hasKilledProduct = false;
 
-        private DeviceMachVision _machVision = new DeviceMachVision();
-
+        // skip-2
+        public int IndexOfDefect { get; set; } = 0;
+        public int IndexOfDefectGroup { get; set; } = 0;
+        public int IndexOfShot { get; set; } = 0;
+        public int IndexOfSide { get; set; } = 0;
+        public int IndexOfBoard { get; set; } = 0;
+        public int IndexOfBatch { get; set; } = 0;
+        public int IndexOfProduct { get; set; } = 0;
+        // image-2
+        public List<DefectCell> DefectCellList { get { return _defectCellList; } }
+        public Bitmap WholeImageA { get { return _wholeImageA; } }
+        public Bitmap WholeImageB { get { return _wholeImageB; } }
+        public Bitmap GerberWholeImageA { get { return _gerberWholeImageA; } }
+        public Bitmap GerberWholeImageB { get { return _gerberWholeImageB; } }
+        // name-2
         public List<string> DefectNameList { get { return _defectNameList; } }
         public List<string> ShotNameList { get { return _shotNameList; } }
         public List<string> SideNameList { get { return _sideNameList; } }
         public List<string> BoardNameList { get { return _boardNameList; } }
         public List<string> BatchNameList { get { return _batchNameList; } }
         public List<string> ProductNameList { get { return _productNameList; } }
-
-        public List<string> ImageNameList { get; set; }
-        public string Product { get; set; }
-        public string Batch { get; set; }
-        public string Board { get; set; }
-        public List<DefectCell> DefectCellList {get;set;}
-        public Bitmap WholeImageA { get; set; }
-        public Bitmap WholeImageB { get; set; }
-        public Bitmap GerberWholeImageA { get; set; }
-        public Bitmap GerberWholeImageB { get; set; }
-
+        public string Defect { get { return _defect; } }
+        public string Shot { get { return _shot; } }
+        public string Side { get { return _side; } }
+        public string Board { get { return _board; } }
+        public string Batch { get { return _batch; } }
+        public string Product { get { return _product; } }
+        // skip-3
         public bool HasKilledDefect { get { return _hasKilledDefect; } }
         public bool HasKilledShot { get { return _hasKilledShot; } }
         public bool HasKilledSide { get { return _hasKilledSide; } }
@@ -65,37 +81,38 @@ namespace DefectChecker.DataBase
 
         public DataBaseManager()
         {
+
             LoadConfig();
             //
             LoadProductList();
             if (String.IsNullOrWhiteSpace(Product) && null != ProductNameList && 0 != ProductNameList.Count)
             {
-                Product = ProductNameList[0];
+                _product = ProductNameList[0];
             }
             LoadBatchList();
             if (String.IsNullOrWhiteSpace(Batch) && null != BatchNameList && 0 != BatchNameList.Count)
             {
-                Batch = BatchNameList[0];
+                _batch = BatchNameList[0];
             }
             LoadBoardList();
             if (String.IsNullOrWhiteSpace(Board) && null != BoardNameList && 0 != BoardNameList.Count)
             {
-                Board = BoardNameList[0];
+                _board = BoardNameList[0];
             }
             LoadSideList();
-            if (String.IsNullOrWhiteSpace(_side) && null != _sideNameList && 0 != _sideNameList.Count)
+            if (String.IsNullOrWhiteSpace(_side) && null != SideNameList && 0 != SideNameList.Count)
             {
-                _side = _sideNameList[0];
+                _side = SideNameList[0];
             }
             LoadShotList();
-            if (String.IsNullOrWhiteSpace(_shot) && null!= _shotNameList && 0 != _shotNameList.Count)
+            if (String.IsNullOrWhiteSpace(_shot) && null!= ShotNameList && 0 != ShotNameList.Count)
             {
-                _shot = _shotNameList[0];
+                _shot = ShotNameList[0];
             }
             LoadCellList();
-            if (String.IsNullOrWhiteSpace(_defect) && null != _defectNameList && 0 != _defectNameList.Count)
+            if (String.IsNullOrWhiteSpace(_defect) && null != DefectNameList && 0 != DefectNameList.Count)
             {
-                _defect = _defectNameList[0];
+                _defect = DefectNameList[0];
             }
 
         }
@@ -106,20 +123,23 @@ namespace DefectChecker.DataBase
         {
             // LABEL: bug exists. need ensurance of the name match with index.
             XmlParameter xmlParameter = new XmlParameter();
-            xmlParameter.ReadParameter(Application.StartupPath + _paramFileName);
+            xmlParameter.ReadParameter(Application.StartupPath + _paramFileOfSetting);
             _dataDir = xmlParameter.GetParamData("DataDir");
             _modelDir = xmlParameter.GetParamData("ModelDir");
-            Product = xmlParameter.GetParamData("Product");
-            Batch = xmlParameter.GetParamData("Batch");
-            Board = xmlParameter.GetParamData("Board");
+
+            xmlParameter.ReadParameter(Application.StartupPath + _paramFileOfDataBaseManager);
+            _product = xmlParameter.GetParamData("Product");
+            _batch = xmlParameter.GetParamData("Batch");
+            _board = xmlParameter.GetParamData("Board");
             _side = xmlParameter.GetParamData("Side");
             _shot = xmlParameter.GetParamData("Shot");
             _defect = xmlParameter.GetParamData("Defect");
-            _indexOfDefectGroup = String.IsNullOrWhiteSpace(xmlParameter.GetParamData("IndexOfDefectGroup")) ? 0 : Convert.ToInt32(xmlParameter.GetParamData("IndexOfDefectGroup"));
-            _indexOfShot = String.IsNullOrWhiteSpace(xmlParameter.GetParamData("IndexOfShot")) ? 0 : Convert.ToInt32(xmlParameter.GetParamData("IndexOfShot"));
-            _indexOfSide = String.IsNullOrWhiteSpace(xmlParameter.GetParamData("IndexOfSide")) ? 0 : Convert.ToInt32(xmlParameter.GetParamData("IndexOfSide"));
-            _indexOfBoard = String.IsNullOrWhiteSpace(xmlParameter.GetParamData("IndexOfBoard")) ? 0 : Convert.ToInt32(xmlParameter.GetParamData("IndexOfBoard"));
-            _indexOfBatch = String.IsNullOrWhiteSpace(xmlParameter.GetParamData("IndexOfBatch")) ? 0 : Convert.ToInt32(xmlParameter.GetParamData("IndexOfBatch"));
+            IndexOfDefect = String.IsNullOrWhiteSpace(xmlParameter.GetParamData("IndexOfDefect")) ? 0 : Convert.ToInt32(xmlParameter.GetParamData("IndexOfDefect"));
+            IndexOfDefectGroup = String.IsNullOrWhiteSpace(xmlParameter.GetParamData("IndexOfDefectGroup")) ? 0 : Convert.ToInt32(xmlParameter.GetParamData("IndexOfDefectGroup"));
+            IndexOfShot = String.IsNullOrWhiteSpace(xmlParameter.GetParamData("IndexOfShot")) ? 0 : Convert.ToInt32(xmlParameter.GetParamData("IndexOfShot"));
+            IndexOfSide = String.IsNullOrWhiteSpace(xmlParameter.GetParamData("IndexOfSide")) ? 0 : Convert.ToInt32(xmlParameter.GetParamData("IndexOfSide"));
+            IndexOfBoard = String.IsNullOrWhiteSpace(xmlParameter.GetParamData("IndexOfBoard")) ? 0 : Convert.ToInt32(xmlParameter.GetParamData("IndexOfBoard"));
+            IndexOfBatch = String.IsNullOrWhiteSpace(xmlParameter.GetParamData("IndexOfBatch")) ? 0 : Convert.ToInt32(xmlParameter.GetParamData("IndexOfBatch"));
 
             return;
         }
@@ -254,7 +274,7 @@ namespace DefectChecker.DataBase
             var nullCount = 0;
             for (var iter = 0; iter < num; ++iter)
             {
-                if (TrySelectCell(_indexOfDefectGroup * num + iter, out defectCell))
+                if (TrySelectCell(IndexOfDefectGroup * num + iter, out defectCell))
                 {
                     defectCells.Add(defectCell);
                 }
@@ -270,15 +290,15 @@ namespace DefectChecker.DataBase
         }
         public void SetIndexOfDefectGroup(int index)
         {
-            _indexOfDefectGroup = index;
+            IndexOfDefectGroup = index;
 
             return;
         }
         public bool TryGetNextDefectGroup(int num, out List<DefectCell> defectCells)
         {
-            if (!TrySelectDefectGroup(++_indexOfDefectGroup, num, out defectCells))
+            if (!TrySelectDefectGroup(++IndexOfDefectGroup, num, out defectCells))
             {
-                --_indexOfDefectGroup;
+                --IndexOfDefectGroup;
 
                 return false;
             }
@@ -287,9 +307,9 @@ namespace DefectChecker.DataBase
         }
         public bool TryGetPreviousDefectGroup(int num, out List<DefectCell> defectCells)
         {
-            if (!TrySelectDefectGroup(--_indexOfDefectGroup, num, out defectCells))
+            if (!TrySelectDefectGroup(--IndexOfDefectGroup, num, out defectCells))
             {
-                ++_indexOfDefectGroup;
+                ++IndexOfDefectGroup;
 
                 return false;
             }
@@ -299,12 +319,14 @@ namespace DefectChecker.DataBase
         //
         public bool TrySelectShot(int index)
         {
+            _shot = "";
+            _shotNameList = new List<string>();
             _hasKilledShot = false;
+
+            IndexOfShot = index;
             if (null == ShotNameList || 0 == ShotNameList.Count || index >= ShotNameList.Count || index < 0)
             {
                 _hasKilledShot = true;
-                _shot = "";
-                LoadCellList();
 
                 return false;
             }
@@ -313,17 +335,11 @@ namespace DefectChecker.DataBase
 
             return true;
         }
-        public void SetIndexOfShot(int index)
-        {
-            _indexOfShot = index;
-
-            return;
-        }
         public bool TryGetNextShot()
         {
-            if (!TrySelectShot(++_indexOfShot))
+            if (!TrySelectShot(++IndexOfShot))
             {
-                --_indexOfShot;
+                --IndexOfShot;
 
                 return false;
             }
@@ -332,9 +348,9 @@ namespace DefectChecker.DataBase
         }
         public bool TryGetPreviousShot()
         {
-            if (!TrySelectShot(--_indexOfShot))
+            if (!TrySelectShot(--IndexOfShot))
             {
-                ++_indexOfShot;
+                ++IndexOfShot;
 
                 return false;
             }
@@ -344,12 +360,14 @@ namespace DefectChecker.DataBase
         //
         public bool TrySelectSide(int index)
         {
+            _side = "";
+            _sideNameList = new List<string>();
             _hasKilledSide = false;
+
+            IndexOfSide = index;
             if (null == SideNameList || 0 == SideNameList.Count || index >= SideNameList.Count || index < 0)
             {
                 _hasKilledSide = true;
-                _side = "";
-                LoadShotList();
 
                 return false;
             }
@@ -358,17 +376,11 @@ namespace DefectChecker.DataBase
 
             return true;
         }
-        public void SetIndexOfSide(int index)
-        {
-            _indexOfSide = index;
-
-            return;
-        }
         public bool TryGetNextSide()
         {
-            if (!TrySelectSide(++_indexOfSide))
+            if (!TrySelectSide(++IndexOfSide))
             {
-                --_indexOfSide;
+                --IndexOfSide;
 
                 return false;
             }
@@ -377,9 +389,9 @@ namespace DefectChecker.DataBase
         }
         public bool TryGetPreviousSide()
         {
-            if (!TrySelectSide(--_indexOfSide))
+            if (!TrySelectSide(--IndexOfSide))
             {
-                ++_indexOfSide;
+                ++IndexOfSide;
 
                 return false;
             }
@@ -389,31 +401,27 @@ namespace DefectChecker.DataBase
         //
         public bool TrySelectBoard(int index)
         {
+            _board = "";
+            _boardNameList = new List<string>();
             _hasKilledBoard = false;
+
+            IndexOfBoard = index;
             if (null == BoardNameList || 0 == BoardNameList.Count || index >= BoardNameList.Count || index < 0)
             {
                 _hasKilledBoard = true;
-                Board = "";
-                LoadSideList();
 
                 return false;
             }
-            Board = BoardNameList[index];
+            _board = BoardNameList[index];
             LoadSideList();
 
             return true;
         }
-        public void SetIndexOfBoard(int index)
-        {
-            _indexOfBoard = index;
-
-            return;
-        }
         public bool TryGetNextBoard()
         {
-            if (!TrySelectBoard(++_indexOfBoard))
+            if (!TrySelectBoard(++IndexOfBoard))
             {
-                --_indexOfBoard;
+                --IndexOfBoard;
 
                 return false;
             }
@@ -422,9 +430,9 @@ namespace DefectChecker.DataBase
         }
         public bool TryGetPreviousBoard()
         {
-            if (!TrySelectBoard(--_indexOfBoard))
+            if (!TrySelectBoard(--IndexOfBoard))
             {
-                ++_indexOfBoard;
+                ++IndexOfBoard;
 
                 return false;
             }
@@ -434,31 +442,27 @@ namespace DefectChecker.DataBase
         //
         public bool TrySelectBatch(int index)
         {
+            _batch = "";
+            _boardNameList = new List<string>();
             _hasKilledBatch = false;
+
+            IndexOfBatch = index;
             if (null == BatchNameList || 0 == BatchNameList.Count || index >= BatchNameList.Count || index < 0)
             {
                 _hasKilledBatch = true;
-                Batch = "";
-                LoadBoardList();
 
                 return false;
             }
-            Batch = BatchNameList[index];
+            _batch = BatchNameList[index];
             LoadBoardList();
 
             return true;
         }
-        public void SetIndexOfBatch(int index)
-        {
-            _indexOfBatch = index;
-
-            return;
-        }
         public bool TryGetNextBatch()
         {
-            if (!TrySelectBatch(++_indexOfBatch))
+            if (!TrySelectBatch(++IndexOfBatch))
             {
-                --_indexOfBatch;
+                --IndexOfBatch;
 
                 return false;
             }
@@ -467,9 +471,9 @@ namespace DefectChecker.DataBase
         }
         public bool TryGetPreviousBatch()
         {
-            if (!TrySelectBatch(--_indexOfBatch))
+            if (!TrySelectBatch(--IndexOfBatch))
             {
-                ++_indexOfBatch;
+                ++IndexOfBatch;
 
                 return false;
             }
@@ -487,21 +491,20 @@ namespace DefectChecker.DataBase
         public void SaveConfig()
         {
             XmlParameter xmlParameter = new XmlParameter();
-            xmlParameter.Add("DataDir", _dataDir);
-            xmlParameter.Add("ModelDir", _modelDir);
             xmlParameter.Add("Product", Product);
             xmlParameter.Add("Batch", Batch);
             xmlParameter.Add("Board", Board);
             xmlParameter.Add("Side", _side);
             xmlParameter.Add("Shot", _shot);
             xmlParameter.Add("Defect", _defect);
-            xmlParameter.Add("IndexOfDefectGroup", _indexOfDefectGroup);
-            xmlParameter.Add("IndexOfShot", _indexOfShot);
-            xmlParameter.Add("IndexOfSide", _indexOfSide);
-            xmlParameter.Add("IndexOfBoard", _indexOfBoard);
-            xmlParameter.Add("IndexOfBatch", _indexOfBatch);
+            xmlParameter.Add("IndexOfDefect", IndexOfDefect);
+            xmlParameter.Add("IndexOfDefectGroup", IndexOfDefectGroup);
+            xmlParameter.Add("IndexOfShot", IndexOfShot);
+            xmlParameter.Add("IndexOfSide", IndexOfSide);
+            xmlParameter.Add("IndexOfBoard", IndexOfBoard);
+            xmlParameter.Add("IndexOfBatch", IndexOfBatch);
 
-            xmlParameter.WriteParameter(Application.StartupPath + _paramFileName);
+            xmlParameter.WriteParameter(Application.StartupPath + _paramFileOfDataBaseManager);
 
             return;
         }

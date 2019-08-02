@@ -55,5 +55,6 @@ namespace DefectChecker.Common
 
             return strLen;
         }
+
     }
 }

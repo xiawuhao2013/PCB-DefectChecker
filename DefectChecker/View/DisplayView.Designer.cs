@@ -42,6 +42,8 @@
             this.aqDisplay1 = new AqVision.Controls.AqDisplay();
             this.aqDisplay2 = new AqVision.Controls.AqDisplay();
             this.panelOfInfo = new System.Windows.Forms.Panel();
+            this.button11 = new System.Windows.Forms.Button();
+            this.button10 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
@@ -139,6 +141,7 @@
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
             this.splitContainer2.Margin = new System.Windows.Forms.Padding(0);
             this.splitContainer2.Name = "splitContainer2";
@@ -147,26 +150,30 @@
             // splitContainer2.Panel1
             // 
             this.splitContainer2.Panel1.Controls.Add(this.splitContainer3);
+            this.splitContainer2.Panel1MinSize = 450;
             // 
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.aqDisplay2);
             this.splitContainer2.Size = new System.Drawing.Size(476, 676);
-            this.splitContainer2.SplitterDistance = 276;
+            this.splitContainer2.SplitterDistance = 450;
             this.splitContainer2.TabIndex = 0;
             // 
             // splitContainer3
             // 
             this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer3.Location = new System.Drawing.Point(0, 0);
             this.splitContainer3.Margin = new System.Windows.Forms.Padding(0);
             this.splitContainer3.Name = "splitContainer3";
+            this.splitContainer3.Panel1MinSize = 350;
             // 
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.aqDisplay1);
-            this.splitContainer3.Size = new System.Drawing.Size(476, 276);
-            this.splitContainer3.SplitterDistance = 180;
+            this.splitContainer3.Size = new System.Drawing.Size(476, 450);
+            this.splitContainer3.SplitterDistance = 350;
+            this.splitContainer3.SplitterWidth = 1;
             this.splitContainer3.TabIndex = 0;
             // 
             // aqDisplay1
@@ -190,7 +197,7 @@
             this.aqDisplay1.Name = "aqDisplay1";
             this.aqDisplay1.OriginMaskImage = null;
             this.aqDisplay1.Radius = 1F;
-            this.aqDisplay1.Size = new System.Drawing.Size(292, 276);
+            this.aqDisplay1.Size = new System.Drawing.Size(125, 450);
             this.aqDisplay1.TabIndex = 0;
             // 
             // aqDisplay2
@@ -214,11 +221,13 @@
             this.aqDisplay2.Name = "aqDisplay2";
             this.aqDisplay2.OriginMaskImage = null;
             this.aqDisplay2.Radius = 1F;
-            this.aqDisplay2.Size = new System.Drawing.Size(476, 396);
+            this.aqDisplay2.Size = new System.Drawing.Size(476, 222);
             this.aqDisplay2.TabIndex = 0;
             // 
             // panelOfInfo
             // 
+            this.panelOfInfo.Controls.Add(this.button11);
+            this.panelOfInfo.Controls.Add(this.button10);
             this.panelOfInfo.Controls.Add(this.button9);
             this.panelOfInfo.Controls.Add(this.button8);
             this.panelOfInfo.Controls.Add(this.button7);
@@ -234,6 +243,24 @@
             this.panelOfInfo.Name = "panelOfInfo";
             this.panelOfInfo.Size = new System.Drawing.Size(100, 676);
             this.panelOfInfo.TabIndex = 0;
+            // 
+            // button11
+            // 
+            this.button11.Location = new System.Drawing.Point(22, 598);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(75, 23);
+            this.button11.TabIndex = 10;
+            this.button11.Text = "板列表";
+            this.button11.UseVisualStyleBackColor = true;
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(22, 543);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(75, 23);
+            this.button10.TabIndex = 9;
+            this.button10.Text = "图像列表";
+            this.button10.UseVisualStyleBackColor = true;
             // 
             // button9
             // 
@@ -372,5 +399,7 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Button button10;
     }
 }
