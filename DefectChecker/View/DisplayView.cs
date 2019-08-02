@@ -11,7 +11,7 @@ namespace DefectChecker.View
     {
         private DataBaseManager _dataBaseManager = new DataBaseManager();
         private DispalyViewOfCells _displayViewOfCells = new DispalyViewOfCells();
-
+        private DataGridView _dataGridView = new DataGridView();
         // LABEL: temporary variables.
         private List<DefectCell> _curDefectGroup = new List<DefectCell>();
         private int _typeOfMark = 0;
@@ -29,6 +29,7 @@ namespace DefectChecker.View
             InitializeComponent();
             this.panelOfInfo.Visible = false;
             InitializeViewCells();
+            InitializeDataGridView();
         }
 
         //
@@ -68,6 +69,22 @@ namespace DefectChecker.View
             this.splitContainer1.Panel2.Controls.Clear();
             _displayViewOfCells.Dock = DockStyle.Fill;
             this.splitContainer1.Panel2.Controls.Add(_displayViewOfCells);
+
+            return;
+        }
+
+        private void InitializeDataGridView()
+        {
+            this.splitContainer3.Panel1.Controls.Clear();
+            _dataGridView.Dock = DockStyle.Fill;
+            this.splitContainer3.Panel1.Controls.Add(_dataGridView);
+
+            return;
+        }
+
+        private void RefreshDataGridView(List<string> info)
+        {
+            _dataGridView.DataSource = info;
 
             return;
         }
@@ -116,14 +133,14 @@ namespace DefectChecker.View
         //
         private bool TryGetFirstShot()
         {
-            _dataBaseManager.SetIndexOfShot(-1);
+            _dataBaseManager.IndexOfShot = -1;
 
             return TryGetNextShot();
         }
 
         private bool TryGetLastShot()
         {
-            _dataBaseManager.SetIndexOfShot(_dataBaseManager.ShotNameList.Count);
+            _dataBaseManager.IndexOfShot = _dataBaseManager.ShotNameList.Count;
 
             return TryGetPreviousShot();
         }
@@ -158,14 +175,14 @@ namespace DefectChecker.View
         //
         private bool TryGetFirstSide()
         {
-            _dataBaseManager.SetIndexOfSide(-1);
+            _dataBaseManager.IndexOfSide = -1;
 
             return TryGetNextSide();
         }
 
         private bool TryGetLastSide()
         {
-            _dataBaseManager.SetIndexOfSide(_dataBaseManager.SideNameList.Count);
+            _dataBaseManager.IndexOfSide = _dataBaseManager.SideNameList.Count;
 
             return TryGetPreviousSide();
         }
@@ -200,14 +217,14 @@ namespace DefectChecker.View
         //
         private bool TryGetFirstBoard()
         {
-            _dataBaseManager.SetIndexOfBoard(-1);
+            _dataBaseManager.IndexOfBoard = -1;
 
             return TryGetNextBoard();
         }
 
         private bool TryGetLastBoard()
         {
-            _dataBaseManager.SetIndexOfBoard(_dataBaseManager.BoardNameList.Count);
+            _dataBaseManager.IndexOfBoard = _dataBaseManager.BoardNameList.Count;
 
             return TryGetPreviousBoard();
         }
@@ -242,14 +259,14 @@ namespace DefectChecker.View
         //
         private bool TryGetFirstBatch()
         {
-            _dataBaseManager.SetIndexOfBatch(-1);
+            _dataBaseManager.IndexOfBatch = -1;
 
             return TryGetNextBatch();
         }
 
         private bool TryGetLastBatch()
         {
-            _dataBaseManager.SetIndexOfBatch(_dataBaseManager.BatchNameList.Count);
+            _dataBaseManager.IndexOfBatch = _dataBaseManager.BatchNameList.Count;
 
             return TryGetPreviousBatch();
         }
