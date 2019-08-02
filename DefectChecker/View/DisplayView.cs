@@ -11,6 +11,7 @@ namespace DefectChecker.View
     {
         private DataBaseManager _dataBaseManager = new DataBaseManager();
         private DispalyViewOfCells _displayViewOfCells = new DispalyViewOfCells();
+
         // LABEL: temporary variables.
         private List<DefectCell> _curDefectGroup = new List<DefectCell>();
         private int _typeOfMark = 0;
