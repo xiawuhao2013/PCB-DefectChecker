@@ -121,12 +121,30 @@ namespace DefectChecker.DataBase
             string sideName = xmlParameter.GetParamData("SideName");
             string shotName = xmlParameter.GetParamData("ShotName");
             string defectName = xmlParameter.GetParamData("DefectName");
+            
+            UpdateProductName(productName, batchName, boardName, sideName, shotName, defectName, false);
+        }
 
-            bool isChooseFirst = false;
-            if (_device.GetProductList(out _productNameList)<=0)
+        private bool UpdateProductName(string productName="", string batchName="", string boardName="", string sideName="", string shotName="", string defectName="", bool isChooseFirst = true)
+        {
+            ProductName = "";
+            BatchName = "";
+            BoardName = "";
+            SideName = "";
+            ShotName = "";
+            DefectName = "";
+            _productNameList = new List<string>();
+            _batchNameList = new List<string>();
+            _boardNameList = new List<string>();
+            _sideNameList = new List<string>();
+            _shotNameList = new List<string>();
+            _defectNameList = new List<string>();
+
+            if (_device.GetProductList(out _productNameList) <= 0)
             {
-                return;
-            }else if (!_productNameList.Contains(productName))
+                return false;
+            }
+            else if (!_productNameList.Contains(productName))
             {
                 isChooseFirst = true;
                 ProductName = _productNameList[0];
@@ -136,9 +154,25 @@ namespace DefectChecker.DataBase
                 ProductName = productName;
             }
 
+            return UpdateBatchName(batchName, boardName, sideName, shotName, defectName, isChooseFirst);
+        }
+
+        private bool UpdateBatchName(string batchName="", string boardName="", string sideName="", string shotName="", string defectName="", bool isChooseFirst = true)
+        {
+            BatchName = "";
+            BoardName = "";
+            SideName = "";
+            ShotName = "";
+            DefectName = "";
+            _batchNameList = new List<string>();
+            _boardNameList = new List<string>();
+            _sideNameList = new List<string>();
+            _shotNameList = new List<string>();
+            _defectNameList = new List<string>();
+
             if (_device.GetBatchList(ProductName, out _batchNameList) <= 0)
             {
-                return;
+                return false;
             }
             else if ((!isChooseFirst) && _batchNameList.Contains(batchName))
             {
@@ -150,9 +184,23 @@ namespace DefectChecker.DataBase
                 BatchName = _batchNameList[0];
             }
 
+            return UpdateBoardName(boardName, sideName, shotName, defectName, isChooseFirst);
+        }
+
+        private bool UpdateBoardName(string boardName="", string sideName="", string shotName="", string defectName="", bool isChooseFirst = true)
+        {
+            BoardName = "";
+            SideName = "";
+            ShotName = "";
+            DefectName = "";
+            _boardNameList = new List<string>();
+            _sideNameList = new List<string>();
+            _shotNameList = new List<string>();
+            _defectNameList = new List<string>();
+
             if (_device.GetBoardList(ProductName, BatchName, out _boardNameList) <= 0)
             {
-                return;
+                return false;
             }
             else if ((!isChooseFirst) && _boardNameList.Contains(boardName))
             {
@@ -164,9 +212,21 @@ namespace DefectChecker.DataBase
                 BoardName = _boardNameList[0];
             }
 
+            return UpdateSideName(sideName, shotName, defectName, isChooseFirst);
+        }
+
+        private bool UpdateSideName(string sideName="", string shotName="", string defectName="", bool isChooseFirst = true)
+        {
+            SideName = "";
+            ShotName = "";
+            DefectName = "";
+            _sideNameList = new List<string>();
+            _shotNameList = new List<string>();
+            _defectNameList = new List<string>();
+
             if (_device.GetSideList(ProductName, BatchName, BoardName, out _sideNameList) <= 0)
             {
-                return;
+                return false;
             }
             else if ((!isChooseFirst) && _sideNameList.Contains(sideName))
             {
@@ -178,9 +238,19 @@ namespace DefectChecker.DataBase
                 SideName = _sideNameList[0];
             }
 
+            return UpdateShotName(shotName, defectName, isChooseFirst);
+        }
+
+        private bool UpdateShotName(string shotName="", string defectName="", bool isChooseFirst = true)
+        {
+            ShotName = "";
+            DefectName = "";
+            _shotNameList = new List<string>();
+            _defectNameList = new List<string>();
+
             if (_device.GetShotList(ProductName, BatchName, BoardName, SideName, out _shotNameList) <= 0)
             {
-                return;
+                return false;
             }
             else if ((!isChooseFirst) && _shotNameList.Contains(shotName))
             {
@@ -192,9 +262,17 @@ namespace DefectChecker.DataBase
                 ShotName = _shotNameList[0];
             }
 
+            return UpdateDefectName(defectName, isChooseFirst);
+        }
+
+        private bool UpdateDefectName(string defectName="", bool isChooseFirst=true)
+        {
+            DefectName = "";
+            _defectNameList = new List<string>();
+
             if (_device.GetDefectListInShot(ProductName, BatchName, BoardName, SideName, ShotName, out _defectNameList) <= 0)
             {
-                return;
+                return false;
             }
             else if ((!isChooseFirst) && _defectNameList.Contains(defectName))
             {
@@ -205,6 +283,8 @@ namespace DefectChecker.DataBase
                 isChooseFirst = true;
                 DefectName = _defectNameList[0];
             }
+
+            return true;
         }
 
         private void SaveDataBaseInfo()
