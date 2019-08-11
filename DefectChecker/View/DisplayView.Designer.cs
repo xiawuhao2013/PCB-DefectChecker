@@ -28,378 +28,340 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ToolStripMenuItemOfchangeDisplayNum = new System.Windows.Forms.ToolStripMenuItem();
-            this.ToolStripMenuItemOfAAA = new System.Windows.Forms.ToolStripMenuItem();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.aqDisplay1 = new AqVision.Controls.AqDisplay();
-            this.aqDisplay2 = new AqVision.Controls.AqDisplay();
-            this.panelOfInfo = new System.Windows.Forms.Panel();
-            this.button11 = new System.Windows.Forms.Button();
-            this.button10 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.menuStrip1.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
-            this.splitContainer3.Panel2.SuspendLayout();
-            this.splitContainer3.SuspendLayout();
-            this.panelOfInfo.SuspendLayout();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.comboBoxProduct = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.comboBoxBatch = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.comboBoxBoard = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.comboBoxSide = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.panel8 = new System.Windows.Forms.Panel();
+            this.comboBoxShot = new System.Windows.Forms.ComboBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.panel9 = new System.Windows.Forms.Panel();
+            this.comboBoxDefect = new System.Windows.Forms.ComboBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.panel10 = new System.Windows.Forms.Panel();
+            this.labelDefectNum = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.panel11 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.panel4.SuspendLayout();
+            this.panel5.SuspendLayout();
+            this.panel6.SuspendLayout();
+            this.panel7.SuspendLayout();
+            this.panel8.SuspendLayout();
+            this.panel9.SuspendLayout();
+            this.panel10.SuspendLayout();
             this.SuspendLayout();
             // 
-            // menuStrip1
+            // tableLayoutPanel1
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.设置ToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(0);
-            this.menuStrip1.Size = new System.Drawing.Size(1248, 24);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.panel4, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.panel5, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.panel6, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.panel7, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.panel8, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.panel9, 0, 5);
+            this.tableLayoutPanel1.Controls.Add(this.panel10, 0, 6);
+            this.tableLayoutPanel1.Controls.Add(this.panel11, 0, 7);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(27, 3);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 8;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(238, 266);
+            this.tableLayoutPanel1.TabIndex = 3;
             // 
-            // 设置ToolStripMenuItem
+            // panel4
             // 
-            this.设置ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ToolStripMenuItemOfchangeDisplayNum,
-            this.ToolStripMenuItemOfAAA});
-            this.设置ToolStripMenuItem.Name = "设置ToolStripMenuItem";
-            this.设置ToolStripMenuItem.Size = new System.Drawing.Size(44, 24);
-            this.设置ToolStripMenuItem.Text = "设置";
+            this.panel4.Controls.Add(this.comboBoxProduct);
+            this.panel4.Controls.Add(this.label1);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel4.Location = new System.Drawing.Point(3, 3);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(232, 27);
+            this.panel4.TabIndex = 0;
             // 
-            // ToolStripMenuItemOfchangeDisplayNum
+            // comboBoxProduct
             // 
-            this.ToolStripMenuItemOfchangeDisplayNum.Name = "ToolStripMenuItemOfchangeDisplayNum";
-            this.ToolStripMenuItemOfchangeDisplayNum.Size = new System.Drawing.Size(148, 22);
-            this.ToolStripMenuItemOfchangeDisplayNum.Text = "设置显示数量";
-            this.ToolStripMenuItemOfchangeDisplayNum.Click += new System.EventHandler(this.ToolStripMenuItemOfchangeDisplayNum_Click);
+            this.comboBoxProduct.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboBoxProduct.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.comboBoxProduct.FormattingEnabled = true;
+            this.comboBoxProduct.ItemHeight = 19;
+            this.comboBoxProduct.Location = new System.Drawing.Point(53, 0);
+            this.comboBoxProduct.Name = "comboBoxProduct";
+            this.comboBoxProduct.Size = new System.Drawing.Size(179, 27);
+            this.comboBoxProduct.TabIndex = 1;
             // 
-            // ToolStripMenuItemOfAAA
+            // label1
             // 
-            this.ToolStripMenuItemOfAAA.Name = "ToolStripMenuItemOfAAA";
-            this.ToolStripMenuItemOfAAA.Size = new System.Drawing.Size(148, 22);
-            this.ToolStripMenuItemOfAAA.Text = "显示侧边栏";
-            this.ToolStripMenuItemOfAAA.Click += new System.EventHandler(this.ToolStripMenuItemOfAAA_Click);
+            this.label1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(53, 27);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "料号名：";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // panel1
+            // panel5
             // 
-            this.panel1.Controls.Add(this.panel2);
-            this.panel1.Controls.Add(this.panelOfInfo);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 24);
-            this.panel1.Margin = new System.Windows.Forms.Padding(0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1248, 676);
-            this.panel1.TabIndex = 1;
+            this.panel5.Controls.Add(this.comboBoxBatch);
+            this.panel5.Controls.Add(this.label4);
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel5.Location = new System.Drawing.Point(3, 36);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(232, 27);
+            this.panel5.TabIndex = 1;
             // 
-            // panel2
+            // comboBoxBatch
             // 
-            this.panel2.Controls.Add(this.splitContainer1);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Margin = new System.Windows.Forms.Padding(0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1148, 676);
-            this.panel2.TabIndex = 1;
+            this.comboBoxBatch.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboBoxBatch.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.comboBoxBatch.FormattingEnabled = true;
+            this.comboBoxBatch.ItemHeight = 19;
+            this.comboBoxBatch.Location = new System.Drawing.Point(53, 0);
+            this.comboBoxBatch.Name = "comboBoxBatch";
+            this.comboBoxBatch.Size = new System.Drawing.Size(179, 27);
+            this.comboBoxBatch.TabIndex = 4;
             // 
-            // splitContainer1
+            // label4
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(0);
-            this.splitContainer1.Name = "splitContainer1";
+            this.label4.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label4.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label4.Location = new System.Drawing.Point(0, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(53, 27);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "批 号：";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // splitContainer1.Panel1
+            // panel6
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(1148, 676);
-            this.splitContainer1.SplitterDistance = 476;
-            this.splitContainer1.TabIndex = 0;
+            this.panel6.Controls.Add(this.comboBoxBoard);
+            this.panel6.Controls.Add(this.label6);
+            this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel6.Location = new System.Drawing.Point(3, 69);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(232, 27);
+            this.panel6.TabIndex = 1;
             // 
-            // splitContainer2
+            // comboBoxBoard
             // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Margin = new System.Windows.Forms.Padding(0);
-            this.splitContainer2.Name = "splitContainer2";
-            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.comboBoxBoard.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboBoxBoard.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.comboBoxBoard.FormattingEnabled = true;
+            this.comboBoxBoard.ItemHeight = 19;
+            this.comboBoxBoard.Location = new System.Drawing.Point(53, 0);
+            this.comboBoxBoard.Name = "comboBoxBoard";
+            this.comboBoxBoard.Size = new System.Drawing.Size(179, 27);
+            this.comboBoxBoard.TabIndex = 4;
             // 
-            // splitContainer2.Panel1
+            // label6
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.splitContainer3);
-            this.splitContainer2.Panel1MinSize = 450;
+            this.label6.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label6.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label6.Location = new System.Drawing.Point(0, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(53, 27);
+            this.label6.TabIndex = 3;
+            this.label6.Text = "板 号：";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // splitContainer2.Panel2
+            // panel7
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.aqDisplay2);
-            this.splitContainer2.Size = new System.Drawing.Size(476, 676);
-            this.splitContainer2.SplitterDistance = 450;
-            this.splitContainer2.TabIndex = 0;
+            this.panel7.Controls.Add(this.comboBoxSide);
+            this.panel7.Controls.Add(this.label8);
+            this.panel7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel7.Location = new System.Drawing.Point(3, 102);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(232, 27);
+            this.panel7.TabIndex = 1;
             // 
-            // splitContainer3
+            // comboBoxSide
             // 
-            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer3.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer3.Margin = new System.Windows.Forms.Padding(0);
-            this.splitContainer3.Name = "splitContainer3";
-            this.splitContainer3.Panel1MinSize = 350;
+            this.comboBoxSide.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboBoxSide.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.comboBoxSide.FormattingEnabled = true;
+            this.comboBoxSide.ItemHeight = 19;
+            this.comboBoxSide.Location = new System.Drawing.Point(53, 0);
+            this.comboBoxSide.Name = "comboBoxSide";
+            this.comboBoxSide.Size = new System.Drawing.Size(179, 27);
+            this.comboBoxSide.TabIndex = 4;
             // 
-            // splitContainer3.Panel2
+            // label8
             // 
-            this.splitContainer3.Panel2.Controls.Add(this.aqDisplay1);
-            this.splitContainer3.Size = new System.Drawing.Size(476, 450);
-            this.splitContainer3.SplitterDistance = 350;
-            this.splitContainer3.SplitterWidth = 1;
-            this.splitContainer3.TabIndex = 0;
+            this.label8.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label8.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label8.Location = new System.Drawing.Point(0, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(53, 27);
+            this.label8.TabIndex = 3;
+            this.label8.Text = "板 面：";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // aqDisplay1
+            // panel8
             // 
-            this.aqDisplay1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.aqDisplay1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.aqDisplay1.GroupName = "";
-            this.aqDisplay1.Image = null;
-            this.aqDisplay1.IsAddDynamicPoint = false;
-            this.aqDisplay1.IsBeginAddImageMask = false;
-            this.aqDisplay1.IsBeginDrawDynamicPolygon = false;
-            this.aqDisplay1.IsInteractiveFlag = true;
-            this.aqDisplay1.IsSaveResultImage = false;
-            this.aqDisplay1.IsScrollBar = true;
-            this.aqDisplay1.IsShowCenterLine = false;
-            this.aqDisplay1.IsShowStatusBar = false;
-            this.aqDisplay1.IsTransformRGB = false;
-            this.aqDisplay1.IsUsedEraser = false;
-            this.aqDisplay1.Location = new System.Drawing.Point(0, 0);
-            this.aqDisplay1.Margin = new System.Windows.Forms.Padding(0);
-            this.aqDisplay1.Name = "aqDisplay1";
-            this.aqDisplay1.OriginMaskImage = null;
-            this.aqDisplay1.Radius = 1F;
-            this.aqDisplay1.Size = new System.Drawing.Size(125, 450);
-            this.aqDisplay1.TabIndex = 0;
+            this.panel8.Controls.Add(this.comboBoxShot);
+            this.panel8.Controls.Add(this.label10);
+            this.panel8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel8.Location = new System.Drawing.Point(3, 135);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(232, 27);
+            this.panel8.TabIndex = 1;
             // 
-            // aqDisplay2
+            // comboBoxShot
             // 
-            this.aqDisplay2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.aqDisplay2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.aqDisplay2.GroupName = "";
-            this.aqDisplay2.Image = null;
-            this.aqDisplay2.IsAddDynamicPoint = false;
-            this.aqDisplay2.IsBeginAddImageMask = false;
-            this.aqDisplay2.IsBeginDrawDynamicPolygon = false;
-            this.aqDisplay2.IsInteractiveFlag = true;
-            this.aqDisplay2.IsSaveResultImage = false;
-            this.aqDisplay2.IsScrollBar = true;
-            this.aqDisplay2.IsShowCenterLine = false;
-            this.aqDisplay2.IsShowStatusBar = false;
-            this.aqDisplay2.IsTransformRGB = false;
-            this.aqDisplay2.IsUsedEraser = false;
-            this.aqDisplay2.Location = new System.Drawing.Point(0, 0);
-            this.aqDisplay2.Margin = new System.Windows.Forms.Padding(0);
-            this.aqDisplay2.Name = "aqDisplay2";
-            this.aqDisplay2.OriginMaskImage = null;
-            this.aqDisplay2.Radius = 1F;
-            this.aqDisplay2.Size = new System.Drawing.Size(476, 222);
-            this.aqDisplay2.TabIndex = 0;
+            this.comboBoxShot.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboBoxShot.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.comboBoxShot.FormattingEnabled = true;
+            this.comboBoxShot.ItemHeight = 19;
+            this.comboBoxShot.Location = new System.Drawing.Point(53, 0);
+            this.comboBoxShot.Name = "comboBoxShot";
+            this.comboBoxShot.Size = new System.Drawing.Size(179, 27);
+            this.comboBoxShot.TabIndex = 4;
             // 
-            // panelOfInfo
+            // label10
             // 
-            this.panelOfInfo.Controls.Add(this.button11);
-            this.panelOfInfo.Controls.Add(this.button10);
-            this.panelOfInfo.Controls.Add(this.button9);
-            this.panelOfInfo.Controls.Add(this.button8);
-            this.panelOfInfo.Controls.Add(this.button7);
-            this.panelOfInfo.Controls.Add(this.button6);
-            this.panelOfInfo.Controls.Add(this.button5);
-            this.panelOfInfo.Controls.Add(this.button4);
-            this.panelOfInfo.Controls.Add(this.button3);
-            this.panelOfInfo.Controls.Add(this.button2);
-            this.panelOfInfo.Controls.Add(this.button1);
-            this.panelOfInfo.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panelOfInfo.Location = new System.Drawing.Point(1148, 0);
-            this.panelOfInfo.Margin = new System.Windows.Forms.Padding(0);
-            this.panelOfInfo.Name = "panelOfInfo";
-            this.panelOfInfo.Size = new System.Drawing.Size(100, 676);
-            this.panelOfInfo.TabIndex = 0;
+            this.label10.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label10.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label10.Location = new System.Drawing.Point(0, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(53, 27);
+            this.label10.TabIndex = 3;
+            this.label10.Text = "视 野：";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // button11
+            // panel9
             // 
-            this.button11.Location = new System.Drawing.Point(22, 598);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(75, 23);
-            this.button11.TabIndex = 10;
-            this.button11.Text = "板列表";
-            this.button11.UseVisualStyleBackColor = true;
+            this.panel9.Controls.Add(this.comboBoxDefect);
+            this.panel9.Controls.Add(this.label12);
+            this.panel9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel9.Location = new System.Drawing.Point(3, 168);
+            this.panel9.Name = "panel9";
+            this.panel9.Size = new System.Drawing.Size(232, 27);
+            this.panel9.TabIndex = 1;
             // 
-            // button10
+            // comboBoxDefect
             // 
-            this.button10.Location = new System.Drawing.Point(22, 543);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(75, 23);
-            this.button10.TabIndex = 9;
-            this.button10.Text = "图像列表";
-            this.button10.UseVisualStyleBackColor = true;
+            this.comboBoxDefect.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboBoxDefect.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.comboBoxDefect.FormattingEnabled = true;
+            this.comboBoxDefect.ItemHeight = 19;
+            this.comboBoxDefect.Location = new System.Drawing.Point(53, 0);
+            this.comboBoxDefect.Name = "comboBoxDefect";
+            this.comboBoxDefect.Size = new System.Drawing.Size(179, 27);
+            this.comboBoxDefect.TabIndex = 8;
             // 
-            // button9
+            // label12
             // 
-            this.button9.Location = new System.Drawing.Point(22, 493);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(75, 23);
-            this.button9.TabIndex = 8;
-            this.button9.Text = "上一批";
-            this.button9.UseVisualStyleBackColor = true;
+            this.label12.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label12.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label12.Location = new System.Drawing.Point(0, 0);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(53, 27);
+            this.label12.TabIndex = 7;
+            this.label12.Text = "图 片：";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // button8
+            // panel10
             // 
-            this.button8.Location = new System.Drawing.Point(22, 435);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(75, 23);
-            this.button8.TabIndex = 7;
-            this.button8.Text = "下一批";
-            this.button8.UseVisualStyleBackColor = true;
+            this.panel10.Controls.Add(this.labelDefectNum);
+            this.panel10.Controls.Add(this.label14);
+            this.panel10.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel10.Location = new System.Drawing.Point(3, 201);
+            this.panel10.Name = "panel10";
+            this.panel10.Size = new System.Drawing.Size(232, 27);
+            this.panel10.TabIndex = 1;
             // 
-            // button7
+            // labelDefectNum
             // 
-            this.button7.Location = new System.Drawing.Point(22, 380);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 23);
-            this.button7.TabIndex = 6;
-            this.button7.Text = "上一块";
-            this.button7.UseVisualStyleBackColor = true;
+            this.labelDefectNum.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelDefectNum.Location = new System.Drawing.Point(53, 0);
+            this.labelDefectNum.Name = "labelDefectNum";
+            this.labelDefectNum.Size = new System.Drawing.Size(179, 27);
+            this.labelDefectNum.TabIndex = 8;
+            this.labelDefectNum.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // button6
+            // label14
             // 
-            this.button6.Location = new System.Drawing.Point(22, 333);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 23);
-            this.button6.TabIndex = 5;
-            this.button6.Text = "下一块";
-            this.button6.UseVisualStyleBackColor = true;
+            this.label14.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label14.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label14.Location = new System.Drawing.Point(0, 0);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(53, 27);
+            this.label14.TabIndex = 7;
+            this.label14.Text = "缺陷数：";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // button5
+            // panel11
             // 
-            this.button5.Location = new System.Drawing.Point(22, 282);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 4;
-            this.button5.Text = "上一面";
-            this.button5.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(22, 231);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "下一面";
-            this.button4.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(22, 181);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "上一组";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(22, 138);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "下一组";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(22, 99);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "加载第一组";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.panel11.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel11.Location = new System.Drawing.Point(3, 234);
+            this.panel11.Name = "panel11";
+            this.panel11.Size = new System.Drawing.Size(232, 29);
+            this.panel11.TabIndex = 1;
             // 
             // DisplayView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.tableLayoutPanel1);
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "DisplayView";
             this.Size = new System.Drawing.Size(1248, 700);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
-            this.splitContainer3.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
-            this.splitContainer3.ResumeLayout(false);
-            this.panelOfInfo.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
+            this.panel5.ResumeLayout(false);
+            this.panel6.ResumeLayout(false);
+            this.panel7.ResumeLayout(false);
+            this.panel8.ResumeLayout(false);
+            this.panel9.ResumeLayout(false);
+            this.panel10.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ColorDialog colorDialog1;
-        private System.Windows.Forms.ToolStripMenuItem 设置ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemOfchangeDisplayNum;
-        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemOfAAA;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panelOfInfo;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.SplitContainer splitContainer3;
-        private AqVision.Controls.AqDisplay aqDisplay1;
-        private AqVision.Controls.AqDisplay aqDisplay2;
-        private System.Windows.Forms.Button button9;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button11;
-        private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.Panel panel7;
+        private System.Windows.Forms.Panel panel8;
+        private System.Windows.Forms.Panel panel9;
+        private System.Windows.Forms.Panel panel10;
+        private System.Windows.Forms.Panel panel11;
+        private System.Windows.Forms.ComboBox comboBoxProduct;
+        private System.Windows.Forms.ComboBox comboBoxBatch;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox comboBoxBoard;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox comboBoxSide;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ComboBox comboBoxShot;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.ComboBox comboBoxDefect;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label labelDefectNum;
+        private System.Windows.Forms.Label label14;
     }
 }
