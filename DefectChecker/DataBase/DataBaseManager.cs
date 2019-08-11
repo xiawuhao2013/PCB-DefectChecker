@@ -10,17 +10,11 @@ namespace DefectChecker.DataBase
 {
     public class DataBaseManager
     {
-        private MarkDataBase _markDataBase;
+        public MarkDataBase DataBase { get; set; }
 
         public DataBaseManager()
         {
-            _markDataBase = new MarkDataBase();
-            LoadDataBase();
-        }
-
-        private void LoadDataBase()
-        {
-            _markDataBase.Init();
+            DataBase = new MarkDataBase();
         }
 
         //private const string _paramFileOfDataBaseManager = @"\ParamFile-DataBaseManager.xml";

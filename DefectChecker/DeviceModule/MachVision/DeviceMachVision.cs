@@ -16,7 +16,6 @@ namespace DefectChecker.DeviceModule.MachVision
 {
     class DeviceMachVision : DeviceInterface
     {
-        private const string _paramFileName = @"\ParamFile.xml";
         private const string _sideA = @"SideA";
         private const string _sideB = @"SideB";
         private const string _fileName = @"Panel.jpg";
@@ -30,15 +29,11 @@ namespace DefectChecker.DeviceModule.MachVision
         private const string _keyOfID = "ParamID";
         private string _dataDir = "";
         private string _modelDir = "";
-
-        //
-
+        
         public DeviceMachVision()
         {
-            LoadConfig();
-        }
 
-        //
+        }
 
         private PathMap GetDefectPathInfo(string productName, string batchName, string boardName, string sideName, string shotName)
         {
@@ -186,19 +181,7 @@ namespace DefectChecker.DeviceModule.MachVision
 
             return codeFile;
         }
-
-        private void LoadConfig()
-        {
-            XmlParameter xmlParameter = new XmlParameter();
-            xmlParameter.ReadParameter(Application.StartupPath + _paramFileName);
-            _dataDir = xmlParameter.GetParamData("DataDir");
-            _modelDir = xmlParameter.GetParamData("ModelDir");
-
-            return;
-        }
-
-        //
-
+        
         public void GetDefectCell(string productName, string batchName, string boardName, string sideName, string shotName, string defectName, out DefectCell defectCell)
         {
             defectCell = new DefectCell();
@@ -214,7 +197,7 @@ namespace DefectChecker.DeviceModule.MachVision
             defectCell.TemplateImage = templateBitmap;
         }
 
-        public void GetDefectListInShot(string productName, string batchName, string boardName, string sideName, string shotName, out List<string> defectList)
+        public int GetDefectListInShot(string productName, string batchName, string boardName, string sideName, string shotName, out List<string> defectList)
         {
             defectList = new List<string>();
             try
@@ -229,13 +212,13 @@ namespace DefectChecker.DeviceModule.MachVision
                 defectList.Clear();
                 MessageBox.Show(ex.Message);
 
-                return;
+                return 0;
             }
 
-            return;
+            return defectList.Count;
         }
 
-        public void GetShotList(string productName, string batchName, string boardName, string sideName, out List<string> shotList)
+        public int GetShotList(string productName, string batchName, string boardName, string sideName, out List<string> shotList)
         {
             shotList = new List<string>();
             try
@@ -250,13 +233,13 @@ namespace DefectChecker.DeviceModule.MachVision
                 shotList.Clear();
                 MessageBox.Show(ex.Message);
 
-                return;
+                return 0;
             }
 
-            return;
+            return shotList.Count;
         }
 
-        public void GetSideList(string productName, string batchName, string boardName, out List<string> sideList)
+        public int GetSideList(string productName, string batchName, string boardName, out List<string> sideList)
         {
             sideList = new List<string>();
             try
@@ -268,16 +251,16 @@ namespace DefectChecker.DeviceModule.MachVision
             }
             catch (Exception ex)
             {
-                sideList = new List<string>();
+                sideList.Clear();
                 MessageBox.Show(ex.Message);
 
-                return;
+                return 0;
             }
 
-            return;
+            return sideList.Count;
         }
 
-        public void GetBoardList(string productName, string batchName, out List<string> boardList)
+        public int GetBoardList(string productName, string batchName, out List<string> boardList)
         {
             boardList = new List<string>();
             try
@@ -292,13 +275,13 @@ namespace DefectChecker.DeviceModule.MachVision
                 boardList.Clear();
                 MessageBox.Show(ex.Message);
 
-                return;
+                return 0;
             }
 
-            return;
+            return boardList.Count;
         }
 
-        public void GetBatchList(string productName, out List<string> batchList)
+        public int GetBatchList(string productName, out List<string> batchList)
         {
             batchList = new List<string>();
             try
@@ -313,14 +296,14 @@ namespace DefectChecker.DeviceModule.MachVision
                 batchList.Clear();
                 MessageBox.Show(ex.Message);
 
-                return;
+                return 0;
             }
 
-            return;
+            return batchList.Count;
         }
 
         // LABEL: some bugs to fix.
-        public void GetCodeList(out Dictionary<int, string> codeList)
+        public int GetCodeList(out Dictionary<int, string> codeList)
         {
             codeList = new Dictionary<int, string>();
             try
@@ -352,13 +335,13 @@ namespace DefectChecker.DeviceModule.MachVision
                 codeList.Clear();
                 MessageBox.Show(ex.Message);
 
-                return;
+                return 0;
             }
 
-            return;
+            return codeList.Count;
         }
 
-        public void GetProductList(out List<string> procductList)
+        public int GetProductList(out List<string> procductList)
         {
             procductList = new List<string>();
             try
@@ -373,10 +356,10 @@ namespace DefectChecker.DeviceModule.MachVision
                 procductList.Clear();
                 MessageBox.Show(ex.Message);
 
-                return;
+                return 0;
             }
 
-            return;
+            return procductList.Count;
         }
 
         public void GetGerberWholeImgA(out Bitmap gerberWholeImg)
@@ -462,6 +445,12 @@ namespace DefectChecker.DeviceModule.MachVision
             }
 
             return defectPositionOfShot;
+        }
+
+        public void SetDataDir(string modelDir, string dataDir)
+        {
+            _modelDir = modelDir;
+            _dataDir = dataDir;
         }
     }
 }

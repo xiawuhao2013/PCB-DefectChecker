@@ -101,6 +101,7 @@
             // comboBoxProduct
             // 
             this.comboBoxProduct.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboBoxProduct.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxProduct.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.comboBoxProduct.FormattingEnabled = true;
             this.comboBoxProduct.ItemHeight = 19;
@@ -133,6 +134,7 @@
             // comboBoxBatch
             // 
             this.comboBoxBatch.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboBoxBatch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxBatch.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.comboBoxBatch.FormattingEnabled = true;
             this.comboBoxBatch.ItemHeight = 19;
@@ -165,6 +167,7 @@
             // comboBoxBoard
             // 
             this.comboBoxBoard.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboBoxBoard.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxBoard.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.comboBoxBoard.FormattingEnabled = true;
             this.comboBoxBoard.ItemHeight = 19;
@@ -197,6 +200,7 @@
             // comboBoxSide
             // 
             this.comboBoxSide.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboBoxSide.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxSide.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.comboBoxSide.FormattingEnabled = true;
             this.comboBoxSide.ItemHeight = 19;
@@ -229,6 +233,7 @@
             // comboBoxShot
             // 
             this.comboBoxShot.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboBoxShot.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxShot.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.comboBoxShot.FormattingEnabled = true;
             this.comboBoxShot.ItemHeight = 19;
@@ -261,6 +266,7 @@
             // comboBoxDefect
             // 
             this.comboBoxDefect.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboBoxDefect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxDefect.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.comboBoxDefect.FormattingEnabled = true;
             this.comboBoxDefect.ItemHeight = 19;
