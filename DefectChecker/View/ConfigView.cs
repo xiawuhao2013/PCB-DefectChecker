@@ -15,7 +15,7 @@ namespace DefectChecker.View
 {
     public partial class ConfigView : UserControl
     {
-        private const string _paramFileOfSetting= @"\ParamFile-Setting.xml";
+        private const string _fileProjectSetting= @"\config\ProjectSetting.xml";
         private string _dataDir;
         private string _modelDir;
 
@@ -27,8 +27,14 @@ namespace DefectChecker.View
 
         private void LoadConfig()
         {
+            string configPath = Application.StartupPath + "/config/";
+            if (false == Directory.Exists(configPath))
+            {
+                Directory.CreateDirectory(configPath);
+            }
+
             XmlParameter xmlParameter = new XmlParameter();
-            xmlParameter.ReadParameter(Application.StartupPath + _paramFileOfSetting);
+            xmlParameter.ReadParameter(Application.StartupPath + _fileProjectSetting);
             _dataDir = xmlParameter.GetParamData("DataDir");
             _modelDir = xmlParameter.GetParamData("ModelDir");
 
@@ -41,7 +47,7 @@ namespace DefectChecker.View
             XmlParameter xmlParameter = new XmlParameter();
             xmlParameter.Add("DataDir", _dataDir);
             xmlParameter.Add("ModelDir", _modelDir);
-            xmlParameter.WriteParameter(Application.StartupPath + _paramFileOfSetting);
+            xmlParameter.WriteParameter(Application.StartupPath + _fileProjectSetting);
         }
 
         private void buttonSelectDataDir_Click(object sender, EventArgs e)
