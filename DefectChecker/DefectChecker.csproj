@@ -95,23 +95,11 @@
     <Compile Include="DeviceModule\MachVision\DeviceMachVision.cs" />
     <Compile Include="Common\FolderHelper.cs" />
     <Compile Include="DeviceModule\MachVision\MachVisionFile.cs" />
-    <Compile Include="View\ChangeDisplayNumForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\ChangeDisplayNumForm.designer.cs">
-      <DependentUpon>ChangeDisplayNumForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="View\ConfigView.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="View\ConfigView.Designer.cs">
       <DependentUpon>ConfigView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\DispalyViewOfCells.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="View\DispalyViewOfCells.Designer.cs">
-      <DependentUpon>DispalyViewOfCells.cs</DependentUpon>
     </Compile>
     <Compile Include="View\DisplayView.cs">
       <SubType>UserControl</SubType>
@@ -127,12 +115,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="View\PcbFileMapView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="View\PcbFileMapView.Designer.cs">
-      <DependentUpon>PcbFileMapView.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -142,23 +124,14 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="View\ChangeDisplayNumForm.resx">
-      <DependentUpon>ChangeDisplayNumForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="View\ConfigView.resx">
       <DependentUpon>ConfigView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\DispalyViewOfCells.resx">
-      <DependentUpon>DispalyViewOfCells.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\DisplayView.resx">
       <DependentUpon>DisplayView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\PcbFileMapView.resx">
-      <DependentUpon>PcbFileMapView.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
