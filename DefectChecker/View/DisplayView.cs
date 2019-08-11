@@ -23,27 +23,84 @@ namespace DefectChecker.View
             _dataBaseManager = new DataBaseManager();
             _dataBase = _dataBaseManager.DataBase;
 
-            //comboBoxProduct.DataSource = _dataBase.ProductNameList;
-            //comboBoxProduct.SelectedText = _dataBase.ProductName;
+            ComboBoxRefresh();
+        }
+
+        private void ComboBoxRefresh()
+        {
+            this.comboBoxProduct.TextChanged -= new System.EventHandler(this.comboBoxProduct_TextChanged);
+            this.comboBoxBatch.TextChanged -= new System.EventHandler(this.comboBoxBatch_TextChanged);
+            this.comboBoxBoard.TextChanged -= new System.EventHandler(this.comboBoxBoard_TextChanged);
+            this.comboBoxSide.TextChanged -= new System.EventHandler(this.comboBoxSide_TextChanged);
+            this.comboBoxShot.TextChanged -= new System.EventHandler(this.comboBoxShot_TextChanged);
+            this.comboBoxDefect.TextChanged -= new System.EventHandler(this.comboBoxDefect_TextChanged);
+
+            comboBoxProduct.DataSource = _dataBase.ProductNameList;
+            comboBoxProduct.Text = _dataBase.ProductName;
+
+            comboBoxBatch.DataSource = _dataBase.BatchNameList;
+            comboBoxBatch.Text = _dataBase.BatchName;
+
+            comboBoxBoard.DataSource = _dataBase.BoardNameList;
+            comboBoxBoard.Text = _dataBase.BoardName;
+
+            comboBoxSide.DataSource = _dataBase.SideNameList;
+            comboBoxSide.Text = _dataBase.SideName;
+
+            comboBoxShot.DataSource = _dataBase.ShotNameList;
+            comboBoxShot.Text = _dataBase.ShotName;
+
+            comboBoxDefect.DataSource = _dataBase.DefectNameList;
+            comboBoxDefect.Text = _dataBase.DefectName;
             
-            var mode = DataSourceUpdateMode.OnPropertyChanged | DataSourceUpdateMode.OnValidation;
-            comboBoxProduct.DataBindings.Add(new Binding("DataSource", _dataBase, "ProductNameList", true, mode));
-            comboBoxProduct.DataBindings.Add(new Binding("Text", _dataBase, "ProductName", true, mode));
+            this.comboBoxProduct.TextChanged += new System.EventHandler(this.comboBoxProduct_TextChanged);
+            this.comboBoxBatch.TextChanged += new System.EventHandler(this.comboBoxBatch_TextChanged);
+            this.comboBoxBoard.TextChanged += new System.EventHandler(this.comboBoxBoard_TextChanged);
+            this.comboBoxSide.TextChanged += new System.EventHandler(this.comboBoxSide_TextChanged);
+            this.comboBoxShot.TextChanged += new System.EventHandler(this.comboBoxShot_TextChanged);
+            this.comboBoxDefect.TextChanged += new System.EventHandler(this.comboBoxDefect_TextChanged);
+        }
 
-            comboBoxBatch.DataBindings.Add(new Binding("DataSource", _dataBase, "BatchNameList", true, mode));
-            comboBoxBatch.DataBindings.Add(new Binding("Text", _dataBase, "BatchName", true, mode));
+        private void comboBoxProduct_TextChanged(object sender, EventArgs e)
+        {
+            string productName = comboBoxProduct.Text;
+            _dataBase.UpdateProductName(productName);
+            ComboBoxRefresh();
+        }
 
-            comboBoxBoard.DataBindings.Add(new Binding("DataSource", _dataBase, "BoardNameList", true, mode));
-            comboBoxBoard.DataBindings.Add(new Binding("Text", _dataBase, "BoardName", true, mode));
+        private void comboBoxBatch_TextChanged(object sender, EventArgs e)
+        {
+            string batchName = comboBoxBatch.Text;
+            _dataBase.UpdateBatchName(batchName);
+            ComboBoxRefresh();
+        }
 
-            comboBoxSide.DataBindings.Add(new Binding("DataSource", _dataBase, "SideNameList", true, mode));
-            comboBoxSide.DataBindings.Add(new Binding("Text", _dataBase, "SideName", true, mode));
+        private void comboBoxBoard_TextChanged(object sender, EventArgs e)
+        {
+            string boardName = comboBoxBoard.Text;
+            _dataBase.UpdateBoardName(boardName);
+            ComboBoxRefresh();
+        }
 
-            comboBoxShot.DataBindings.Add(new Binding("DataSource", _dataBase, "ShotNameList", true, mode));
-            comboBoxShot.DataBindings.Add(new Binding("Text", _dataBase, "ShotName", true, mode));
+        private void comboBoxSide_TextChanged(object sender, EventArgs e)
+        {
+            string sideName = comboBoxSide.Text;
+            _dataBase.UpdateSideName(sideName);
+            ComboBoxRefresh();
+        }
 
-            comboBoxDefect.DataBindings.Add(new Binding("DataSource", _dataBase, "DefectNameList", true, mode));
-            comboBoxDefect.DataBindings.Add(new Binding("Text", _dataBase, "DefectName", true, mode));
+        private void comboBoxShot_TextChanged(object sender, EventArgs e)
+        {
+            string shotName = comboBoxShot.Text;
+            _dataBase.UpdateShotName(shotName);
+            ComboBoxRefresh();
+        }
+
+        private void comboBoxDefect_TextChanged(object sender, EventArgs e)
+        {
+            string defectName = comboBoxDefect.Text;
+            _dataBase.UpdateDefectName(defectName);
+            ComboBoxRefresh();
         }
     }
 }

@@ -125,7 +125,19 @@ namespace DefectChecker.DataBase
             UpdateProductName(productName, batchName, boardName, sideName, shotName, defectName, false);
         }
 
-        private bool UpdateProductName(string productName="", string batchName="", string boardName="", string sideName="", string shotName="", string defectName="", bool isChooseFirst = true)
+        private void SaveDataBaseInfo()
+        {
+            XmlParameter xmlParameter = new XmlParameter();
+            xmlParameter.Add("ProductName", ProductName);
+            xmlParameter.Add("BatchName", BatchName);
+            xmlParameter.Add("BoardName", BoardName);
+            xmlParameter.Add("SideName", SideName);
+            xmlParameter.Add("ShotName", ShotName);
+            xmlParameter.Add("DefectName", DefectName);
+            xmlParameter.WriteParameter(Application.StartupPath + _fileDataBaseInfo);
+        }
+
+        public bool UpdateProductName(string productName="", string batchName="", string boardName="", string sideName="", string shotName="", string defectName="", bool isChooseFirst = false)
         {
             ProductName = "";
             BatchName = "";
@@ -157,7 +169,7 @@ namespace DefectChecker.DataBase
             return UpdateBatchName(batchName, boardName, sideName, shotName, defectName, isChooseFirst);
         }
 
-        private bool UpdateBatchName(string batchName="", string boardName="", string sideName="", string shotName="", string defectName="", bool isChooseFirst = true)
+        public bool UpdateBatchName(string batchName="", string boardName="", string sideName="", string shotName="", string defectName="", bool isChooseFirst = false)
         {
             BatchName = "";
             BoardName = "";
@@ -187,7 +199,7 @@ namespace DefectChecker.DataBase
             return UpdateBoardName(boardName, sideName, shotName, defectName, isChooseFirst);
         }
 
-        private bool UpdateBoardName(string boardName="", string sideName="", string shotName="", string defectName="", bool isChooseFirst = true)
+        public bool UpdateBoardName(string boardName="", string sideName="", string shotName="", string defectName="", bool isChooseFirst = false)
         {
             BoardName = "";
             SideName = "";
@@ -215,7 +227,7 @@ namespace DefectChecker.DataBase
             return UpdateSideName(sideName, shotName, defectName, isChooseFirst);
         }
 
-        private bool UpdateSideName(string sideName="", string shotName="", string defectName="", bool isChooseFirst = true)
+        public bool UpdateSideName(string sideName="", string shotName="", string defectName="", bool isChooseFirst = false)
         {
             SideName = "";
             ShotName = "";
@@ -241,7 +253,7 @@ namespace DefectChecker.DataBase
             return UpdateShotName(shotName, defectName, isChooseFirst);
         }
 
-        private bool UpdateShotName(string shotName="", string defectName="", bool isChooseFirst = true)
+        public bool UpdateShotName(string shotName="", string defectName="", bool isChooseFirst = false)
         {
             ShotName = "";
             DefectName = "";
@@ -265,7 +277,7 @@ namespace DefectChecker.DataBase
             return UpdateDefectName(defectName, isChooseFirst);
         }
 
-        private bool UpdateDefectName(string defectName="", bool isChooseFirst=true)
+        public bool UpdateDefectName(string defectName="", bool isChooseFirst=false)
         {
             DefectName = "";
             _defectNameList = new List<string>();
@@ -285,18 +297,6 @@ namespace DefectChecker.DataBase
             }
 
             return true;
-        }
-
-        private void SaveDataBaseInfo()
-        {
-            XmlParameter xmlParameter = new XmlParameter();
-            xmlParameter.Add("ProductName", ProductName);
-            xmlParameter.Add("BatchName", BatchName);
-            xmlParameter.Add("BoardName", BoardName);
-            xmlParameter.Add("SideName", SideName);
-            xmlParameter.Add("ShotName", ShotName);
-            xmlParameter.Add("DefectName", DefectName);
-            xmlParameter.WriteParameter(Application.StartupPath + _fileDataBaseInfo);
         }
 
         public bool SaveMarkDataInfo(string productName, string batchName, string boardName, string sideName,
