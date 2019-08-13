@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.comboBoxProduct = new System.Windows.Forms.ComboBox();
@@ -52,6 +53,12 @@
             this.labelDefectNum = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.panel11 = new System.Windows.Forms.Panel();
+            this.splitter1 = new System.Windows.Forms.Splitter();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanelTemplate = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanelImage = new System.Windows.Forms.TableLayoutPanel();
+            this.splitter2 = new System.Windows.Forms.Splitter();
+            this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -60,7 +67,17 @@
             this.panel8.SuspendLayout();
             this.panel9.SuspendLayout();
             this.panel10.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.tableLayoutPanel1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(571, 272);
+            this.panel1.TabIndex = 4;
             // 
             // tableLayoutPanel1
             // 
@@ -74,7 +91,8 @@
             this.tableLayoutPanel1.Controls.Add(this.panel9, 0, 5);
             this.tableLayoutPanel1.Controls.Add(this.panel10, 0, 6);
             this.tableLayoutPanel1.Controls.Add(this.panel11, 0, 7);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(27, 3);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 8;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
@@ -85,7 +103,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(238, 266);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(262, 272);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
             // panel4
@@ -95,7 +113,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(3, 3);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(232, 27);
+            this.panel4.Size = new System.Drawing.Size(256, 28);
             this.panel4.TabIndex = 0;
             // 
             // comboBoxProduct
@@ -107,7 +125,7 @@
             this.comboBoxProduct.ItemHeight = 19;
             this.comboBoxProduct.Location = new System.Drawing.Point(53, 0);
             this.comboBoxProduct.Name = "comboBoxProduct";
-            this.comboBoxProduct.Size = new System.Drawing.Size(179, 27);
+            this.comboBoxProduct.Size = new System.Drawing.Size(203, 27);
             this.comboBoxProduct.TabIndex = 1;
             // 
             // label1
@@ -116,7 +134,7 @@
             this.label1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label1.Location = new System.Drawing.Point(0, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(53, 27);
+            this.label1.Size = new System.Drawing.Size(53, 28);
             this.label1.TabIndex = 0;
             this.label1.Text = "料号名：";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -126,9 +144,9 @@
             this.panel5.Controls.Add(this.comboBoxBatch);
             this.panel5.Controls.Add(this.label4);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel5.Location = new System.Drawing.Point(3, 36);
+            this.panel5.Location = new System.Drawing.Point(3, 37);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(232, 27);
+            this.panel5.Size = new System.Drawing.Size(256, 28);
             this.panel5.TabIndex = 1;
             // 
             // comboBoxBatch
@@ -140,7 +158,7 @@
             this.comboBoxBatch.ItemHeight = 19;
             this.comboBoxBatch.Location = new System.Drawing.Point(53, 0);
             this.comboBoxBatch.Name = "comboBoxBatch";
-            this.comboBoxBatch.Size = new System.Drawing.Size(179, 27);
+            this.comboBoxBatch.Size = new System.Drawing.Size(203, 27);
             this.comboBoxBatch.TabIndex = 4;
             // 
             // label4
@@ -149,7 +167,7 @@
             this.label4.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label4.Location = new System.Drawing.Point(0, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(53, 27);
+            this.label4.Size = new System.Drawing.Size(53, 28);
             this.label4.TabIndex = 3;
             this.label4.Text = "批 号：";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -159,9 +177,9 @@
             this.panel6.Controls.Add(this.comboBoxBoard);
             this.panel6.Controls.Add(this.label6);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel6.Location = new System.Drawing.Point(3, 69);
+            this.panel6.Location = new System.Drawing.Point(3, 71);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(232, 27);
+            this.panel6.Size = new System.Drawing.Size(256, 28);
             this.panel6.TabIndex = 1;
             // 
             // comboBoxBoard
@@ -173,7 +191,7 @@
             this.comboBoxBoard.ItemHeight = 19;
             this.comboBoxBoard.Location = new System.Drawing.Point(53, 0);
             this.comboBoxBoard.Name = "comboBoxBoard";
-            this.comboBoxBoard.Size = new System.Drawing.Size(179, 27);
+            this.comboBoxBoard.Size = new System.Drawing.Size(203, 27);
             this.comboBoxBoard.TabIndex = 4;
             // 
             // label6
@@ -182,7 +200,7 @@
             this.label6.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label6.Location = new System.Drawing.Point(0, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(53, 27);
+            this.label6.Size = new System.Drawing.Size(53, 28);
             this.label6.TabIndex = 3;
             this.label6.Text = "板 号：";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -192,9 +210,9 @@
             this.panel7.Controls.Add(this.comboBoxSide);
             this.panel7.Controls.Add(this.label8);
             this.panel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel7.Location = new System.Drawing.Point(3, 102);
+            this.panel7.Location = new System.Drawing.Point(3, 105);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(232, 27);
+            this.panel7.Size = new System.Drawing.Size(256, 28);
             this.panel7.TabIndex = 1;
             // 
             // comboBoxSide
@@ -206,7 +224,7 @@
             this.comboBoxSide.ItemHeight = 19;
             this.comboBoxSide.Location = new System.Drawing.Point(53, 0);
             this.comboBoxSide.Name = "comboBoxSide";
-            this.comboBoxSide.Size = new System.Drawing.Size(179, 27);
+            this.comboBoxSide.Size = new System.Drawing.Size(203, 27);
             this.comboBoxSide.TabIndex = 4;
             // 
             // label8
@@ -215,7 +233,7 @@
             this.label8.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label8.Location = new System.Drawing.Point(0, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(53, 27);
+            this.label8.Size = new System.Drawing.Size(53, 28);
             this.label8.TabIndex = 3;
             this.label8.Text = "板 面：";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -225,9 +243,9 @@
             this.panel8.Controls.Add(this.comboBoxShot);
             this.panel8.Controls.Add(this.label10);
             this.panel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel8.Location = new System.Drawing.Point(3, 135);
+            this.panel8.Location = new System.Drawing.Point(3, 139);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(232, 27);
+            this.panel8.Size = new System.Drawing.Size(256, 28);
             this.panel8.TabIndex = 1;
             // 
             // comboBoxShot
@@ -239,7 +257,7 @@
             this.comboBoxShot.ItemHeight = 19;
             this.comboBoxShot.Location = new System.Drawing.Point(53, 0);
             this.comboBoxShot.Name = "comboBoxShot";
-            this.comboBoxShot.Size = new System.Drawing.Size(179, 27);
+            this.comboBoxShot.Size = new System.Drawing.Size(203, 27);
             this.comboBoxShot.TabIndex = 4;
             // 
             // label10
@@ -248,7 +266,7 @@
             this.label10.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label10.Location = new System.Drawing.Point(0, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(53, 27);
+            this.label10.Size = new System.Drawing.Size(53, 28);
             this.label10.TabIndex = 3;
             this.label10.Text = "视 野：";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -258,9 +276,9 @@
             this.panel9.Controls.Add(this.comboBoxDefect);
             this.panel9.Controls.Add(this.label12);
             this.panel9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel9.Location = new System.Drawing.Point(3, 168);
+            this.panel9.Location = new System.Drawing.Point(3, 173);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(232, 27);
+            this.panel9.Size = new System.Drawing.Size(256, 28);
             this.panel9.TabIndex = 1;
             // 
             // comboBoxDefect
@@ -272,7 +290,7 @@
             this.comboBoxDefect.ItemHeight = 19;
             this.comboBoxDefect.Location = new System.Drawing.Point(53, 0);
             this.comboBoxDefect.Name = "comboBoxDefect";
-            this.comboBoxDefect.Size = new System.Drawing.Size(179, 27);
+            this.comboBoxDefect.Size = new System.Drawing.Size(203, 27);
             this.comboBoxDefect.TabIndex = 8;
             // 
             // label12
@@ -281,7 +299,7 @@
             this.label12.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label12.Location = new System.Drawing.Point(0, 0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(53, 27);
+            this.label12.Size = new System.Drawing.Size(53, 28);
             this.label12.TabIndex = 7;
             this.label12.Text = "图 片：";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -291,9 +309,9 @@
             this.panel10.Controls.Add(this.labelDefectNum);
             this.panel10.Controls.Add(this.label14);
             this.panel10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel10.Location = new System.Drawing.Point(3, 201);
+            this.panel10.Location = new System.Drawing.Point(3, 207);
             this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(232, 27);
+            this.panel10.Size = new System.Drawing.Size(256, 28);
             this.panel10.TabIndex = 1;
             // 
             // labelDefectNum
@@ -301,7 +319,7 @@
             this.labelDefectNum.Dock = System.Windows.Forms.DockStyle.Fill;
             this.labelDefectNum.Location = new System.Drawing.Point(53, 0);
             this.labelDefectNum.Name = "labelDefectNum";
-            this.labelDefectNum.Size = new System.Drawing.Size(179, 27);
+            this.labelDefectNum.Size = new System.Drawing.Size(203, 28);
             this.labelDefectNum.TabIndex = 8;
             this.labelDefectNum.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -311,7 +329,7 @@
             this.label14.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label14.Location = new System.Drawing.Point(0, 0);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(53, 27);
+            this.label14.Size = new System.Drawing.Size(53, 28);
             this.label14.TabIndex = 7;
             this.label14.Text = "缺陷数：";
             this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -319,19 +337,76 @@
             // panel11
             // 
             this.panel11.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel11.Location = new System.Drawing.Point(3, 234);
+            this.panel11.Location = new System.Drawing.Point(3, 241);
             this.panel11.Name = "panel11";
-            this.panel11.Size = new System.Drawing.Size(232, 29);
+            this.panel11.Size = new System.Drawing.Size(256, 28);
             this.panel11.TabIndex = 1;
+            // 
+            // splitter1
+            // 
+            this.splitter1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.splitter1.Location = new System.Drawing.Point(0, 272);
+            this.splitter1.Name = "splitter1";
+            this.splitter1.Size = new System.Drawing.Size(571, 3);
+            this.splitter1.TabIndex = 5;
+            this.splitter1.TabStop = false;
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.tableLayoutPanelTemplate);
+            this.panel2.Controls.Add(this.splitter1);
+            this.panel2.Controls.Add(this.panel1);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(571, 700);
+            this.panel2.TabIndex = 5;
+            // 
+            // tableLayoutPanelTemplate
+            // 
+            this.tableLayoutPanelTemplate.ColumnCount = 2;
+            this.tableLayoutPanelTemplate.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelTemplate.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelTemplate.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanelTemplate.Location = new System.Drawing.Point(0, 275);
+            this.tableLayoutPanelTemplate.Name = "tableLayoutPanelTemplate";
+            this.tableLayoutPanelTemplate.RowCount = 1;
+            this.tableLayoutPanelTemplate.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelTemplate.Size = new System.Drawing.Size(571, 425);
+            this.tableLayoutPanelTemplate.TabIndex = 6;
+            // 
+            // tableLayoutPanelImage
+            // 
+            this.tableLayoutPanelImage.ColumnCount = 2;
+            this.tableLayoutPanelImage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelImage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelImage.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tableLayoutPanelImage.Location = new System.Drawing.Point(574, 0);
+            this.tableLayoutPanelImage.Name = "tableLayoutPanelImage";
+            this.tableLayoutPanelImage.RowCount = 1;
+            this.tableLayoutPanelImage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelImage.Size = new System.Drawing.Size(674, 408);
+            this.tableLayoutPanelImage.TabIndex = 6;
+            // 
+            // splitter2
+            // 
+            this.splitter2.Location = new System.Drawing.Point(571, 0);
+            this.splitter2.Name = "splitter2";
+            this.splitter2.Size = new System.Drawing.Size(3, 700);
+            this.splitter2.TabIndex = 7;
+            this.splitter2.TabStop = false;
             // 
             // DisplayView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.tableLayoutPanelImage);
+            this.Controls.Add(this.splitter2);
+            this.Controls.Add(this.panel2);
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "DisplayView";
             this.Size = new System.Drawing.Size(1248, 700);
+            this.panel1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
@@ -340,34 +415,41 @@
             this.panel8.ResumeLayout(false);
             this.panel9.ResumeLayout(false);
             this.panel10.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
         private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.ComboBox comboBoxProduct;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Panel panel6;
-        private System.Windows.Forms.Panel panel7;
-        private System.Windows.Forms.Panel panel8;
-        private System.Windows.Forms.Panel panel9;
-        private System.Windows.Forms.Panel panel10;
-        private System.Windows.Forms.Panel panel11;
-        private System.Windows.Forms.ComboBox comboBoxProduct;
         private System.Windows.Forms.ComboBox comboBoxBatch;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.ComboBox comboBoxBoard;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.ComboBox comboBoxSide;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.ComboBox comboBoxShot;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Panel panel9;
         private System.Windows.Forms.ComboBox comboBoxDefect;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Panel panel10;
         private System.Windows.Forms.Label labelDefectNum;
         private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Panel panel11;
+        private System.Windows.Forms.Splitter splitter1;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelTemplate;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelImage;
+        private System.Windows.Forms.Splitter splitter2;
     }
 }
