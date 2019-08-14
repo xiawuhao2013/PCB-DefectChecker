@@ -10,375 +10,435 @@ namespace DefectChecker.DataBase
 {
     public class DataBaseManager
     {
-        public MarkDataBase DataBase { get; set; }
+        // config files
+        private const string _fileProjectSetting = @"\config\ProjectSetting.xml";
+        private const string _fileDataBaseManager = @"\config\DataBaseManager.xml";
 
-        public DataBaseManager()
+        private MarkDataBase _markDataBase = new MarkDataBase();
+        private DeviceMachVision _device = new DeviceMachVision();
+
+        private string _dataDir;
+        private string _modelDir;
+
+        // product dictionary - 1
+        private List<string> _productNameList = new List<string>();
+        private List<string> _batchNameList = new List<string>();
+        private List<string> _boardNameList = new List<string>();
+        private List<string> _sideNameList = new List<string>();
+        private List<string> _shotNameList = new List<string>();
+        private List<string> _defectNameList = new List<string>();
+
+        //// skip
+        //private int _indexOfProductNameList = 0;
+        //private int _indexOfBatchNameList = 0;
+        //private int _indexOfBoardNameList = 0;
+        //private int _indexOfSideNameList = 0;
+        //private int _indexOfShotNameList = 0;
+        //private int _indexOfDefectNameList = 0;
+
+        // product dictionary - 2
+        public List<string> ProductNameList { get { return _productNameList; } }
+        public List<string> BatchNameList { get { return _batchNameList; } }
+        public List<string> BoardNameList { get { return _boardNameList; } }
+        public List<string> SideNameList { get { return _sideNameList; } }
+        public List<string> ShotNameList { get { return _shotNameList; } }
+        public List<string> DefectNameList { get { return _defectNameList; } }
+
+        // product name info
+        public string ProductName
         {
-            DataBase = new MarkDataBase();
+            get;
+            set;
+        }
+        public string BatchName
+        {
+            get;
+            set;
+        }
+        public string BoardName { get; set; }
+        public string SideName { get; set; }
+        public string ShotName { get; set; }
+        public string DefectName { get; set; }
+
+        public DataBaseManager(MarkDataBase markDataBase)
+        {
+            _markDataBase = markDataBase;
+            Init();
         }
 
-        private const string _fileOfDataBaseManager = @"\config\DataBaseManager.xml";
-
-        // image-1
-        private List<DefectCell> _defectCellList = new List<DefectCell>();
-        private Bitmap _wholeImageA = null;
-        private Bitmap _wholeImageB = null;
-        private Bitmap _gerberWholeImageA = null;
-        private Bitmap _gerberWholeImageB = null;
-        // skip-1
-        private bool _hasKilledDefect = false;
-        private bool _hasKilledShot = false;
-        private bool _hasKilledSide = false;
-        private bool _hasKilledBoard = false;
-        private bool _hasKilledBatch = false;
-        private bool _hasKilledProduct = false;
-
-        // image-2
-        public List<DefectCell> DefectCellList { get { return _defectCellList; } }
-        public Bitmap WholeImageA { get { return _wholeImageA; } }
-        public Bitmap WholeImageB { get { return _wholeImageB; } }
-        public Bitmap GerberWholeImageA { get { return _gerberWholeImageA; } }
-        public Bitmap GerberWholeImageB { get { return _gerberWholeImageB; } }
-        // skip-3
-        public bool HasKilledDefect { get { return _hasKilledDefect; } }
-        public bool HasKilledShot { get { return _hasKilledShot; } }
-        public bool HasKilledSide { get { return _hasKilledSide; } }
-        public bool HasKilledBoard { get { return _hasKilledBoard; } }
-        public bool HasKilledBatch { get { return _hasKilledBatch; } }
-        public bool HasKilledProduct { get { return _hasKilledProduct; } }
-
-        private DefectCell LoadDefectCell()
+        private void ClearDataBaseInfo()
         {
-            DataBase._device.GetDefectCell(DataBase.ProductName, DataBase.BatchName, DataBase.BoardName, DataBase.SideName, DataBase.ShotName, DataBase.DefectName, out var defectCell);
+            ProductName = "";
+            BatchName = "";
+            BoardName = "";
+            SideName = "";
+            ShotName = "";
+            DefectName = "";
 
-            return defectCell;
+            _productNameList = new List<string>();
+            _batchNameList = new List<string>();
+            _boardNameList = new List<string>();
+            _sideNameList = new List<string>();
+            _shotNameList = new List<string>();
+            _defectNameList = new List<string>();
         }
 
-        private void RecordMarkResult() { }
-        private void RemoveMarkResult() { }
-
-        //
-        public bool TrySelectCell(int index, out DefectCell defectCell)
+        private void Init()
         {
-            defectCell = new DefectCell();
-            if (null == DataBase.DefectNameList || 0 == DataBase.DefectNameList.Count || index >= DataBase.DefectNameList.Count || index < 0)
-            {
-                DataBase.DefectName = "";
-
-                return false;
-            }
-            DataBase.DefectName = DataBase.DefectNameList[index];
-            defectCell = LoadDefectCell();
-
-            return true;
+            LoadProjectSetting();
+            LoadDataBaseInfo();
+            SaveDataBaseInfo();
         }
-        // LABEL: refrence these codes temporary.
-        /*
-        public bool TryGetNextCell(out DefectCell defectCell, out bool isEnd)
+
+        private void LoadProjectSetting()
         {
-            defectCell = new DefectCell();
-            isEnd = false;
-            if (null == _defectNameList || 0 == _defectNameList.Count)
-            {
-                return false;
-            }
-            var index = _defectNameList.FindIndex(x => x.Contains(_defect));
-            if (-1 == index)
-            {
-                return false;
-            }
-            if (++index >= _defectNameList.Count)
-            {
-                isEnd = true;
-
-                return false;
-            }
-            if (!TrySelectCell(index, out defectCell))
-            {
-                return false;
-            }
-
-            return true;
+            XmlParameter xmlParameter = new XmlParameter();
+            xmlParameter.ReadParameter(Application.StartupPath + _fileProjectSetting);
+            _dataDir = xmlParameter.GetParamData("DataDir");
+            _modelDir = xmlParameter.GetParamData("ModelDir");
         }
-        public bool TryGetPreviousCell(out DefectCell defectCell, out bool isFirst)
-        {
-            defectCell = new DefectCell();
-            isFirst = false;
-            if (null == _defectNameList || 0 == _defectNameList.Count)
-            {
-                return false;
-            }
-            var index = _defectNameList.FindIndex(x => x.Contains(_defect));
-            if (-1 == index)
-            {
-                return false;
-            }
-            if (--index < 0)
-            {
-                isFirst = true;
 
-                return false;
-            }
-            if (!TrySelectCell(index, out defectCell))
-            {
-                return false;
-            }
-
-            return true;
-        }
-        */
-        //
-        public bool TrySelectDefectGroup(int index, int num, out List<DefectCell> defectCells)
+        private void LoadDataBaseInfo()
         {
-            DefectCell defectCell = new DefectCell();
-            defectCells = new List<DefectCell>();
-            var nullCount = 0;
-            for (var iter = 0; iter < num; ++iter)
-            {
-                if (TrySelectCell(IndexOfDefectGroup * num + iter, out defectCell))
-                {
-                    defectCells.Add(defectCell);
-                }
-                else
-                {
-                    ++nullCount;
-                    defectCells.Add(new DefectCell());
-                }
-            }
-            _hasKilledDefect = nullCount == num;
+            ClearDataBaseInfo();
+            _device.SetDataDir(_modelDir, _dataDir);
 
-            return nullCount != num;
-        }
-        public void SetIndexOfDefectGroup(int index)
-        {
-            IndexOfDefectGroup = index;
+            XmlParameter xmlParameter = new XmlParameter();
+            xmlParameter.ReadParameter(Application.StartupPath + _fileDataBaseManager);
+
+            ProductName = xmlParameter.GetParamData("ProductName");
+            BatchName = xmlParameter.GetParamData("BatchName");
+            BoardName = xmlParameter.GetParamData("BoardName");
+            SideName = xmlParameter.GetParamData("SideName");
+            ShotName = xmlParameter.GetParamData("ShotName");
+            DefectName = xmlParameter.GetParamData("DefectName");
+
+            if (string.IsNullOrWhiteSpace(ProductName))
+            {
+                SelectProduct("", true);
+            }
+            else
+            {
+               SelectProduct(ProductName, false);
+            }
 
             return;
         }
-        public bool TryGetNextDefectGroup(int num, out List<DefectCell> defectCells)
-        {
-            if (!TrySelectDefectGroup(++IndexOfDefectGroup, num, out defectCells))
-            {
-                --IndexOfDefectGroup;
 
+        private void SaveDataBaseInfo()
+        {
+            XmlParameter xmlParameter = new XmlParameter();
+            xmlParameter.Add("ProductName", ProductName);
+            xmlParameter.Add("BatchName", BatchName);
+            xmlParameter.Add("BoardName", BoardName);
+            xmlParameter.Add("SideName", SideName);
+            xmlParameter.Add("ShotName", ShotName);
+            xmlParameter.Add("DefectName", DefectName);
+            xmlParameter.WriteParameter(Application.StartupPath + _fileDataBaseManager);
+        }
+
+        private void ResetProduct()
+        {
+            ProductName = "";
+            _productNameList = new List<string>();
+            BatchName = "";
+            _batchNameList = new List<string>();
+            BoardName = "";
+            _boardNameList = new List<string>();
+            SideName = "";
+            _sideNameList = new List<string>();
+            ShotName = "";
+            _shotNameList = new List<string>();
+            DefectName = "";
+            _defectNameList = new List<string>();
+
+            return;
+        }
+
+        private void ResetBatch()
+        {
+            BatchName = "";
+            _batchNameList = new List<string>();
+            BoardName = "";
+            _boardNameList = new List<string>();
+            SideName = "";
+            _sideNameList = new List<string>();
+            ShotName = "";
+            _shotNameList = new List<string>();
+            DefectName = "";
+            _defectNameList = new List<string>();
+
+            return;
+        }
+
+        private void ResetBoard()
+        {
+            BoardName = "";
+            _boardNameList = new List<string>();
+            SideName = "";
+            _sideNameList = new List<string>();
+            ShotName = "";
+            _shotNameList = new List<string>();
+            DefectName = "";
+            _defectNameList = new List<string>();
+
+            return;
+        }
+
+        private void ResetSide()
+        {
+            SideName = "";
+            _sideNameList = new List<string>();
+            ShotName = "";
+            _shotNameList = new List<string>();
+            DefectName = "";
+            _defectNameList = new List<string>();
+
+            return;
+        }
+
+        private void ResetShot()
+        {
+            ShotName = "";
+            _shotNameList = new List<string>();
+            DefectName = "";
+            _defectNameList = new List<string>();
+
+            return;
+        }
+
+        private void ResetDefect()
+        {
+            DefectName = "";
+            _defectNameList = new List<string>();
+
+            return;
+        }
+
+        private bool RefreshProductNameList()
+        {
+            return _device.GetProductList(out _productNameList) > 0;
+        }
+
+        private bool RefreshBatchNameList()
+        {
+            return _device.GetBatchList(ProductName, out _batchNameList) > 0;
+        }
+
+        private bool RefreshBoardNameList()
+        {
+            return _device.GetBoardList(ProductName, BatchName, out _boardNameList) > 0;
+        }
+
+        private bool RefreshSideNameList()
+        {
+            return _device.GetSideList(ProductName, BatchName, BoardName, out _sideNameList) > 0;
+        }
+
+        private bool RefreshShotNameList()
+        {
+            return _device.GetShotList(ProductName, BatchName, BoardName, SideName, out _shotNameList) > 0;
+        }
+
+        private bool RefreshDefectNameList()
+        {
+            return _device.GetDefectListInShot(ProductName, BatchName, BoardName, SideName, ShotName, out _defectNameList) > 0;
+        }
+
+
+        public bool SelectProduct(string productName, bool isChooseFirst)
+        {
+            ResetProduct();
+            if (!UpdateProductName(productName, isChooseFirst))
+            {
+                return false;
+            }
+
+            return SelectBatch("", true);
+        }
+
+        public bool SelectBatch(string batchName, bool isChooseFirst)
+        {
+            ResetBatch();
+            if (!UpdateBatchName(batchName, isChooseFirst))
+            {
+                return false;
+            }
+
+            return SelectBoard("", true);
+        }
+
+        public bool SelectBoard(string boardName, bool isChooseFirst)
+        {
+            ResetBoard();
+            if (!UpdateBoardName(boardName, isChooseFirst))
+            {
+                return false;
+            }
+
+            return SelectSide("", true);
+        }
+
+        public bool SelectSide(string sideName, bool isChooseFirst)
+        {
+            ResetSide();
+            if (!UpdateSideName(sideName, isChooseFirst))
+            {
+                return false;
+            }
+
+            return SelectShot("", true);
+        }
+
+        public bool SelectShot(string shotName, bool isChooseFirst)
+        {
+            ResetShot();
+            if (!UpdateShotName(shotName, isChooseFirst))
+            {
+                return false;
+            }
+
+            return SelectDefect("", true);
+        }
+
+        public bool SelectDefect(string defectName, bool isChooseFirst)
+        {
+            ResetDefect();
+            if (!UpdateDefectName(defectName, isChooseFirst))
+            {
                 return false;
             }
 
             return true;
         }
-        public bool TryGetPreviousDefectGroup(int num, out List<DefectCell> defectCells)
+
+        
+        
+
+        private bool UpdateProductName(string productName, bool isChooseFirst = false)
         {
-            if (!TrySelectDefectGroup(--IndexOfDefectGroup, num, out defectCells))
-            {
-                ++IndexOfDefectGroup;
-
-                return false;
-            }
-
-            return true;
-        }
-        //
-        //public bool TrySelectShot(int index)
-        //{
-        //    _shot = "";
-        //    _shotNameList = new List<string>();
-        //    _hasKilledShot = false;
-
-        //    IndexOfShot = index;
-        //    if (null == ShotNameList || 0 == ShotNameList.Count || index >= ShotNameList.Count || index < 0)
-        //    {
-        //        _hasKilledShot = true;
-
-        //        return false;
-        //    }
-        //    _shot = ShotNameList[index];
-        //    LoadCellList();
-
-        //    return true;
-        //}
-        public bool TrySelectShot(int index)
-        {
-            if (null == DataBase.ShotNameList || index >= DataBase.ShotNameList.Count)
+            if (!RefreshProductNameList())
             {
                 return false;
             }
-            return DataBase.UpdateShotName(DataBase.ShotNameList[index]);
+            if (isChooseFirst)
+            {
+                ProductName = ProductNameList[0];
+                return true;
+            }
+            if (ProductNameList.Contains(productName))
+            {
+                ProductName = productName;
+                return true;
+            }
+
+            return false;
         }
-        public bool TryGetNextShot()
+
+        private bool UpdateBatchName(string batchName, bool isChooseFirst = false)
         {
-            var index= DataBase.ShotNameList.IndexOf(DataBase.ShotName);
-            if (!TrySelectShot(++index))
+            if (!RefreshBatchNameList())
             {
                 return false;
             }
 
-            return true;
+            if (isChooseFirst)
+            {
+                BatchName = BatchNameList[0];
+                return true;
+            }
+            if (BatchNameList.Contains(batchName))
+            {
+                BatchName = batchName;
+                return true;
+            }
+
+            return false;
         }
-        public bool TryGetPreviousShot()
+
+        private bool UpdateBoardName(string boardName, bool isChooseFirst = false)
         {
-            var index= DataBase.ShotNameList.IndexOf(DataBase.ShotName);
-            if (!TrySelectShot(--index))
+            if (!RefreshBoardNameList())
             {
                 return false;
             }
 
-            return true;
+            if (isChooseFirst)
+            {
+                BoardName = BoardNameList[0];
+                return true;
+            }
+            if (BoardNameList.Contains(boardName))
+            {
+                BoardName = boardName;
+                return true;
+            }
+
+            return false;
         }
-        //
-        //public bool TrySelectSide(int index)
-        //{
-        //    _side = "";
-        //    _sideNameList = new List<string>();
-        //    _hasKilledSide = false;
 
-        //    IndexOfSide = index;
-        //    if (null == SideNameList || 0 == SideNameList.Count || index >= SideNameList.Count || index < 0)
-        //    {
-        //        _hasKilledSide = true;
-
-        //        return false;
-        //    }
-        //    _side = SideNameList[index];
-        //    LoadShotList();
-
-        //    return true;
-        //}
-        public bool TrySelectSide(int index)
+        private bool UpdateSideName(string sideName, bool isChooseFirst)
         {
-            if (null == DataBase.SideNameList)
+            if (!RefreshSideNameList())
             {
                 return false;
             }
-            return DataBase.UpdateSideName(DataBase.SideNameList[index]);
-        }
-        public bool TryGetNextSide()
-        {
-            if (!TrySelectSide(++IndexOfSide))
-            {
-                --IndexOfSide;
 
-                return false;
+            if (isChooseFirst)
+            {
+                SideName = SideNameList[0];
+                return true;
+            }
+            if (SideNameList.Contains(sideName))
+            {
+                SideName = sideName;
+                return true;
             }
 
-            return true;
+            return false;
         }
-        public bool TryGetPreviousSide()
+
+        private bool UpdateShotName(string shotName, bool isChooseFirst)
         {
-            if (!TrySelectSide(--IndexOfSide))
-            {
-                ++IndexOfSide;
-
-                return false;
-            }
-
-            return true;
-        }
-        //
-        //public bool TrySelectBoard(int index)
-        //{
-        //    _board = "";
-        //    _boardNameList = new List<string>();
-        //    _hasKilledBoard = false;
-
-        //    IndexOfBoard = index;
-        //    if (null == BoardNameList || 0 == BoardNameList.Count || index >= BoardNameList.Count || index < 0)
-        //    {
-        //        _hasKilledBoard = true;
-
-        //        return false;
-        //    }
-        //    _board = BoardNameList[index];
-        //    LoadSideList();
-
-        //    return true;
-        //}
-        public bool TrySelectBoard(int index)
-        {
-            if (null == DataBase.BoardNameList)
+            if (!RefreshShotNameList())
             {
                 return false;
             }
-            return DataBase.UpdateBoardName(DataBase.BoardNameList[index]);
-        }
-        public bool TryGetNextBoard()
-        {
-            if (!TrySelectBoard(++IndexOfBoard))
-            {
-                --IndexOfBoard;
 
-                return false;
+            if (isChooseFirst)
+            {
+                ShotName = ShotNameList[0];
+                return true;
+            }
+            if (ShotNameList.Contains(shotName))
+            {
+                ShotName = shotName;
+                return true;
             }
 
-            return true;
+            return false;
         }
-        public bool TryGetPreviousBoard()
+
+        private bool UpdateDefectName(string defectName, bool isChooseFirst)
         {
-            if (!TrySelectBoard(--IndexOfBoard))
-            {
-                ++IndexOfBoard;
-
-                return false;
-            }
-
-            return true;
-        }
-        //
-        //public bool TrySelectBatch(int index)
-        //{
-        //    _batch = "";
-        //    _boardNameList = new List<string>();
-        //    _hasKilledBatch = false;
-
-        //    IndexOfBatch = index;
-        //    if (null == BatchNameList || 0 == BatchNameList.Count || index >= BatchNameList.Count || index < 0)
-        //    {
-        //        _hasKilledBatch = true;
-
-        //        return false;
-        //    }
-        //    _batch = BatchNameList[index];
-        //    LoadBoardList();
-
-        //    return true;
-        //}
-        public bool TrySelectBatch(int index)
-        {
-            if (null == DataBase.BatchNameList)
+            if (!RefreshDefectNameList())
             {
                 return false;
             }
-            return DataBase.UpdateBatchName(DataBase.BatchNameList[index]);
-        }
-        public bool TryGetNextBatch()
-        {
-            if (!TrySelectBatch(++IndexOfBatch))
-            {
-                --IndexOfBatch;
 
-                return false;
+            if (isChooseFirst)
+            {
+                DefectName = DefectNameList[0];
+                return true;
+            }
+            if (DefectNameList.Contains(defectName))
+            {
+                DefectName = defectName;
+                return true;
             }
 
-            return true;
+            return false;
         }
-        public bool TryGetPreviousBatch()
-        {
-            if (!TrySelectBatch(--IndexOfBatch))
-            {
-                ++IndexOfBatch;
-
-                return false;
-            }
-
-            return true;
-        }
-        //
-        public void GetDefectInfo() { }
-
-        public void Mark(int type)
-        {
-
-        }
-        //
 
     }
 }

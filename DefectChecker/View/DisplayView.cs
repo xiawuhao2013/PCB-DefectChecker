@@ -37,8 +37,8 @@ namespace DefectChecker.View
 
         private void DataBaseInit()
         {
-            _dataBaseManager = new DataBaseManager();
-            _dataBase = _dataBaseManager.DataBase;
+            _dataBase = new MarkDataBase();
+            _dataBaseManager = new DataBaseManager(_dataBase);
 
             ComboBoxRefresh();
         }
@@ -52,23 +52,23 @@ namespace DefectChecker.View
             this.comboBoxShot.TextChanged -= new System.EventHandler(this.comboBoxShot_TextChanged);
             this.comboBoxDefect.TextChanged -= new System.EventHandler(this.comboBoxDefect_TextChanged);
 
-            comboBoxProduct.DataSource = _dataBase.ProductNameList;
-            comboBoxProduct.Text = _dataBase.ProductName;
+            comboBoxProduct.DataSource = _dataBaseManager.ProductNameList;
+            comboBoxProduct.Text = _dataBaseManager.ProductName;
 
-            comboBoxBatch.DataSource = _dataBase.BatchNameList;
-            comboBoxBatch.Text = _dataBase.BatchName;
+            comboBoxBatch.DataSource = _dataBaseManager.BatchNameList;
+            comboBoxBatch.Text = _dataBaseManager.BatchName;
 
-            comboBoxBoard.DataSource = _dataBase.BoardNameList;
-            comboBoxBoard.Text = _dataBase.BoardName;
+            comboBoxBoard.DataSource = _dataBaseManager.BoardNameList;
+            comboBoxBoard.Text = _dataBaseManager.BoardName;
 
-            comboBoxSide.DataSource = _dataBase.SideNameList;
-            comboBoxSide.Text = _dataBase.SideName;
+            comboBoxSide.DataSource = _dataBaseManager.SideNameList;
+            comboBoxSide.Text = _dataBaseManager.SideName;
 
-            comboBoxShot.DataSource = _dataBase.ShotNameList;
-            comboBoxShot.Text = _dataBase.ShotName;
+            comboBoxShot.DataSource = _dataBaseManager.ShotNameList;
+            comboBoxShot.Text = _dataBaseManager.ShotName;
 
-            comboBoxDefect.DataSource = _dataBase.DefectNameList;
-            comboBoxDefect.Text = _dataBase.DefectName;
+            comboBoxDefect.DataSource = _dataBaseManager.DefectNameList;
+            comboBoxDefect.Text = _dataBaseManager.DefectName;
             
             this.comboBoxProduct.TextChanged += new System.EventHandler(this.comboBoxProduct_TextChanged);
             this.comboBoxBatch.TextChanged += new System.EventHandler(this.comboBoxBatch_TextChanged);
@@ -81,42 +81,42 @@ namespace DefectChecker.View
         private void comboBoxProduct_TextChanged(object sender, EventArgs e)
         {
             string productName = comboBoxProduct.Text;
-            _dataBase.UpdateProductName(productName);
+            _dataBaseManager.SelectProduct(productName, false);
             ComboBoxRefresh();
         }
 
         private void comboBoxBatch_TextChanged(object sender, EventArgs e)
         {
             string batchName = comboBoxBatch.Text;
-            _dataBase.UpdateBatchName(batchName);
+            _dataBaseManager.SelectBatch(batchName, false);
             ComboBoxRefresh();
         }
 
         private void comboBoxBoard_TextChanged(object sender, EventArgs e)
         {
             string boardName = comboBoxBoard.Text;
-            _dataBase.UpdateBoardName(boardName);
+            _dataBaseManager.SelectBoard(boardName, false);
             ComboBoxRefresh();
         }
 
         private void comboBoxSide_TextChanged(object sender, EventArgs e)
         {
             string sideName = comboBoxSide.Text;
-            _dataBase.UpdateSideName(sideName);
+            _dataBaseManager.SelectSide(sideName, false);
             ComboBoxRefresh();
         }
 
         private void comboBoxShot_TextChanged(object sender, EventArgs e)
         {
             string shotName = comboBoxShot.Text;
-            _dataBase.UpdateShotName(shotName);
+            _dataBaseManager.SelectShot(shotName, false);
             ComboBoxRefresh();
         }
 
         private void comboBoxDefect_TextChanged(object sender, EventArgs e)
         {
             string defectName = comboBoxDefect.Text;
-            _dataBase.UpdateDefectName(defectName);
+            _dataBaseManager.SelectShot(defectName, false);
             ComboBoxRefresh();
         }
 
@@ -150,6 +150,7 @@ namespace DefectChecker.View
 
         private void RefreshDisplayWindows(List<DefectCell> defectCells, List<DisplayWindow> displayWindows)
         {
+            /*
             if (null == defectCells || null == displayWindows)
             {
                 return;
@@ -165,6 +166,7 @@ namespace DefectChecker.View
                 displayWindows[indexOfDisplayWindow].defectCell = defectCells[indexOfDisplayWindow];
                 displayWindows[indexOfDisplayWindow].RefreshWindow();
             }
+            */
 
             return;
         }
