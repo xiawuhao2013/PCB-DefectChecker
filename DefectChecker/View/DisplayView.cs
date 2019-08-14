@@ -11,6 +11,7 @@ namespace DefectChecker.View
     public partial class DisplayView : UserControl
     {
         private bool _canRefreshDisplayWindows = true;
+        private int _indexOfDisplayWindowOnSelected = 0;
         // 
         private List<DefectCell> _defectCells = null; // replace with DataBaseManager.xxx
         private List<DisplayWindow> _displayWindows = null; // may need window number control.
@@ -188,11 +189,11 @@ namespace DefectChecker.View
             {
                 return base.ProcessCmdKey(ref msg, keyData);
             }
-            int indexOfDisplayWindowOnSelected = 0;
             switch (keyData)
             {
                 // TODO: add manager codes.
-                // judge the moment to refresh all displayWindows, or move the cursor within displayWindows.
+                // treate the _indexOfDisplayWindowOnSelected here.
+                // and determine whether to RefreshDisplayWindows() or not, according to _indexOfDisplayWindowOnSelected.
                 case Keys.Right:
                 case Keys.Left:
                 case Keys.Up:
@@ -202,7 +203,7 @@ namespace DefectChecker.View
                 default:
                     break;
             }
-            MoveCursorToDisplayWindow(indexOfDisplayWindowOnSelected, _displayWindows);
+            MoveCursorToDisplayWindow(_indexOfDisplayWindowOnSelected, _displayWindows);
 
             return true;
         }
