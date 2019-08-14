@@ -119,14 +119,7 @@ namespace DefectChecker.View
             {
                 return;
             }
-            if (null != defectCell.DefectImage)
-            {
-                displayWindow.ImageOfCheck = defectCell.DefectImage.Clone() as Bitmap;
-            }
-            if (null != defectCell.TemplateImage)
-            {
-                displayWindow.ImageOfModel = defectCell.TemplateImage.Clone() as Bitmap;
-            }
+            displayWindow.defectCell = defectCell;
             displayWindow.Refresh();
 
             return;
@@ -140,6 +133,7 @@ namespace DefectChecker.View
             }
             switch (keyData)
             {
+                // TODO: add manager codes.
                 case Keys.Right:
                 case Keys.Left:
                 case Keys.Up:

@@ -9,25 +9,28 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using AqVision.Controls;
 using Aqrose.Framework.Utility.Tools;
+using DefectChecker.DefectDataStructure;
 
 namespace DefectChecker.View.widget
 {
     public partial class DisplayWindow : UserControl
     {
-        private List<double> _posXsOfRoi = new List<double>();
-        private List<double> _posYsOfRoi = new List<double>();
-        private List<int> _pointsNumOfRoi = new List<int>();
-
-        public bool IsShowModel { get; set; }
-
-        public Bitmap ImageOfCheck = null;
-        public Bitmap ImageOfModel = null;
+        public DefectCell defectCell { get; set; }
 
         public DisplayWindow()
         {
             InitializeComponent();
             ShowModelWindow();
             Refresh();
+        }
+
+        private void GetDefectPointsForAqDisplay(List<ShapeBase> shapeBases, out List<double> posXs, out List<double> posYs, out List<int> pointsNums)
+        {
+            posXs = new List<double>();
+            posYs = new List<double>();
+            pointsNums = new List<int>();
+
+            throw new NotImplementedException();
         }
 
         private bool IsModelWindowHiden()
@@ -60,7 +63,7 @@ namespace DefectChecker.View.widget
         private void RefreshAqDisplay()
         {
             RefreshAqDisplayOfCheck();
-            if (0 != this.splitContainer1.Panel2.Width)
+            if (!IsModelWindowHiden())
             {
                 RefreshAqDispayOfModel();
             }
@@ -71,12 +74,13 @@ namespace DefectChecker.View.widget
         private void RefreshAqDisplayOfCheck()
         {
             this.aqDisplayOfCheck.InteractiveGraphics.Clear();
-            if (null == ImageOfCheck)
+            if (null == defectCell || null == defectCell.DefectImage)
             {
                 return;
             }
-            this.aqDisplayOfCheck.Image = ImageOfCheck;
-            DisplayContour.GetContours(_posYsOfRoi, _posXsOfRoi, _pointsNumOfRoi, out var aqShapes);
+            this.aqDisplayOfCheck.Image = defectCell.DefectImage.Clone() as Bitmap;
+            GetDefectPointsForAqDisplay(defectCell.Info.SubDefectList, out var posXs, out var posYs, out var pointsNums);
+            DisplayContour.GetContours(posYs, posXs, pointsNums, out var aqShapes);
             DisplayContour.Display(aqDisplayOfCheck, aqShapes);
             this.aqDisplayOfCheck.FitToScreen();
             this.aqDisplayOfCheck.Update();
@@ -87,11 +91,11 @@ namespace DefectChecker.View.widget
         private void RefreshAqDispayOfModel()
         {
             this.aqDisplayOfModel.InteractiveGraphics.Clear();
-            if (null == ImageOfModel)
+            if (null == defectCell || null == defectCell.TemplateImage)
             {
                 return;
             }
-            this.aqDisplayOfModel.Image = ImageOfModel;
+            this.aqDisplayOfModel.Image = defectCell.TemplateImage.Clone() as Bitmap;
             this.aqDisplayOfModel.FitToScreen();
             this.aqDisplayOfModel.Update();
 
