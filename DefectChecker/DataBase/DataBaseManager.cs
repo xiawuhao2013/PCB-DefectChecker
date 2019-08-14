@@ -60,6 +60,14 @@ namespace DefectChecker.DataBase
         public string ShotName { get; set; }
         public string DefectName { get; set; }
 
+        //// index
+        //public int IndexOfProductNameList { get; set; }
+        //public int IndexOfBatchNameList { get; set; }
+        //public int IndexOfBoardNameList { get; set; }
+        //public int IndexOfSideNameList { get; set; }
+        //public int IndexOfShotNameList { get; set; }
+        //public int IndexOfDefectNameList { get; set; }
+
         public DataBaseManager(MarkDataBase markDataBase)
         {
             _markDataBase = markDataBase;
@@ -222,37 +230,31 @@ namespace DefectChecker.DataBase
 
         private bool RefreshProductNameList()
         {
-            ResetProduct();
             return _device.GetProductList(out _productNameList) > 0;
         }
 
         private bool RefreshBatchNameList()
         {
-            ResetBatch();
             return _device.GetBatchList(ProductName, out _batchNameList) > 0;
         }
 
         private bool RefreshBoardNameList()
         {
-            ResetBoard();
             return _device.GetBoardList(ProductName, BatchName, out _boardNameList) > 0;
         }
 
         private bool RefreshSideNameList()
         {
-            ResetSide();
             return _device.GetSideList(ProductName, BatchName, BoardName, out _sideNameList) > 0;
         }
 
         private bool RefreshShotNameList()
         {
-            ResetShot();
             return _device.GetShotList(ProductName, BatchName, BoardName, SideName, out _shotNameList) > 0;
         }
 
         private bool RefreshDefectNameList()
         {
-            ResetDefect();
             return _device.GetDefectListInShot(ProductName, BatchName, BoardName, SideName, ShotName, out _defectNameList) > 0;
         }
 
@@ -352,6 +354,7 @@ namespace DefectChecker.DataBase
             return true;
         }
 
+        //
         public void SwitchProduct(string productName)
         {
             var index = ProductNameList.IndexOf(productName);
@@ -410,6 +413,164 @@ namespace DefectChecker.DataBase
             }
 
             return;
+        }
+
+        //
+        public bool TryGetNextProductNotEmpty (bool isHead = false)
+        {
+            int index = -1;
+            RefreshProductNameList();
+            do
+            {
+                if (!isHead)
+                {
+                    if (ProductNameList.Contains(ProductName))
+                    {
+                        index = ProductNameList.IndexOf(ProductName);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
+                if (index >= ProductNameList.Count - 1)
+                {
+                    return false;
+                }
+            } while (!TrySelectProduct(++index));
+
+            return TryGetNextBatchNotEmpty(true);
+        }
+
+        public bool TryGetNextBatchNotEmpty(bool isHead = false)
+        {
+            int index = -1;
+            RefreshBatchNameList();
+            do
+            {
+                if (!isHead)
+                {
+                    if (BatchNameList.Contains(BatchName))
+                    {
+                        index = BatchNameList.IndexOf(BatchName);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                if (index >= BatchNameList.Count - 1)
+                {
+                    return false;
+                }
+            } while (!TrySelectBatch(++index));
+
+            return TryGetNextBoardNotEmpty(true);
+        }
+
+        public bool TryGetNextBoardNotEmpty(bool isHead = false)
+        {
+            int index = -1;
+            RefreshBoardNameList();
+            do
+            {
+                if (!isHead)
+                {
+                    if (BoardNameList.Contains(BoardName))
+                    {
+                        index = BoardNameList.IndexOf(BoardName);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                if (index >= BoardNameList.Count - 1)
+                {
+                    return false;
+                }
+            } while (!TrySelectBoard(++index));
+
+            return TryGetNextSideNotEmpty(true);
+        }
+
+        public bool TryGetNextSideNotEmpty(bool isHead = false)
+        {
+            int index = -1;
+            RefreshSideNameList();
+            do
+            {
+                if (!isHead)
+                {
+                    if (SideNameList.Contains(SideName))
+                    {
+                        index = SideNameList.IndexOf(SideName);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                if (index >= SideNameList.Count - 1)
+                {
+                    return false;
+                }
+            } while (!TrySelectSide(++index));
+
+            return TryGetNextShotNotEmpty(true);
+        }
+
+        public bool TryGetNextShotNotEmpty(bool isHead = false)
+        {
+            int index = -1;
+            RefreshShotNameList();
+            do
+            {
+                if (!isHead)
+                {
+                    if (ShotNameList.Contains(ShotName))
+                    {
+                        index = ShotNameList.IndexOf(ShotName);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                if (index >= ShotNameList.Count - 1)
+                {
+                    return false;
+                }
+            } while (!TrySelectShot(++index));
+
+            return TryGetNextDefectNotEmpty(true);
+        }
+
+        public bool TryGetNextDefectNotEmpty(bool isHead = false)
+        {
+            int index = -1;
+            RefreshDefectNameList();
+            do
+            {
+                if (!isHead)
+                {
+                    if (DefectNameList.Contains(DefectName))
+                    {
+                        index = DefectNameList.IndexOf(DefectName);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                if (index >= DefectNameList.Count - 1)
+                {
+                    return false;
+                }
+            } while (!TrySelectDefect(++index));
+
+            return true;
         }
     }
 }

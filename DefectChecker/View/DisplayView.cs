@@ -193,6 +193,21 @@ namespace DefectChecker.View
                 // treate the _indexOfDisplayWindowOnSelected here.
                 // and determine whether to RefreshDisplayWindows() or not, according to _indexOfDisplayWindowOnSelected.
                 case Keys.Right:
+                    if (_dataBaseManager.TryGetNextDefectNotEmpty() || _dataBaseManager.TryGetNextShotNotEmpty() || _dataBaseManager.TryGetNextSideNotEmpty() || _dataBaseManager.TryGetNextBoardNotEmpty() || _dataBaseManager.TryGetNextBatchNotEmpty() || _dataBaseManager.TryGetNextProductNotEmpty())
+                    {
+                        var defect = _dataBaseManager.DefectName;
+                        var shot = _dataBaseManager.ShotName;
+                        var side = _dataBaseManager.SideName;
+                        var board = _dataBaseManager.BoardName;
+                        var batch = _dataBaseManager.BatchName;
+                        var product = _dataBaseManager.ProductName;
+                        ComboBoxRefresh();
+                    }
+                    else
+                    {
+                        MessageBox.Show("完了！");
+                    }
+                    break;
                 case Keys.Left:
                 case Keys.Up:
                 case Keys.Down:
