@@ -102,8 +102,17 @@ namespace DefectChecker.View.widget
             return;
         }
 
-        public void Refresh()
+        public void RefreshWindow()
         {
+            // remove it or not is all ok.
+            /*
+            if (null == defectCell)
+            {
+                this.Hide();
+
+                return;
+            }
+            */
             RefreshAqDisplay();
             RefreshTitle();
             RefreshInfo();

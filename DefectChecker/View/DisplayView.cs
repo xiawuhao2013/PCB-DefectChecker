@@ -11,6 +11,10 @@ namespace DefectChecker.View
     public partial class DisplayView : UserControl
     {
         private bool _canRefreshDisplayWindows = true;
+        // 
+        private List<DefectCell> _defectCells = null; // replace with DataBaseManager.xxx
+        private List<DisplayWindow> _displayWindows = null; // may need window number control.
+
         private DataBaseManager _dataBaseManager;
         private MarkDataBase _dataBase;
 
@@ -19,6 +23,8 @@ namespace DefectChecker.View
             InitializeComponent();
             DataBaseInit();
 
+            // 
+            _displayWindows.Add(displayWindow1);
         }
 
         private void EnableCanRefreshDisplayWindows()
@@ -113,14 +119,65 @@ namespace DefectChecker.View
             ComboBoxRefresh();
         }
 
-        private void RefreshDisplayWindow(DefectCell defectCell, DisplayWindow displayWindow)
+        private void ShowModelOnDisplayWindows(List<DisplayWindow> displayWindows)
         {
-            if (null == defectCell)
+            if (null == displayWindows)
             {
                 return;
             }
-            displayWindow.defectCell = defectCell;
-            displayWindow.Refresh();
+            foreach (var displayWindow in displayWindows)
+            {
+                displayWindow.ShowModelWindow();
+            }
+
+            return;
+        }
+
+        private void HideModelOnDisplayWindows(List<DisplayWindow> displayWindows)
+        {
+            if (null == displayWindows)
+            {
+                return;
+            }
+            foreach (var displayWindow in displayWindows)
+            {
+                displayWindow.HideModelWindow();
+            }
+
+            return;
+        }
+
+        private void RefreshDisplayWindows(List<DefectCell> defectCells, List<DisplayWindow> displayWindows)
+        {
+            if (null == defectCells || null == displayWindows)
+            {
+                return;
+            }
+            if (defectCells.Count != displayWindows.Count)
+            {
+                MessageBox.Show("数量异常!");
+
+                return;
+            }
+            for (int indexOfDisplayWindow = 0; indexOfDisplayWindow < displayWindows.Count; ++indexOfDisplayWindow)
+            {
+                displayWindows[indexOfDisplayWindow].defectCell = defectCells[indexOfDisplayWindow];
+                displayWindows[indexOfDisplayWindow].RefreshWindow();
+            }
+
+            return;
+        }
+
+        private void MoveCursorToDisplayWindow(int indexOfWindow, List<DisplayWindow> displayWindows)
+        {
+            if (displayWindows == null)
+            {
+                return;
+            }
+            if (indexOfWindow < displayWindows.Count)
+            {
+                displayWindows[indexOfWindow].Focus();
+            }
 
             return;
         }
@@ -131,9 +188,11 @@ namespace DefectChecker.View
             {
                 return base.ProcessCmdKey(ref msg, keyData);
             }
+            int indexOfDisplayWindowOnSelected = 0;
             switch (keyData)
             {
                 // TODO: add manager codes.
+                // judge the moment to refresh all displayWindows, or move the cursor within displayWindows.
                 case Keys.Right:
                 case Keys.Left:
                 case Keys.Up:
@@ -143,14 +202,16 @@ namespace DefectChecker.View
                 default:
                     break;
             }
-            return false;
+            MoveCursorToDisplayWindow(indexOfDisplayWindowOnSelected, _displayWindows);
+
+            return true;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             if (_canRefreshDisplayWindows)
             {
-                this.displayWindow1.Refresh();
+                RefreshDisplayWindows(_defectCells, _displayWindows);
                 _canRefreshDisplayWindows = false;
             }
 
