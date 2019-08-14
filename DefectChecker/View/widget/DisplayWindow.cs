@@ -26,7 +26,7 @@ namespace DefectChecker.View.widget
         public DisplayWindow()
         {
             InitializeComponent();
-            HideModelWindow();
+            ShowModelWindow();
             Refresh();
         }
 

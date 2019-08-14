@@ -4,11 +4,13 @@ using System.Drawing;
 using System.Windows.Forms;
 using DefectChecker.DataBase;
 using DefectChecker.DefectDataStructure;
+using DefectChecker.View.widget;
 
 namespace DefectChecker.View
 {
     public partial class DisplayView : UserControl
     {
+        private bool _canRefreshDisplayWindows = true;
         private DataBaseManager _dataBaseManager;
         private MarkDataBase _dataBase;
 
@@ -16,6 +18,14 @@ namespace DefectChecker.View
         {
             InitializeComponent();
             DataBaseInit();
+
+        }
+
+        private void EnableCanRefreshDisplayWindows()
+        {
+            _canRefreshDisplayWindows = true;
+
+            return;
         }
 
         private void DataBaseInit()
@@ -101,6 +111,72 @@ namespace DefectChecker.View
             string defectName = comboBoxDefect.Text;
             _dataBase.UpdateDefectName(defectName);
             ComboBoxRefresh();
+        }
+
+        private void RefreshDisplayWindow(DefectCell defectCell, DisplayWindow displayWindow)
+        {
+            if (null == defectCell)
+            {
+                return;
+            }
+            if (null != defectCell.DefectImage)
+            {
+                displayWindow.ImageOfCheck = defectCell.DefectImage.Clone() as Bitmap;
+            }
+            if (null != defectCell.TemplateImage)
+            {
+                displayWindow.ImageOfModel = defectCell.TemplateImage.Clone() as Bitmap;
+            }
+            displayWindow.Refresh();
+
+            return;
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (_canRefreshDisplayWindows)
+            {
+                return base.ProcessCmdKey(ref msg, keyData);
+            }
+            switch (keyData)
+            {
+                case Keys.Right:
+                case Keys.Left:
+                case Keys.Up:
+                case Keys.Down:
+                    EnableCanRefreshDisplayWindows();
+                    break;
+                default:
+                    break;
+            }
+            return false;
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (_canRefreshDisplayWindows)
+            {
+                this.displayWindow1.Refresh();
+                _canRefreshDisplayWindows = false;
+            }
+
+            return;
+        }
+
+        private void DisplayView_Enter(object sender, EventArgs e)
+        {
+            this.timer1.Start();
+            EnableCanRefreshDisplayWindows();
+
+            return;
+        }
+
+        private void DisplayView_Leave(object sender, EventArgs e)
+        {
+            this.timer1.Stop();
+            EnableCanRefreshDisplayWindows();
+
+            return;
         }
     }
 }

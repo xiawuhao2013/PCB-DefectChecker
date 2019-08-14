@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -57,8 +58,9 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.tableLayoutPanelTemplate = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelImage = new System.Windows.Forms.TableLayoutPanel();
-            this.splitter2 = new System.Windows.Forms.Splitter();
             this.displayWindow1 = new DefectChecker.View.widget.DisplayWindow();
+            this.splitter2 = new System.Windows.Forms.Splitter();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -391,6 +393,14 @@
             this.tableLayoutPanelImage.Size = new System.Drawing.Size(674, 408);
             this.tableLayoutPanelImage.TabIndex = 6;
             // 
+            // displayWindow1
+            // 
+            this.displayWindow1.IsShowModel = false;
+            this.displayWindow1.Location = new System.Drawing.Point(3, 3);
+            this.displayWindow1.Name = "displayWindow1";
+            this.displayWindow1.Size = new System.Drawing.Size(331, 402);
+            this.displayWindow1.TabIndex = 0;
+            // 
             // splitter2
             // 
             this.splitter2.Location = new System.Drawing.Point(571, 0);
@@ -399,13 +409,9 @@
             this.splitter2.TabIndex = 7;
             this.splitter2.TabStop = false;
             // 
-            // displayWindow1
+            // timer1
             // 
-            this.displayWindow1.IsShowModel = false;
-            this.displayWindow1.Location = new System.Drawing.Point(3, 3);
-            this.displayWindow1.Name = "displayWindow1";
-            this.displayWindow1.Size = new System.Drawing.Size(331, 402);
-            this.displayWindow1.TabIndex = 0;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // DisplayView
             // 
@@ -417,6 +423,8 @@
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "DisplayView";
             this.Size = new System.Drawing.Size(1248, 700);
+            this.Enter += new System.EventHandler(this.DisplayView_Enter);
+            this.Leave += new System.EventHandler(this.DisplayView_Leave);
             this.panel1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
@@ -464,5 +472,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelImage;
         private System.Windows.Forms.Splitter splitter2;
         private widget.DisplayWindow displayWindow1;
+        private System.Windows.Forms.Timer timer1;
     }
 }
