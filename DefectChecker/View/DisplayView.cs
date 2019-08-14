@@ -80,44 +80,40 @@ namespace DefectChecker.View
 
         private void comboBoxProduct_TextChanged(object sender, EventArgs e)
         {
-            string productName = comboBoxProduct.Text;
-            _dataBaseManager.SelectProduct(productName, false);
+            _dataBaseManager.SwitchProduct(comboBoxProduct.Text);
             ComboBoxRefresh();
         }
 
         private void comboBoxBatch_TextChanged(object sender, EventArgs e)
         {
-            string batchName = comboBoxBatch.Text;
-            _dataBaseManager.SelectBatch(batchName, false);
+            _dataBaseManager.SwitchBatch(comboBoxBatch.Text);
             ComboBoxRefresh();
         }
 
         private void comboBoxBoard_TextChanged(object sender, EventArgs e)
         {
-            string boardName = comboBoxBoard.Text;
-            _dataBaseManager.SelectBoard(boardName, false);
+            _dataBaseManager.SwitchBoard(comboBoxBoard.Text);
             ComboBoxRefresh();
         }
 
         private void comboBoxSide_TextChanged(object sender, EventArgs e)
         {
-            string sideName = comboBoxSide.Text;
-            _dataBaseManager.SelectSide(sideName, false);
+            _dataBaseManager.SwitchSide(comboBoxSide.Text);
             ComboBoxRefresh();
         }
 
         private void comboBoxShot_TextChanged(object sender, EventArgs e)
         {
-            string shotName = comboBoxShot.Text;
-            _dataBaseManager.SelectShot(shotName, false);
+            _dataBaseManager.SwitchShot(comboBoxShot.Text);
             ComboBoxRefresh();
         }
 
         private void comboBoxDefect_TextChanged(object sender, EventArgs e)
         {
-            string defectName = comboBoxDefect.Text;
-            _dataBaseManager.SelectShot(defectName, false);
+            _dataBaseManager.SwitchDefect(comboBoxDefect.Text);
             ComboBoxRefresh();
+
+            return;
         }
 
         private void ShowModelOnDisplayWindows(List<DisplayWindow> displayWindows)

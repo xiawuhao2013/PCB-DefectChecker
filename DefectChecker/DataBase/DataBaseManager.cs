@@ -66,25 +66,9 @@ namespace DefectChecker.DataBase
             Init();
         }
 
-        private void ClearDataBaseInfo()
-        {
-            ProductName = "";
-            BatchName = "";
-            BoardName = "";
-            SideName = "";
-            ShotName = "";
-            DefectName = "";
-
-            _productNameList = new List<string>();
-            _batchNameList = new List<string>();
-            _boardNameList = new List<string>();
-            _sideNameList = new List<string>();
-            _shotNameList = new List<string>();
-            _defectNameList = new List<string>();
-        }
-
         private void Init()
         {
+            ResetProduct();
             LoadProjectSetting();
             LoadDataBaseInfo();
             SaveDataBaseInfo();
@@ -100,7 +84,6 @@ namespace DefectChecker.DataBase
 
         private void LoadDataBaseInfo()
         {
-            ClearDataBaseInfo();
             _device.SetDataDir(_modelDir, _dataDir);
 
             XmlParameter xmlParameter = new XmlParameter();
@@ -113,13 +96,35 @@ namespace DefectChecker.DataBase
             ShotName = xmlParameter.GetParamData("ShotName");
             DefectName = xmlParameter.GetParamData("DefectName");
 
-            if (string.IsNullOrWhiteSpace(ProductName))
+            RefreshProductNameList();
+            if (!ProductNameList.Contains(ProductName))
             {
-                SelectProduct("", true);
+                TrySelectProduct(0);
             }
-            else
+            RefreshBatchNameList();
+            if (!BatchNameList.Contains(BatchName))
             {
-               SelectProduct(ProductName, false);
+                TrySelectBatch(0);
+            }
+            RefreshBoardNameList();
+            if(!BoardNameList.Contains(BoardName))
+            {
+                TrySelectBoard(0);
+            }
+            RefreshSideNameList();
+            if (!SideNameList.Contains(SideName))
+            {
+                TrySelectSide(0);
+            }
+            RefreshShotNameList();
+            if (!ShotNameList.Contains(ShotName))
+            {
+                TrySelectShot(0);
+            }
+            RefreshDefectNameList();
+            if (!DefectNameList.Contains(DefectName))
+            {
+                TrySelectDefect(0);
             }
 
             return;
@@ -217,228 +222,194 @@ namespace DefectChecker.DataBase
 
         private bool RefreshProductNameList()
         {
+            ResetProduct();
             return _device.GetProductList(out _productNameList) > 0;
         }
 
         private bool RefreshBatchNameList()
         {
+            ResetBatch();
             return _device.GetBatchList(ProductName, out _batchNameList) > 0;
         }
 
         private bool RefreshBoardNameList()
         {
+            ResetBoard();
             return _device.GetBoardList(ProductName, BatchName, out _boardNameList) > 0;
         }
 
         private bool RefreshSideNameList()
         {
+            ResetSide();
             return _device.GetSideList(ProductName, BatchName, BoardName, out _sideNameList) > 0;
         }
 
         private bool RefreshShotNameList()
         {
+            ResetShot();
             return _device.GetShotList(ProductName, BatchName, BoardName, SideName, out _shotNameList) > 0;
         }
 
         private bool RefreshDefectNameList()
         {
+            ResetDefect();
             return _device.GetDefectListInShot(ProductName, BatchName, BoardName, SideName, ShotName, out _defectNameList) > 0;
         }
 
-
-        public bool SelectProduct(string productName, bool isChooseFirst)
+        private bool TrySelectProduct(int index)
         {
             ResetProduct();
-            if (!UpdateProductName(productName, isChooseFirst))
-            {
-                return false;
-            }
-
-            return SelectBatch("", true);
-        }
-
-        public bool SelectBatch(string batchName, bool isChooseFirst)
-        {
-            ResetBatch();
-            if (!UpdateBatchName(batchName, isChooseFirst))
-            {
-                return false;
-            }
-
-            return SelectBoard("", true);
-        }
-
-        public bool SelectBoard(string boardName, bool isChooseFirst)
-        {
-            ResetBoard();
-            if (!UpdateBoardName(boardName, isChooseFirst))
-            {
-                return false;
-            }
-
-            return SelectSide("", true);
-        }
-
-        public bool SelectSide(string sideName, bool isChooseFirst)
-        {
-            ResetSide();
-            if (!UpdateSideName(sideName, isChooseFirst))
-            {
-                return false;
-            }
-
-            return SelectShot("", true);
-        }
-
-        public bool SelectShot(string shotName, bool isChooseFirst)
-        {
-            ResetShot();
-            if (!UpdateShotName(shotName, isChooseFirst))
-            {
-                return false;
-            }
-
-            return SelectDefect("", true);
-        }
-
-        public bool SelectDefect(string defectName, bool isChooseFirst)
-        {
-            ResetDefect();
-            if (!UpdateDefectName(defectName, isChooseFirst))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        
-        
-
-        private bool UpdateProductName(string productName, bool isChooseFirst = false)
-        {
             if (!RefreshProductNameList())
             {
                 return false;
             }
-            if (isChooseFirst)
+            if (index >= ProductNameList.Count || index < 0)
             {
-                ProductName = ProductNameList[0];
-                return true;
+                return false;
             }
-            if (ProductNameList.Contains(productName))
-            {
-                ProductName = productName;
-                return true;
-            }
+            ProductName = ProductNameList[index];
 
-            return false;
+            return true;
         }
 
-        private bool UpdateBatchName(string batchName, bool isChooseFirst = false)
+        private bool TrySelectBatch(int index)
         {
+            ResetBatch();
             if (!RefreshBatchNameList())
             {
                 return false;
             }
-
-            if (isChooseFirst)
+            if (index >= BatchNameList.Count || index < 0)
             {
-                BatchName = BatchNameList[0];
-                return true;
+                return false;
             }
-            if (BatchNameList.Contains(batchName))
-            {
-                BatchName = batchName;
-                return true;
-            }
+            BatchName = BatchNameList[index];
 
-            return false;
+            return true;
         }
 
-        private bool UpdateBoardName(string boardName, bool isChooseFirst = false)
+        private bool TrySelectBoard(int index)
         {
+            ResetBoard();
             if (!RefreshBoardNameList())
             {
                 return false;
             }
-
-            if (isChooseFirst)
+            if (index >= BoardNameList.Count || index < 0)
             {
-                BoardName = BoardNameList[0];
-                return true;
+                return false;
             }
-            if (BoardNameList.Contains(boardName))
-            {
-                BoardName = boardName;
-                return true;
-            }
+            BoardName = BoardNameList[index];
 
-            return false;
+            return true;
         }
 
-        private bool UpdateSideName(string sideName, bool isChooseFirst)
+        private bool TrySelectSide(int index)
         {
+            ResetSide();
             if (!RefreshSideNameList())
             {
                 return false;
             }
-
-            if (isChooseFirst)
+            if (index >= SideNameList.Count || index < 0)
             {
-                SideName = SideNameList[0];
-                return true;
+                return false;
             }
-            if (SideNameList.Contains(sideName))
-            {
-                SideName = sideName;
-                return true;
-            }
+            SideName = SideNameList[index];
 
-            return false;
+            return true;
         }
 
-        private bool UpdateShotName(string shotName, bool isChooseFirst)
+        private bool TrySelectShot(int index)
         {
+            ResetShot();
             if (!RefreshShotNameList())
             {
                 return false;
             }
-
-            if (isChooseFirst)
+            if (index >= ShotNameList.Count || index < 0)
             {
-                ShotName = ShotNameList[0];
-                return true;
+                return false;
             }
-            if (ShotNameList.Contains(shotName))
-            {
-                ShotName = shotName;
-                return true;
-            }
+            ShotName = ShotNameList[index];
 
-            return false;
+            return true;
         }
 
-        private bool UpdateDefectName(string defectName, bool isChooseFirst)
+        private bool TrySelectDefect(int index)
         {
+            ResetDefect();
             if (!RefreshDefectNameList())
             {
                 return false;
             }
-
-            if (isChooseFirst)
+            if (index >= DefectNameList.Count || index < 0)
             {
-                DefectName = DefectNameList[0];
-                return true;
+                return false;
             }
-            if (DefectNameList.Contains(defectName))
-            {
-                DefectName = defectName;
-                return true;
-            }
+            DefectName = DefectNameList[index];
 
-            return false;
+            return true;
         }
 
+        public void SwitchProduct(string productName)
+        {
+            var index = ProductNameList.IndexOf(productName);
+            if (TrySelectProduct(index) && TrySelectBatch(0) && TrySelectBoard(0) && TrySelectSide(0) && TrySelectShot(0) && TrySelectDefect(0))
+            {
+            }
+
+            return;
+        }
+
+        public void SwitchBatch(string batchName)
+        {
+            var index = BatchNameList.IndexOf(batchName);
+            if (TrySelectBatch(index) && TrySelectBoard(0) && TrySelectSide(0) && TrySelectShot(0) && TrySelectDefect(0))
+            {
+            }
+
+            return;
+        }
+
+        public void SwitchBoard(string boardName)
+        {
+            var index = BoardNameList.IndexOf(boardName);
+            if (TrySelectBoard(index) && TrySelectSide(0) && TrySelectShot(0) && TrySelectDefect(0))
+            {
+            }
+
+            return;
+        }
+
+        public void SwitchSide(string sideName)
+        {
+            var index = SideNameList.IndexOf(sideName);
+            if (TrySelectSide(index) && TrySelectShot(0) && TrySelectDefect(0))
+            {
+            }
+
+            return;
+        }
+
+        public void SwitchShot(string shotName)
+        {
+            var index = ShotNameList.IndexOf(shotName);
+            if (TrySelectShot(index) && TrySelectDefect(0))
+            {
+            }
+
+            return;
+        }
+
+        public void SwitchDefect(string defectName)
+        {
+            var index = DefectNameList.IndexOf(defectName);
+            if (TrySelectDefect(index))
+            {
+            }
+
+            return;
+        }
     }
 }
