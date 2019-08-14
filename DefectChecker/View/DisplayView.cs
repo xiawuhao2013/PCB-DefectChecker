@@ -13,8 +13,8 @@ namespace DefectChecker.View
         private bool _canRefreshDisplayWindows = true;
         private int _indexOfDisplayWindowOnSelected = 0;
         // 
-        private List<DefectCell> _defectCells = null; // replace with DataBaseManager.xxx
-        private List<DisplayWindow> _displayWindows = null; // may need window number control.
+        private List<DefectCell> _defectCells = new List<DefectCell>(); // replace with DataBaseManager.xxx
+        private List<DisplayWindow> _displayWindows = new List<DisplayWindow>(); // may need window number control.
 
         private DataBaseManager _dataBaseManager;
         private MarkDataBase _dataBase;
