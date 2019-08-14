@@ -209,6 +209,21 @@ namespace DefectChecker.View
                     }
                     break;
                 case Keys.Left:
+                    if (_dataBaseManager.TryGetPreviousDefectNotEmpty() || _dataBaseManager.TryGetPreviousShotNotEmpty() || _dataBaseManager.TryGetPreviousSideNotEmpty() || _dataBaseManager.TryGetPreviousBoardNotEmpty() || _dataBaseManager.TryGetPreviousBatchNotEmpty() || _dataBaseManager.TryGetPreviousProductNotEmpty())
+                    {
+                        var defect = _dataBaseManager.DefectName;
+                        var shot = _dataBaseManager.ShotName;
+                        var side = _dataBaseManager.SideName;
+                        var board = _dataBaseManager.BoardName;
+                        var batch = _dataBaseManager.BatchName;
+                        var product = _dataBaseManager.ProductName;
+                        ComboBoxRefresh();
+                    }
+                    else
+                    {
+                        MessageBox.Show("完了！");
+                    }
+                    break;
                 case Keys.Up:
                 case Keys.Down:
                     EnableCanRefreshDisplayWindows();

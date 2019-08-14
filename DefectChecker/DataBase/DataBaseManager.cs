@@ -572,5 +572,162 @@ namespace DefectChecker.DataBase
 
             return true;
         }
+
+        //
+        public bool TryGetPreviousProductNotEmpty(bool isEnd = false)
+        {
+            RefreshProductNameList();
+            int index = ProductNameList.Count;
+            do
+            {
+                if (!isEnd)
+                {
+                    if (ProductNameList.Contains(ProductName))
+                    {
+                        index = ProductNameList.IndexOf(ProductName);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                if (index <= 0)
+                {
+                    return false;
+                }
+            } while (!TrySelectProduct(--index));
+
+            return TryGetPreviousBatchNotEmpty(true);
+        }
+
+        public bool TryGetPreviousBatchNotEmpty(bool isEnd = false)
+        {
+            RefreshBatchNameList();
+            int index = BatchNameList.Count;
+            do
+            {
+                if (!isEnd)
+                {
+                    if (BatchNameList.Contains(BatchName))
+                    {
+                        index = BatchNameList.IndexOf(BatchName);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                if (index <= 0)
+                {
+                    return false;
+                }
+            } while (!TrySelectBatch(--index));
+
+            return TryGetPreviousBoardNotEmpty(true);
+        }
+
+        public bool TryGetPreviousBoardNotEmpty(bool isEnd = false)
+        {
+            RefreshBoardNameList();
+            int index = BoardNameList.Count;
+            do
+            {
+                if (!isEnd)
+                {
+                    if (BoardNameList.Contains(BoardName))
+                    {
+                        index = BoardNameList.IndexOf(BoardName);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                if (index <= 0)
+                {
+                    return false;
+                }
+            } while (!TrySelectBoard(--index));
+
+            return TryGetPreviousSideNotEmpty(true);
+        }
+
+        public bool TryGetPreviousSideNotEmpty(bool isEnd = false)
+        {
+            RefreshSideNameList();
+            int index = SideNameList.Count;
+            do
+            {
+                if (!isEnd)
+                {
+                    if (SideNameList.Contains(SideName))
+                    {
+                        index = SideNameList.IndexOf(SideName);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                if (index <= 0)
+                {
+                    return false;
+                }
+            } while (!TrySelectSide(--index));
+
+            return TryGetPreviousShotNotEmpty(true);
+        }
+
+        public bool TryGetPreviousShotNotEmpty(bool isEnd = false)
+        {
+            RefreshShotNameList();
+            int index = ShotNameList.Count;
+            do
+            {
+                if (!isEnd)
+                {
+                    if (ShotNameList.Contains(ShotName))
+                    {
+                        index = ShotNameList.IndexOf(ShotName);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                if (index <= 0)
+                {
+                    return false;
+                }
+            } while (!TrySelectShot(--index));
+
+            return TryGetPreviousDefectNotEmpty(true);
+        }
+
+        public bool TryGetPreviousDefectNotEmpty(bool isEnd = false)
+        {
+            RefreshDefectNameList();
+            int index = DefectNameList.Count;
+            do
+            {
+                if (!isEnd)
+                {
+                    if (DefectNameList.Contains(DefectName))
+                    {
+                        index = DefectNameList.IndexOf(DefectName);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                if (index <= 0)
+                {
+                    return false;
+                }
+            } while (!TrySelectDefect(--index));
+
+            return true;
+        }
     }
 }
