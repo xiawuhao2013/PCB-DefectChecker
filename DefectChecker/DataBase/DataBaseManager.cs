@@ -438,9 +438,10 @@ namespace DefectChecker.DataBase
                 {
                     return false;
                 }
-            } while (!TrySelectProduct(++index));
+                isHead = false;
+            } while ((!TrySelectProduct(++index))||(!TryGetNextBatchNotEmpty(true)));
 
-            return TryGetNextBatchNotEmpty(true);
+            return true;
         }
 
         public bool TryGetNextBatchNotEmpty(bool isHead = false)
@@ -464,9 +465,10 @@ namespace DefectChecker.DataBase
                 {
                     return false;
                 }
-            } while (!TrySelectBatch(++index));
+                isHead = false;
+            } while ((!TrySelectBatch(++index))||(!TryGetNextBoardNotEmpty(true)));
 
-            return TryGetNextBoardNotEmpty(true);
+            return true;
         }
 
         public bool TryGetNextBoardNotEmpty(bool isHead = false)
@@ -490,9 +492,10 @@ namespace DefectChecker.DataBase
                 {
                     return false;
                 }
-            } while (!TrySelectBoard(++index));
+                isHead = false;
+            } while ((!TrySelectBoard(++index))||(!TryGetNextSideNotEmpty(true)));
 
-            return TryGetNextSideNotEmpty(true);
+            return true;
         }
 
         public bool TryGetNextSideNotEmpty(bool isHead = false)
@@ -516,9 +519,10 @@ namespace DefectChecker.DataBase
                 {
                     return false;
                 }
-            } while (!TrySelectSide(++index));
+                isHead = false;
+            } while ((!TrySelectSide(++index))||(!TryGetNextShotNotEmpty(true)));
 
-            return TryGetNextShotNotEmpty(true);
+            return true;
         }
 
         public bool TryGetNextShotNotEmpty(bool isHead = false)
@@ -542,9 +546,10 @@ namespace DefectChecker.DataBase
                 {
                     return false;
                 }
-            } while (!TrySelectShot(++index));
+                isHead = false;
+            } while ((!TrySelectShot(++index))||(!TryGetNextDefectNotEmpty(true)));
 
-            return TryGetNextDefectNotEmpty(true);
+            return true;
         }
 
         public bool TryGetNextDefectNotEmpty(bool isHead = false)
@@ -568,6 +573,7 @@ namespace DefectChecker.DataBase
                 {
                     return false;
                 }
+                isHead = false;
             } while (!TrySelectDefect(++index));
 
             return true;
@@ -595,9 +601,10 @@ namespace DefectChecker.DataBase
                 {
                     return false;
                 }
-            } while (!TrySelectProduct(--index));
+                isEnd = false;
+            } while ((!TrySelectProduct(--index)) || (!TryGetPreviousBatchNotEmpty(true)));
 
-            return TryGetPreviousBatchNotEmpty(true);
+            return true;
         }
 
         public bool TryGetPreviousBatchNotEmpty(bool isEnd = false)
@@ -621,9 +628,10 @@ namespace DefectChecker.DataBase
                 {
                     return false;
                 }
-            } while (!TrySelectBatch(--index));
+                isEnd = false;
+            } while ((!TrySelectBatch(--index)) || (!TryGetPreviousBoardNotEmpty(true)));
 
-            return TryGetPreviousBoardNotEmpty(true);
+            return true;
         }
 
         public bool TryGetPreviousBoardNotEmpty(bool isEnd = false)
@@ -647,9 +655,10 @@ namespace DefectChecker.DataBase
                 {
                     return false;
                 }
-            } while (!TrySelectBoard(--index));
+                isEnd = false;
+            } while ((!TrySelectBoard(--index))||(!TryGetPreviousSideNotEmpty(true)));
 
-            return TryGetPreviousSideNotEmpty(true);
+            return true;
         }
 
         public bool TryGetPreviousSideNotEmpty(bool isEnd = false)
@@ -673,9 +682,10 @@ namespace DefectChecker.DataBase
                 {
                     return false;
                 }
-            } while (!TrySelectSide(--index));
+                isEnd = false;
+            } while ((!TrySelectSide(--index)) ||(!TryGetPreviousShotNotEmpty(true)));
 
-            return TryGetPreviousShotNotEmpty(true);
+            return true;
         }
 
         public bool TryGetPreviousShotNotEmpty(bool isEnd = false)
@@ -699,9 +709,10 @@ namespace DefectChecker.DataBase
                 {
                     return false;
                 }
-            } while (!TrySelectShot(--index));
+                isEnd = false;
+            } while ((!TrySelectShot(--index)) || (!TryGetPreviousDefectNotEmpty(true)));
 
-            return TryGetPreviousDefectNotEmpty(true);
+            return true;
         }
 
         public bool TryGetPreviousDefectNotEmpty(bool isEnd = false)
@@ -725,6 +736,7 @@ namespace DefectChecker.DataBase
                 {
                     return false;
                 }
+                isEnd = false;
             } while (!TrySelectDefect(--index));
 
             return true;
