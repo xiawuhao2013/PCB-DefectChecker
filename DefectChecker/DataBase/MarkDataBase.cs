@@ -17,7 +17,7 @@ namespace DefectChecker.DataBase
         private string _dataDir;
         private string _modelDir;
 
-        private DeviceInterface _device;
+        public DeviceInterface _device;
 
         private List<string> _productNameList;
         private List<string> _batchNameList;
@@ -25,6 +25,42 @@ namespace DefectChecker.DataBase
         private List<string> _sideNameList;
         private List<string> _shotNameList;
         private List<string> _defectNameList;
+
+        //public int IndexOfProudctNameList
+        //{
+        //    get { return ProductNameList.IndexOf(ProductName); }
+        //    set { IndexOfProudctNameList = value; }
+        //}
+
+        //public int IndexOfBatchNameList
+        //{
+        //    get { return BatchNameList.IndexOf(BatchName); }
+        //    set { IndexOfBatchNameList = value; }
+        //}
+
+        //public int IndexOfBoardNameList
+        //{
+        //    get { return BoardNameList.IndexOf(BoardName); }
+        //    set { IndexOfBoardNameList = value; }
+        //}
+
+        //public int IndexOfSideNameList
+        //{
+        //    get { return SideNameList.IndexOf(SideName); }
+        //    set { IndexOfSideNameList = value; }
+        //}
+
+        //public int IndexOfShotNameList
+        //{
+        //    get { return ShotNameList.IndexOf(ShotName); }
+        //    set { IndexOfShotNameList = value; }
+        //}
+
+        //public int IndexOfDefectNameList
+        //{
+        //    get { return DefectNameList.IndexOf(DefectName); }
+        //    set { IndexOfDefectNameList = value; }
+        //}
 
         public string ProductName { get; set; }
         public string BatchName { get; set; }

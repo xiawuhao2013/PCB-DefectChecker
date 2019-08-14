@@ -395,6 +395,7 @@
             // 
             // displayWindow1
             // 
+            this.displayWindow1.defectCell = null;
             this.displayWindow1.Location = new System.Drawing.Point(3, 3);
             this.displayWindow1.Name = "displayWindow1";
             this.displayWindow1.Size = new System.Drawing.Size(331, 402);
