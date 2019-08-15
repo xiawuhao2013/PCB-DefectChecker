@@ -126,14 +126,14 @@ namespace DefectChecker.DeviceModule.MachVision
             var point = pointStr.Split(',');
             int len = point.Length;
             
-            int topLeftX, topLeftY, bottomRightX, bottomRightY;
+            double topLeftX, topLeftY, bottomRightX, bottomRightY;
             if (len== 10 &&
-                int.TryParse(point[0], out topLeftX) &&
-                int.TryParse(point[1], out topLeftY) &&
-                int.TryParse(point[4], out bottomRightX) &&
-                int.TryParse(point[5], out bottomRightY))
+                double.TryParse(point[0], out topLeftX) &&
+                double.TryParse(point[1], out topLeftY) &&
+                double.TryParse(point[4], out bottomRightX) &&
+                double.TryParse(point[5], out bottomRightY))
             {
-                subDefect = new Rectangle(topLeftX, topLeftY, bottomRightX, bottomRightY);
+                subDefect = Rectangle.FromLTRB(Convert.ToInt32(topLeftX), Convert.ToInt32(topLeftY), Convert.ToInt32(bottomRightX), Convert.ToInt32(bottomRightY));
                 return true;
             }
 
