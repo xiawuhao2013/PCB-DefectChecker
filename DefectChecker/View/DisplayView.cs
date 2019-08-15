@@ -175,9 +175,34 @@ namespace DefectChecker.View
             {
                 return;
             }
-            if (indexOfWindow < displayWindows.Count)
+            foreach (var displayWindow in displayWindows)
             {
-                displayWindows[indexOfWindow].Focus();
+                if (displayWindows.IndexOf(displayWindow) == indexOfWindow)
+                {
+                    displayWindow.BorderStyle = BorderStyle.Fixed3D;
+                }
+                else
+                {
+                    displayWindow.BorderStyle = BorderStyle.None;
+                }
+            }
+
+            return;
+        }
+
+        private void MoveForwardCursor()
+        {
+            _indexOfDisplayWindowOnSelected = (_indexOfDisplayWindowOnSelected + 1) % _numberOfDispalyWindows;
+
+            return;
+        }
+
+        private void MoveBackwardCursor()
+        {
+            _indexOfDisplayWindowOnSelected = (_indexOfDisplayWindowOnSelected - 1) % _numberOfDispalyWindows;
+            if (_indexOfDisplayWindowOnSelected < 0)
+            {
+                _indexOfDisplayWindowOnSelected += _numberOfDispalyWindows;
             }
 
             return;
@@ -197,6 +222,7 @@ namespace DefectChecker.View
                 case Keys.Right:
                     if (_dataBaseManager.TrySwitchBackward())
                     {
+                        MoveForwardCursor();
                         _hasButtonPressed = true;
                         ComboBoxRefresh();
                     }
@@ -208,6 +234,7 @@ namespace DefectChecker.View
                 case Keys.Left:
                     if (_dataBaseManager.TrySwitchForward())
                     {
+                        MoveBackwardCursor();
                         _hasButtonPressed = true;
                         ComboBoxRefresh();
                     }
