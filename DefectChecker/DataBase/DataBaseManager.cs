@@ -74,6 +74,45 @@ namespace DefectChecker.DataBase
             Init();
         }
 
+        private bool GetRangeOfDefectGroup(int groupSize, out int head, out int end)
+        {
+            head = -1;
+            end = -1;
+            if (groupSize <= 0 || (!DefectNameList.Contains(DefectName)))
+            {
+                return false;
+            }
+            int indexOfGroup = DefectNameList.IndexOf(DefectName) / groupSize;
+            head = indexOfGroup * groupSize;
+            end = head + groupSize - 1;
+
+            return true;
+        }
+
+        private bool TryGetDefectCellByIndex(int index, out DefectCell defectCell)
+        {
+            defectCell = new DefectCell();
+            if (null == DefectNameList || 0 == DefectNameList.Count || index >= DefectNameList.Count || index < 0)
+            {
+                return false;
+            }
+            _device.GetDefectCell(ProductName, BatchName, BoardName, SideName, ShotName, DefectNameList[index], out defectCell);
+
+            return true;
+        }
+
+        private void InitializeDefectGroup(int groupSize, out List<DefectCell> defectCells)
+        {
+            defectCells = new List<DefectCell>();
+            int iter = groupSize;
+            do
+            {
+                defectCells.Add(new DefectCell());
+            } while (--iter > 0);
+
+            return;
+        }
+
         private void Init()
         {
             ResetProduct();
@@ -685,6 +724,34 @@ namespace DefectChecker.DataBase
         }
 
         //
+        public void GetDefectGroup(int groupSize, out List<DefectCell> defectCells)
+        {
+            defectCells = new List<DefectCell>();
+            if (groupSize <= 0)
+            {
+                return;
+            }
+            if (!GetRangeOfDefectGroup(groupSize, out var head, out var end))
+            {
+                InitializeDefectGroup(groupSize, out defectCells);
+            }
+
+            for (var iter = head; iter <= end; ++iter)
+            {
+                if (TryGetDefectCellByIndex(iter, out var defectCell))
+                {
+                    defectCells.Add(defectCell);
+                }
+                else
+                {
+                    defectCells.Add(new DefectCell());
+                }
+            }
+
+            return;
+        }
+
+        //
         public void SwitchProduct(string productName)
         {
             var index = ProductNameList.IndexOf(productName);
@@ -764,6 +831,6 @@ namespace DefectChecker.DataBase
 
             return false;
         }
-        
+
     }
 }
