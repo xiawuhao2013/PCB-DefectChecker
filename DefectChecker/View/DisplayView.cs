@@ -193,14 +193,8 @@ namespace DefectChecker.View
                 // treate the _indexOfDisplayWindowOnSelected here.
                 // and determine whether to RefreshDisplayWindows() or not, according to _indexOfDisplayWindowOnSelected.
                 case Keys.Right:
-                    if (_dataBaseManager.TryGetNextDefectNotEmpty() || _dataBaseManager.TryGetNextShotNotEmpty() || _dataBaseManager.TryGetNextSideNotEmpty() || _dataBaseManager.TryGetNextBoardNotEmpty() || _dataBaseManager.TryGetNextBatchNotEmpty() || _dataBaseManager.TryGetNextProductNotEmpty())
+                    if (_dataBaseManager.TrySwitchBackward())
                     {
-                        var defect = _dataBaseManager.DefectName;
-                        var shot = _dataBaseManager.ShotName;
-                        var side = _dataBaseManager.SideName;
-                        var board = _dataBaseManager.BoardName;
-                        var batch = _dataBaseManager.BatchName;
-                        var product = _dataBaseManager.ProductName;
                         ComboBoxRefresh();
                     }
                     else
@@ -209,14 +203,8 @@ namespace DefectChecker.View
                     }
                     break;
                 case Keys.Left:
-                    if (_dataBaseManager.TryGetPreviousDefectNotEmpty() || _dataBaseManager.TryGetPreviousShotNotEmpty() || _dataBaseManager.TryGetPreviousSideNotEmpty() || _dataBaseManager.TryGetPreviousBoardNotEmpty() || _dataBaseManager.TryGetPreviousBatchNotEmpty() || _dataBaseManager.TryGetPreviousProductNotEmpty())
+                    if (_dataBaseManager.TrySwitchForward())
                     {
-                        var defect = _dataBaseManager.DefectName;
-                        var shot = _dataBaseManager.ShotName;
-                        var side = _dataBaseManager.SideName;
-                        var board = _dataBaseManager.BoardName;
-                        var batch = _dataBaseManager.BatchName;
-                        var product = _dataBaseManager.ProductName;
                         ComboBoxRefresh();
                     }
                     else

@@ -150,6 +150,7 @@ namespace DefectChecker.DataBase
             xmlParameter.WriteParameter(Application.StartupPath + _fileDataBaseManager);
         }
 
+        //
         private void ResetProduct()
         {
             ProductName = "";
@@ -228,6 +229,7 @@ namespace DefectChecker.DataBase
             return;
         }
 
+        //
         private bool RefreshProductNameList()
         {
             return _device.GetProductList(out _productNameList) > 0;
@@ -258,6 +260,7 @@ namespace DefectChecker.DataBase
             return _device.GetDefectListInShot(ProductName, BatchName, BoardName, SideName, ShotName, out _defectNameList) > 0;
         }
 
+        //
         private bool TrySelectProduct(int index)
         {
             ResetProduct();
@@ -355,6 +358,333 @@ namespace DefectChecker.DataBase
         }
 
         //
+        private bool TryGetNextProductNotEmpty(bool isHead = false)
+        {
+            int index = -1;
+            RefreshProductNameList();
+            do
+            {
+                if (!isHead)
+                {
+                    if (ProductNameList.Contains(ProductName))
+                    {
+                        index = ProductNameList.IndexOf(ProductName);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
+                if (index >= ProductNameList.Count - 1)
+                {
+                    return false;
+                }
+                isHead = false;
+            } while ((!TrySelectProduct(++index)) || (!TryGetNextBatchNotEmpty(true)));
+
+            return true;
+        }
+
+        private bool TryGetNextBatchNotEmpty(bool isHead = false)
+        {
+            int index = -1;
+            RefreshBatchNameList();
+            do
+            {
+                if (!isHead)
+                {
+                    if (BatchNameList.Contains(BatchName))
+                    {
+                        index = BatchNameList.IndexOf(BatchName);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                if (index >= BatchNameList.Count - 1)
+                {
+                    return false;
+                }
+                isHead = false;
+            } while ((!TrySelectBatch(++index)) || (!TryGetNextBoardNotEmpty(true)));
+
+            return true;
+        }
+
+        private bool TryGetNextBoardNotEmpty(bool isHead = false)
+        {
+            int index = -1;
+            RefreshBoardNameList();
+            do
+            {
+                if (!isHead)
+                {
+                    if (BoardNameList.Contains(BoardName))
+                    {
+                        index = BoardNameList.IndexOf(BoardName);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                if (index >= BoardNameList.Count - 1)
+                {
+                    return false;
+                }
+                isHead = false;
+            } while ((!TrySelectBoard(++index)) || (!TryGetNextSideNotEmpty(true)));
+
+            return true;
+        }
+
+        private bool TryGetNextSideNotEmpty(bool isHead = false)
+        {
+            int index = -1;
+            RefreshSideNameList();
+            do
+            {
+                if (!isHead)
+                {
+                    if (SideNameList.Contains(SideName))
+                    {
+                        index = SideNameList.IndexOf(SideName);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                if (index >= SideNameList.Count - 1)
+                {
+                    return false;
+                }
+                isHead = false;
+            } while ((!TrySelectSide(++index)) || (!TryGetNextShotNotEmpty(true)));
+
+            return true;
+        }
+
+        private bool TryGetNextShotNotEmpty(bool isHead = false)
+        {
+            int index = -1;
+            RefreshShotNameList();
+            do
+            {
+                if (!isHead)
+                {
+                    if (ShotNameList.Contains(ShotName))
+                    {
+                        index = ShotNameList.IndexOf(ShotName);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                if (index >= ShotNameList.Count - 1)
+                {
+                    return false;
+                }
+                isHead = false;
+            } while ((!TrySelectShot(++index)) || (!TryGetNextDefectNotEmpty(true)));
+
+            return true;
+        }
+
+        private bool TryGetNextDefectNotEmpty(bool isHead = false)
+        {
+            int index = -1;
+            RefreshDefectNameList();
+            do
+            {
+                if (!isHead)
+                {
+                    if (DefectNameList.Contains(DefectName))
+                    {
+                        index = DefectNameList.IndexOf(DefectName);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                if (index >= DefectNameList.Count - 1)
+                {
+                    return false;
+                }
+                isHead = false;
+            } while (!TrySelectDefect(++index));
+
+            return true;
+        }
+
+        //
+        private bool TryGetPreviousProductNotEmpty(bool isEnd = false)
+        {
+            RefreshProductNameList();
+            int index = ProductNameList.Count;
+            do
+            {
+                if (!isEnd)
+                {
+                    if (ProductNameList.Contains(ProductName))
+                    {
+                        index = ProductNameList.IndexOf(ProductName);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                if (index <= 0)
+                {
+                    return false;
+                }
+                isEnd = false;
+            } while ((!TrySelectProduct(--index)) || (!TryGetPreviousBatchNotEmpty(true)));
+
+            return true;
+        }
+
+        private bool TryGetPreviousBatchNotEmpty(bool isEnd = false)
+        {
+            RefreshBatchNameList();
+            int index = BatchNameList.Count;
+            do
+            {
+                if (!isEnd)
+                {
+                    if (BatchNameList.Contains(BatchName))
+                    {
+                        index = BatchNameList.IndexOf(BatchName);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                if (index <= 0)
+                {
+                    return false;
+                }
+                isEnd = false;
+            } while ((!TrySelectBatch(--index)) || (!TryGetPreviousBoardNotEmpty(true)));
+
+            return true;
+        }
+
+        private bool TryGetPreviousBoardNotEmpty(bool isEnd = false)
+        {
+            RefreshBoardNameList();
+            int index = BoardNameList.Count;
+            do
+            {
+                if (!isEnd)
+                {
+                    if (BoardNameList.Contains(BoardName))
+                    {
+                        index = BoardNameList.IndexOf(BoardName);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                if (index <= 0)
+                {
+                    return false;
+                }
+                isEnd = false;
+            } while ((!TrySelectBoard(--index)) || (!TryGetPreviousSideNotEmpty(true)));
+
+            return true;
+        }
+
+        private bool TryGetPreviousSideNotEmpty(bool isEnd = false)
+        {
+            RefreshSideNameList();
+            int index = SideNameList.Count;
+            do
+            {
+                if (!isEnd)
+                {
+                    if (SideNameList.Contains(SideName))
+                    {
+                        index = SideNameList.IndexOf(SideName);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                if (index <= 0)
+                {
+                    return false;
+                }
+                isEnd = false;
+            } while ((!TrySelectSide(--index)) || (!TryGetPreviousShotNotEmpty(true)));
+
+            return true;
+        }
+
+        private bool TryGetPreviousShotNotEmpty(bool isEnd = false)
+        {
+            RefreshShotNameList();
+            int index = ShotNameList.Count;
+            do
+            {
+                if (!isEnd)
+                {
+                    if (ShotNameList.Contains(ShotName))
+                    {
+                        index = ShotNameList.IndexOf(ShotName);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                if (index <= 0)
+                {
+                    return false;
+                }
+                isEnd = false;
+            } while ((!TrySelectShot(--index)) || (!TryGetPreviousDefectNotEmpty(true)));
+
+            return true;
+        }
+
+        private bool TryGetPreviousDefectNotEmpty(bool isEnd = false)
+        {
+            RefreshDefectNameList();
+            int index = DefectNameList.Count;
+            do
+            {
+                if (!isEnd)
+                {
+                    if (DefectNameList.Contains(DefectName))
+                    {
+                        index = DefectNameList.IndexOf(DefectName);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                if (index <= 0)
+                {
+                    return false;
+                }
+                isEnd = false;
+            } while (!TrySelectDefect(--index));
+
+            return true;
+        }
+
+        //
         public void SwitchProduct(string productName)
         {
             var index = ProductNameList.IndexOf(productName);
@@ -415,331 +745,25 @@ namespace DefectChecker.DataBase
             return;
         }
 
-        //
-        public bool TryGetNextProductNotEmpty (bool isHead = false)
+        public bool TrySwitchBackward()
         {
-            int index = -1;
-            RefreshProductNameList();
-            do
+            if (TryGetNextDefectNotEmpty() || TryGetNextShotNotEmpty() || TryGetNextSideNotEmpty() || TryGetNextBoardNotEmpty() || TryGetNextBatchNotEmpty() || TryGetNextProductNotEmpty())
             {
-                if (!isHead)
-                {
-                    if (ProductNameList.Contains(ProductName))
-                    {
-                        index = ProductNameList.IndexOf(ProductName);
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
+                return true;
+            }
 
-                if (index >= ProductNameList.Count - 1)
-                {
-                    return false;
-                }
-                isHead = false;
-            } while ((!TrySelectProduct(++index))||(!TryGetNextBatchNotEmpty(true)));
-
-            return true;
+            return false;
         }
 
-        public bool TryGetNextBatchNotEmpty(bool isHead = false)
+        public bool TrySwitchForward()
         {
-            int index = -1;
-            RefreshBatchNameList();
-            do
+            if (TryGetPreviousDefectNotEmpty() || TryGetPreviousShotNotEmpty() || TryGetPreviousSideNotEmpty() || TryGetPreviousBoardNotEmpty() || TryGetPreviousBatchNotEmpty() || TryGetPreviousProductNotEmpty())
             {
-                if (!isHead)
-                {
-                    if (BatchNameList.Contains(BatchName))
-                    {
-                        index = BatchNameList.IndexOf(BatchName);
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                if (index >= BatchNameList.Count - 1)
-                {
-                    return false;
-                }
-                isHead = false;
-            } while ((!TrySelectBatch(++index))||(!TryGetNextBoardNotEmpty(true)));
+                return true;
+            }
 
-            return true;
+            return false;
         }
-
-        public bool TryGetNextBoardNotEmpty(bool isHead = false)
-        {
-            int index = -1;
-            RefreshBoardNameList();
-            do
-            {
-                if (!isHead)
-                {
-                    if (BoardNameList.Contains(BoardName))
-                    {
-                        index = BoardNameList.IndexOf(BoardName);
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                if (index >= BoardNameList.Count - 1)
-                {
-                    return false;
-                }
-                isHead = false;
-            } while ((!TrySelectBoard(++index))||(!TryGetNextSideNotEmpty(true)));
-
-            return true;
-        }
-
-        public bool TryGetNextSideNotEmpty(bool isHead = false)
-        {
-            int index = -1;
-            RefreshSideNameList();
-            do
-            {
-                if (!isHead)
-                {
-                    if (SideNameList.Contains(SideName))
-                    {
-                        index = SideNameList.IndexOf(SideName);
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                if (index >= SideNameList.Count - 1)
-                {
-                    return false;
-                }
-                isHead = false;
-            } while ((!TrySelectSide(++index))||(!TryGetNextShotNotEmpty(true)));
-
-            return true;
-        }
-
-        public bool TryGetNextShotNotEmpty(bool isHead = false)
-        {
-            int index = -1;
-            RefreshShotNameList();
-            do
-            {
-                if (!isHead)
-                {
-                    if (ShotNameList.Contains(ShotName))
-                    {
-                        index = ShotNameList.IndexOf(ShotName);
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                if (index >= ShotNameList.Count - 1)
-                {
-                    return false;
-                }
-                isHead = false;
-            } while ((!TrySelectShot(++index))||(!TryGetNextDefectNotEmpty(true)));
-
-            return true;
-        }
-
-        public bool TryGetNextDefectNotEmpty(bool isHead = false)
-        {
-            int index = -1;
-            RefreshDefectNameList();
-            do
-            {
-                if (!isHead)
-                {
-                    if (DefectNameList.Contains(DefectName))
-                    {
-                        index = DefectNameList.IndexOf(DefectName);
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                if (index >= DefectNameList.Count - 1)
-                {
-                    return false;
-                }
-                isHead = false;
-            } while (!TrySelectDefect(++index));
-
-            return true;
-        }
-
-        //
-        public bool TryGetPreviousProductNotEmpty(bool isEnd = false)
-        {
-            RefreshProductNameList();
-            int index = ProductNameList.Count;
-            do
-            {
-                if (!isEnd)
-                {
-                    if (ProductNameList.Contains(ProductName))
-                    {
-                        index = ProductNameList.IndexOf(ProductName);
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                if (index <= 0)
-                {
-                    return false;
-                }
-                isEnd = false;
-            } while ((!TrySelectProduct(--index)) || (!TryGetPreviousBatchNotEmpty(true)));
-
-            return true;
-        }
-
-        public bool TryGetPreviousBatchNotEmpty(bool isEnd = false)
-        {
-            RefreshBatchNameList();
-            int index = BatchNameList.Count;
-            do
-            {
-                if (!isEnd)
-                {
-                    if (BatchNameList.Contains(BatchName))
-                    {
-                        index = BatchNameList.IndexOf(BatchName);
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                if (index <= 0)
-                {
-                    return false;
-                }
-                isEnd = false;
-            } while ((!TrySelectBatch(--index)) || (!TryGetPreviousBoardNotEmpty(true)));
-
-            return true;
-        }
-
-        public bool TryGetPreviousBoardNotEmpty(bool isEnd = false)
-        {
-            RefreshBoardNameList();
-            int index = BoardNameList.Count;
-            do
-            {
-                if (!isEnd)
-                {
-                    if (BoardNameList.Contains(BoardName))
-                    {
-                        index = BoardNameList.IndexOf(BoardName);
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                if (index <= 0)
-                {
-                    return false;
-                }
-                isEnd = false;
-            } while ((!TrySelectBoard(--index))||(!TryGetPreviousSideNotEmpty(true)));
-
-            return true;
-        }
-
-        public bool TryGetPreviousSideNotEmpty(bool isEnd = false)
-        {
-            RefreshSideNameList();
-            int index = SideNameList.Count;
-            do
-            {
-                if (!isEnd)
-                {
-                    if (SideNameList.Contains(SideName))
-                    {
-                        index = SideNameList.IndexOf(SideName);
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                if (index <= 0)
-                {
-                    return false;
-                }
-                isEnd = false;
-            } while ((!TrySelectSide(--index)) ||(!TryGetPreviousShotNotEmpty(true)));
-
-            return true;
-        }
-
-        public bool TryGetPreviousShotNotEmpty(bool isEnd = false)
-        {
-            RefreshShotNameList();
-            int index = ShotNameList.Count;
-            do
-            {
-                if (!isEnd)
-                {
-                    if (ShotNameList.Contains(ShotName))
-                    {
-                        index = ShotNameList.IndexOf(ShotName);
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                if (index <= 0)
-                {
-                    return false;
-                }
-                isEnd = false;
-            } while ((!TrySelectShot(--index)) || (!TryGetPreviousDefectNotEmpty(true)));
-
-            return true;
-        }
-
-        public bool TryGetPreviousDefectNotEmpty(bool isEnd = false)
-        {
-            RefreshDefectNameList();
-            int index = DefectNameList.Count;
-            do
-            {
-                if (!isEnd)
-                {
-                    if (DefectNameList.Contains(DefectName))
-                    {
-                        index = DefectNameList.IndexOf(DefectName);
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                if (index <= 0)
-                {
-                    return false;
-                }
-                isEnd = false;
-            } while (!TrySelectDefect(--index));
-
-            return true;
-        }
+        
     }
 }
