@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,32 +43,32 @@ namespace DefectChecker.DeviceModule.MachVision
             return false;
         }
 
-        private bool ReadRoiInTemplate(string defectName, out RectShape roi)
+        private bool ReadRoiInTemplate(string defectName, out Rectangle roi)
         {
-            double topLeftX, topLeftY, width, height;
+            int topLeftX, topLeftY, width, height;
             string str;
             IniHelper iniHelper = new IniHelper();
             if (iniHelper.ReadValue(defectName, "DefectRoiGold ", _fileName, out str) > 0)
             {
                 var array = str.Split(',');
                 if (array.Length == 4 &&
-                    double.TryParse(array[0], out topLeftX) &&
-                    double.TryParse(array[1], out topLeftY) &&
-                    double.TryParse(array[2], out width) &&
-                    double.TryParse(array[3], out height))
+                    int.TryParse(array[0], out topLeftX) &&
+                    int.TryParse(array[1], out topLeftY) &&
+                    int.TryParse(array[2], out width) &&
+                    int.TryParse(array[3], out height))
                 {
-                    roi = new RectShape(topLeftX, topLeftY, topLeftX + width - 1, topLeftY + height - 1);
+                    roi = new Rectangle(topLeftX, topLeftY, width - 1, height - 1);
                     return true;
                 }
             }
 
-            roi = new RectShape(0, 0, 0, 0);
+            roi = new Rectangle(0, 0, 0, 0);
             return false;
         }
 
-        private bool ReadSubDefects(string defectName, out List<ShapeBase> subDefects)
+        private bool ReadSubDefects(string defectName, out List<Rectangle> subDefects)
         {
-            subDefects = new List<ShapeBase>();
+            subDefects = new List<Rectangle>();
             IniHelper iniHelper = new IniHelper();
             string str;
             if (iniHelper.ReadValue(defectName, "NumSubDefect", _fileName, out str)<=0)
@@ -95,7 +96,7 @@ namespace DefectChecker.DeviceModule.MachVision
                     {
                         continue;
                     }
-                    ShapeBase subDefect;
+                    Rectangle subDefect;
                     if (DecodeSubDefect(subStr, out subDefect))
                     {
                         subDefects.Add(subDefect);
@@ -109,7 +110,7 @@ namespace DefectChecker.DeviceModule.MachVision
             return true;
         }
 
-        private bool DecodeSubDefect(string str, out ShapeBase subDefect)
+        private bool DecodeSubDefect(string str, out Rectangle subDefect)
         {
             var array = str.Split('#');
             string pointStr;
@@ -119,24 +120,24 @@ namespace DefectChecker.DeviceModule.MachVision
             }
             else
             {
-                subDefect = new RectShape(0, 0, 0, 0);
+                subDefect = new Rectangle(0, 0, 0, 0);
                 return false;
             }
             var point = pointStr.Split(',');
             int len = point.Length;
             
-            double topLeftX, topLeftY, bottomRightX, bottomRightY;
+            int topLeftX, topLeftY, bottomRightX, bottomRightY;
             if (len== 10 &&
-                double.TryParse(point[0], out topLeftX) &&
-                double.TryParse(point[1], out topLeftY) &&
-                double.TryParse(point[4], out bottomRightX) &&
-                double.TryParse(point[5], out bottomRightY))
+                int.TryParse(point[0], out topLeftX) &&
+                int.TryParse(point[1], out topLeftY) &&
+                int.TryParse(point[4], out bottomRightX) &&
+                int.TryParse(point[5], out bottomRightY))
             {
-                subDefect = new RectShape(topLeftX, topLeftY, bottomRightX, bottomRightY);
+                subDefect = new Rectangle(topLeftX, topLeftY, bottomRightX, bottomRightY);
                 return true;
             }
 
-            subDefect = new RectShape(0, 0, 0, 0);
+            subDefect = new Rectangle(0, 0, 0, 0);
             return false;
         }
 
@@ -154,7 +155,7 @@ namespace DefectChecker.DeviceModule.MachVision
                 defectInfo.CodeNum = codeNum;
             }
 
-            RectShape roi;
+            Rectangle roi;
             if (!ReadRoiInTemplate(defectName, out roi))
             {
                 return false;
@@ -164,7 +165,7 @@ namespace DefectChecker.DeviceModule.MachVision
                 defectInfo.RoiInTemplate = roi;
             }
 
-            List<ShapeBase> subDefects;
+            List<Rectangle> subDefects;
             if (!ReadSubDefects(defectName, out subDefects))
             {
                 return false;

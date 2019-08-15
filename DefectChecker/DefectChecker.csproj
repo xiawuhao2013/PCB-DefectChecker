@@ -97,8 +97,6 @@
     <Compile Include="DataBase\SqliteDataBase\SqliteDB.cs" />
     <Compile Include="DefectDataStructure\DefectCell.cs" />
     <Compile Include="DefectDataStructure\DefectInfo.cs" />
-    <Compile Include="DefectDataStructure\ShapeBase.cs" />
-    <Compile Include="DefectDataStructure\RectShape.cs" />
     <Compile Include="DeviceModule\DeviceInterface.cs" />
     <Compile Include="DeviceModule\MachVision\DeviceMachVision.cs" />
     <Compile Include="Common\FolderHelper.cs" />

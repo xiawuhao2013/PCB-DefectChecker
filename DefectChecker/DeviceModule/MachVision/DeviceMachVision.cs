@@ -194,7 +194,17 @@ namespace DefectChecker.DeviceModule.MachVision
             defectCell.DefectImage = new Bitmap(defectPath+"\\"+defectName+".bmp");
             Bitmap templateBitmap;
             GetTemplateWholeImgA(out templateBitmap);
-            defectCell.TemplateImage = templateBitmap;
+            
+            Bitmap templateImage;
+            if (ImageOperateTools.BitmapCropImage(templateBitmap, defectInfo.RoiInTemplate, out templateImage))
+            {
+                defectCell.TemplateImage = templateImage;
+            }
+            else
+            {
+                defectCell.TemplateImage = null;
+            }
+
         }
 
         public int GetDefectListInShot(string productName, string batchName, string boardName, string sideName, string shotName, out List<string> defectList)

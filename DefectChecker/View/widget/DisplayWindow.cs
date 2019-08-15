@@ -24,13 +24,13 @@ namespace DefectChecker.View.widget
             Refresh();
         }
 
-        private void GetDefectPointsForAqDisplay(List<ShapeBase> shapeBases, out List<double> posXs, out List<double> posYs, out List<int> pointsNums)
+        private void GetDefectPointsForAqDisplay(List<Rectangle> shapeBases, out List<double> posXs, out List<double> posYs, out List<int> pointsNums)
         {
             posXs = new List<double>();
             posYs = new List<double>();
             pointsNums = new List<int>();
 
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         private bool IsModelWindowHiden()
