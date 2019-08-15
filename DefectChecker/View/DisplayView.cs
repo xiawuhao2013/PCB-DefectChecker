@@ -10,7 +10,8 @@ namespace DefectChecker.View
 {
     public partial class DisplayView : UserControl
     {
-        private bool _canRefreshDisplayWindows = true;
+        private int _numberOfDispalyWindows = 1;
+        private bool _hasButtonPressed = false;
         private int _indexOfDisplayWindowOnSelected = 0;
         // 
         private List<DefectCell> _defectCells = new List<DefectCell>(); // replace with DataBaseManager.xxx
@@ -26,13 +27,6 @@ namespace DefectChecker.View
 
             // 
             _displayWindows.Add(displayWindow1);
-        }
-
-        private void EnableCanRefreshDisplayWindows()
-        {
-            _canRefreshDisplayWindows = true;
-
-            return;
         }
 
         private void DataBaseInit()
@@ -144,25 +138,33 @@ namespace DefectChecker.View
             return;
         }
 
-        private void RefreshDisplayWindows(List<DefectCell> defectCells, List<DisplayWindow> displayWindows)
+        private void RefreshDefectCells()
         {
-            /*
-            if (null == defectCells || null == displayWindows)
+            _defectCells.Clear();
+            _dataBaseManager.GetDefectGroup(_numberOfDispalyWindows, out _defectCells);
+
+            return;
+        }
+
+        private void RefreshDisplayWindows()
+        {
+            RefreshDefectCells();
+            if (null == _defectCells || null == _displayWindows)
             {
                 return;
             }
-            if (defectCells.Count != displayWindows.Count)
+            if (_defectCells.Count != _displayWindows.Count)
             {
                 MessageBox.Show("数量异常!");
 
                 return;
             }
-            for (int indexOfDisplayWindow = 0; indexOfDisplayWindow < displayWindows.Count; ++indexOfDisplayWindow)
+            for (int indexOfDisplayWindow = 0; indexOfDisplayWindow < _displayWindows.Count; ++indexOfDisplayWindow)
             {
-                displayWindows[indexOfDisplayWindow].defectCell = defectCells[indexOfDisplayWindow];
-                displayWindows[indexOfDisplayWindow].RefreshWindow();
+                _displayWindows[indexOfDisplayWindow].defectCell = _defectCells[indexOfDisplayWindow];
+                _displayWindows[indexOfDisplayWindow].RefreshWindow();
             }
-            */
+
 
             return;
         }
@@ -183,7 +185,7 @@ namespace DefectChecker.View
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (_canRefreshDisplayWindows)
+            if (_hasButtonPressed)
             {
                 return base.ProcessCmdKey(ref msg, keyData);
             }
@@ -195,6 +197,7 @@ namespace DefectChecker.View
                 case Keys.Right:
                     if (_dataBaseManager.TrySwitchBackward())
                     {
+                        _hasButtonPressed = true;
                         ComboBoxRefresh();
                     }
                     else
@@ -205,6 +208,7 @@ namespace DefectChecker.View
                 case Keys.Left:
                     if (_dataBaseManager.TrySwitchForward())
                     {
+                        _hasButtonPressed = true;
                         ComboBoxRefresh();
                     }
                     else
@@ -214,7 +218,6 @@ namespace DefectChecker.View
                     break;
                 case Keys.Up:
                 case Keys.Down:
-                    EnableCanRefreshDisplayWindows();
                     break;
                 default:
                     break;
@@ -226,10 +229,10 @@ namespace DefectChecker.View
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (_canRefreshDisplayWindows)
+            if (_hasButtonPressed)
             {
-                RefreshDisplayWindows(_defectCells, _displayWindows);
-                _canRefreshDisplayWindows = false;
+                RefreshDisplayWindows();
+                _hasButtonPressed = false;
             }
 
             return;
@@ -238,7 +241,7 @@ namespace DefectChecker.View
         private void DisplayView_Enter(object sender, EventArgs e)
         {
             this.timer1.Start();
-            EnableCanRefreshDisplayWindows();
+            RefreshDisplayWindows();
 
             return;
         }
@@ -246,7 +249,7 @@ namespace DefectChecker.View
         private void DisplayView_Leave(object sender, EventArgs e)
         {
             this.timer1.Stop();
-            EnableCanRefreshDisplayWindows();
+            RefreshDisplayWindows();
 
             return;
         }

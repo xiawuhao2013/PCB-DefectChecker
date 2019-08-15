@@ -58,9 +58,9 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.tableLayoutPanelTemplate = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelImage = new System.Windows.Forms.TableLayoutPanel();
-            this.displayWindow1 = new DefectChecker.View.widget.DisplayWindow();
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.displayWindow1 = new DefectChecker.View.widget.DisplayWindow();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -393,14 +393,6 @@
             this.tableLayoutPanelImage.Size = new System.Drawing.Size(674, 408);
             this.tableLayoutPanelImage.TabIndex = 6;
             // 
-            // displayWindow1
-            // 
-            this.displayWindow1.defectCell = null;
-            this.displayWindow1.Location = new System.Drawing.Point(3, 3);
-            this.displayWindow1.Name = "displayWindow1";
-            this.displayWindow1.Size = new System.Drawing.Size(331, 402);
-            this.displayWindow1.TabIndex = 0;
-            // 
             // splitter2
             // 
             this.splitter2.Location = new System.Drawing.Point(571, 0);
@@ -412,6 +404,14 @@
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // displayWindow1
+            // 
+            this.displayWindow1.defectCell = null;
+            this.displayWindow1.Location = new System.Drawing.Point(3, 3);
+            this.displayWindow1.Name = "displayWindow1";
+            this.displayWindow1.Size = new System.Drawing.Size(331, 402);
+            this.displayWindow1.TabIndex = 0;
             // 
             // DisplayView
             // 
