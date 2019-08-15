@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using AqVision.Controls;
 using Aqrose.Framework.Utility.Tools;
 using DefectChecker.DefectDataStructure;
+using AqVision.Graphic.AqVision.shape;
 
 namespace DefectChecker.View.widget
 {
@@ -24,13 +25,36 @@ namespace DefectChecker.View.widget
             Refresh();
         }
 
-        private void GetDefectPointsForAqDisplay(List<Rectangle> shapeBases, out List<double> posXs, out List<double> posYs, out List<int> pointsNums)
+        private void ConvertRectanglesToAqShapes(List<Rectangle> rectangles, out List<AqShap> aqShapes)
         {
-            posXs = new List<double>();
-            posYs = new List<double>();
-            pointsNums = new List<int>();
+            aqShapes = new List<AqShap>();
+            List<double> posYs = new List<double>();
+            List<double> posXs = new List<double>();
+            List<int> pointsNums = new List<int>();
 
-            //throw new NotImplementedException();
+            if (null == rectangles)
+            {
+                return;
+            }
+            foreach (var rectangle in rectangles)
+            {
+                posYs.Add(rectangle.Y);
+                posYs.Add(rectangle.Y + rectangle.Width);
+                posYs.Add(rectangle.Y + rectangle.Width);
+                posYs.Add(rectangle.Y);
+                posYs.Add(rectangle.Y);
+
+                posXs.Add(rectangle.X);
+                posXs.Add(rectangle.X);
+                posXs.Add(rectangle.X + rectangle.Height);
+                posXs.Add(rectangle.X + rectangle.Height);
+                posXs.Add(rectangle.X);
+
+                pointsNums.Add(5);
+            }
+            DisplayContour.GetContours(posYs, posXs, pointsNums, out aqShapes);
+
+            return;
         }
 
         private bool IsModelWindowHiden()
@@ -79,8 +103,7 @@ namespace DefectChecker.View.widget
                 return;
             }
             this.aqDisplayOfCheck.Image = defectCell.DefectImage.Clone() as Bitmap;
-            GetDefectPointsForAqDisplay(defectCell.Info.SubDefectList, out var posXs, out var posYs, out var pointsNums);
-            DisplayContour.GetContours(posYs, posXs, pointsNums, out var aqShapes);
+            ConvertRectanglesToAqShapes(defectCell.Info.SubDefectList, out var aqShapes);
             DisplayContour.Display(aqDisplayOfCheck, aqShapes);
             this.aqDisplayOfCheck.FitToScreen();
             this.aqDisplayOfCheck.Update();
