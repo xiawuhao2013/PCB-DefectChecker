@@ -101,6 +101,7 @@
     <Compile Include="DeviceModule\MachVision\DeviceMachVision.cs" />
     <Compile Include="Common\FolderHelper.cs" />
     <Compile Include="DeviceModule\MachVision\MachVisionFile.cs" />
+    <Compile Include="ImagerProc\Regions\HTransformation.cs" />
     <Compile Include="View\ConfigView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -168,5 +169,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
