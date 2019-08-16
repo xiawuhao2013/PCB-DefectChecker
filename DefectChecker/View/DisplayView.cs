@@ -76,36 +76,52 @@ namespace DefectChecker.View
         {
             _dataBaseManager.SwitchProduct(comboBoxProduct.Text);
             ComboBoxRefresh();
+            _hasButtonPressed = true;
+
+            return;
         }
 
         private void comboBoxBatch_TextChanged(object sender, EventArgs e)
         {
             _dataBaseManager.SwitchBatch(comboBoxBatch.Text);
             ComboBoxRefresh();
+            _hasButtonPressed = true;
+
+            return;
         }
 
         private void comboBoxBoard_TextChanged(object sender, EventArgs e)
         {
             _dataBaseManager.SwitchBoard(comboBoxBoard.Text);
             ComboBoxRefresh();
+            _hasButtonPressed = true;
+
+            return;
         }
 
         private void comboBoxSide_TextChanged(object sender, EventArgs e)
         {
             _dataBaseManager.SwitchSide(comboBoxSide.Text);
             ComboBoxRefresh();
+            _hasButtonPressed = true;
+
+            return;
         }
 
         private void comboBoxShot_TextChanged(object sender, EventArgs e)
         {
             _dataBaseManager.SwitchShot(comboBoxShot.Text);
             ComboBoxRefresh();
+            _hasButtonPressed = true;
+
+            return;
         }
 
         private void comboBoxDefect_TextChanged(object sender, EventArgs e)
         {
             _dataBaseManager.SwitchDefect(comboBoxDefect.Text);
             ComboBoxRefresh();
+            _hasButtonPressed = true;
 
             return;
         }
