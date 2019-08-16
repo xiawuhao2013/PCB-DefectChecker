@@ -58,7 +58,6 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.tableLayoutPanelTemplate = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelImage = new System.Windows.Forms.TableLayoutPanel();
-            this.displayWindow1 = new DefectChecker.View.widget.DisplayWindow();
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
@@ -71,7 +70,6 @@
             this.panel9.SuspendLayout();
             this.panel10.SuspendLayout();
             this.panel2.SuspendLayout();
-            this.tableLayoutPanelImage.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -381,25 +379,16 @@
             // 
             // tableLayoutPanelImage
             // 
-            this.tableLayoutPanelImage.ColumnCount = 2;
+            this.tableLayoutPanelImage.ColumnCount = 1;
             this.tableLayoutPanelImage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanelImage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanelImage.Controls.Add(this.displayWindow1, 0, 0);
-            this.tableLayoutPanelImage.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tableLayoutPanelImage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanelImage.Location = new System.Drawing.Point(574, 0);
             this.tableLayoutPanelImage.Name = "tableLayoutPanelImage";
             this.tableLayoutPanelImage.RowCount = 1;
             this.tableLayoutPanelImage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanelImage.Size = new System.Drawing.Size(674, 408);
+            this.tableLayoutPanelImage.Size = new System.Drawing.Size(674, 700);
             this.tableLayoutPanelImage.TabIndex = 6;
-            // 
-            // displayWindow1
-            // 
-            this.displayWindow1.defectCell = null;
-            this.displayWindow1.Location = new System.Drawing.Point(3, 3);
-            this.displayWindow1.Name = "displayWindow1";
-            this.displayWindow1.Size = new System.Drawing.Size(331, 402);
-            this.displayWindow1.TabIndex = 0;
             // 
             // splitter2
             // 
@@ -435,7 +424,6 @@
             this.panel9.ResumeLayout(false);
             this.panel10.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
-            this.tableLayoutPanelImage.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -471,7 +459,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelTemplate;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelImage;
         private System.Windows.Forms.Splitter splitter2;
-        private widget.DisplayWindow displayWindow1;
         private System.Windows.Forms.Timer timer1;
     }
 }

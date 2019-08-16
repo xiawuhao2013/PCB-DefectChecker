@@ -10,9 +10,9 @@ namespace DefectChecker.View
 {
     public partial class DisplayView : UserControl
     {
-        private int _numberOfDispalyWindows = 1;
+        private const int _maxNumberOfDisplayWindows = 10;
+        private int _numberOfDispalyWindows = 5;
         private bool _hasButtonPressed = false;
-        private int _indexOfDisplayWindowOnSelected = 0;
         // 
         private List<DefectCell> _defectCells = new List<DefectCell>(); // replace with DataBaseManager.xxx
         private List<DisplayWindow> _displayWindows = new List<DisplayWindow>(); // may need window number control.
@@ -26,8 +26,64 @@ namespace DefectChecker.View
             DataBaseInit();
 
             // 
-            _displayWindows.Add(displayWindow1);
+            RefreshDisplayWindows(this.tableLayoutPanelImage, _numberOfDispalyWindows);
         }
+
+        #region DisplayWindowNumber
+
+        private void ClearTable(TableLayoutPanel table)
+        {
+            table.Controls.Clear();
+            table.RowStyles.Clear();
+            table.ColumnStyles.Clear();
+
+            return;
+        }
+
+        private void UniformTable(TableLayoutPanel table)
+        {
+            for (int count = 0; count < table.RowCount; ++count)
+            {
+                table.RowStyles.Add(new RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            }
+            for (int count = 0; count < table.ColumnCount; ++count)
+            {
+                table.ColumnStyles.Add(new ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            }
+
+            return;
+        }
+
+        private void SetTable(TableLayoutPanel table, int numberOfCell)
+        {
+            numberOfCell = Math.Max(1, numberOfCell);
+            numberOfCell = Math.Min(_maxNumberOfDisplayWindows, numberOfCell);
+            table.RowCount = Convert.ToInt32(Math.Round(Math.Sqrt(numberOfCell)));
+            table.ColumnCount = Convert.ToInt32(Math.Ceiling(Math.Sqrt(numberOfCell)));
+
+            return;
+        }
+
+        private void RefreshDisplayWindows(TableLayoutPanel table, int number)
+        {
+            _displayWindows.Clear();
+            ClearTable(table);
+            SetTable(table, number);
+            UniformTable(table);
+
+            for (int index = 0; index < number; ++index)
+            {
+                DisplayWindow widget = new DisplayWindow();
+                widget.Dock = DockStyle.Fill;
+                widget.Margin = new System.Windows.Forms.Padding(1);
+                _displayWindows.Add(widget);
+                table.Controls.Add(widget, index % number, index / number);
+            }
+
+            return;
+        }
+
+        #endregion
 
         private void DataBaseInit()
         {
@@ -75,7 +131,6 @@ namespace DefectChecker.View
         private void comboBoxProduct_TextChanged(object sender, EventArgs e)
         {
             _dataBaseManager.SwitchProduct(comboBoxProduct.Text);
-            ComboBoxRefresh();
             _hasButtonPressed = true;
 
             return;
@@ -84,7 +139,6 @@ namespace DefectChecker.View
         private void comboBoxBatch_TextChanged(object sender, EventArgs e)
         {
             _dataBaseManager.SwitchBatch(comboBoxBatch.Text);
-            ComboBoxRefresh();
             _hasButtonPressed = true;
 
             return;
@@ -93,7 +147,6 @@ namespace DefectChecker.View
         private void comboBoxBoard_TextChanged(object sender, EventArgs e)
         {
             _dataBaseManager.SwitchBoard(comboBoxBoard.Text);
-            ComboBoxRefresh();
             _hasButtonPressed = true;
 
             return;
@@ -102,7 +155,6 @@ namespace DefectChecker.View
         private void comboBoxSide_TextChanged(object sender, EventArgs e)
         {
             _dataBaseManager.SwitchSide(comboBoxSide.Text);
-            ComboBoxRefresh();
             _hasButtonPressed = true;
 
             return;
@@ -111,7 +163,6 @@ namespace DefectChecker.View
         private void comboBoxShot_TextChanged(object sender, EventArgs e)
         {
             _dataBaseManager.SwitchShot(comboBoxShot.Text);
-            ComboBoxRefresh();
             _hasButtonPressed = true;
 
             return;
@@ -120,7 +171,6 @@ namespace DefectChecker.View
         private void comboBoxDefect_TextChanged(object sender, EventArgs e)
         {
             _dataBaseManager.SwitchDefect(comboBoxDefect.Text);
-            ComboBoxRefresh();
             _hasButtonPressed = true;
 
             return;
@@ -177,7 +227,7 @@ namespace DefectChecker.View
             }
             for (int indexOfDisplayWindow = 0; indexOfDisplayWindow < _displayWindows.Count; ++indexOfDisplayWindow)
             {
-                _displayWindows[indexOfDisplayWindow].defectCell = _defectCells[indexOfDisplayWindow];
+                _displayWindows[indexOfDisplayWindow].SetDefectCell(_defectCells[indexOfDisplayWindow]);
                 _displayWindows[indexOfDisplayWindow].RefreshWindow();
             }
 
@@ -185,40 +235,26 @@ namespace DefectChecker.View
             return;
         }
 
-        private void MoveCursorToDisplayWindow(int indexOfWindow, List<DisplayWindow> displayWindows)
+        private void FocusCurrentDisplayWindow()
         {
-            if (displayWindows == null)
+            int focus = -1;
+            if (null == _displayWindows)
             {
                 return;
             }
-            foreach (var displayWindow in displayWindows)
+            if (_dataBaseManager.DefectNameList != null && _dataBaseManager.DefectNameList.Contains(_dataBaseManager.DefectName))
             {
-                if (displayWindows.IndexOf(displayWindow) == indexOfWindow)
-                {
-                    displayWindow.BorderStyle = BorderStyle.Fixed3D;
-                }
-                else
-                {
-                    displayWindow.BorderStyle = BorderStyle.None;
-                }
+                focus = _dataBaseManager.DefectNameList.IndexOf(_dataBaseManager.DefectName) % _numberOfDispalyWindows;
             }
 
-            return;
-        }
-
-        private void MoveForwardCursor()
-        {
-            _indexOfDisplayWindowOnSelected = (_indexOfDisplayWindowOnSelected + 1) % _numberOfDispalyWindows;
-
-            return;
-        }
-
-        private void MoveBackwardCursor()
-        {
-            _indexOfDisplayWindowOnSelected = (_indexOfDisplayWindowOnSelected - 1) % _numberOfDispalyWindows;
-            if (_indexOfDisplayWindowOnSelected < 0)
+            foreach (var displayWindow in _displayWindows)
             {
-                _indexOfDisplayWindowOnSelected += _numberOfDispalyWindows;
+                if (-1 != focus && _displayWindows.IndexOf(displayWindow) == focus)
+                {
+                    displayWindow.BorderStyle = BorderStyle.Fixed3D;
+                    continue;
+                }
+                displayWindow.BorderStyle = BorderStyle.None;
             }
 
             return;
@@ -238,9 +274,7 @@ namespace DefectChecker.View
                 case Keys.Right:
                     if (_dataBaseManager.TrySwitchBackward())
                     {
-                        MoveForwardCursor();
                         _hasButtonPressed = true;
-                        ComboBoxRefresh();
                     }
                     else
                     {
@@ -250,9 +284,7 @@ namespace DefectChecker.View
                 case Keys.Left:
                     if (_dataBaseManager.TrySwitchForward())
                     {
-                        MoveBackwardCursor();
                         _hasButtonPressed = true;
-                        ComboBoxRefresh();
                     }
                     else
                     {
@@ -265,7 +297,6 @@ namespace DefectChecker.View
                 default:
                     break;
             }
-            MoveCursorToDisplayWindow(_indexOfDisplayWindowOnSelected, _displayWindows);
 
             return true;
         }
@@ -274,6 +305,8 @@ namespace DefectChecker.View
         {
             if (_hasButtonPressed)
             {
+                ComboBoxRefresh();
+                FocusCurrentDisplayWindow();
                 RefreshDisplayWindows();
                 _hasButtonPressed = false;
             }
