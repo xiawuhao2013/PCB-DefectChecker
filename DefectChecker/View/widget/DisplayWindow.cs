@@ -16,7 +16,7 @@ namespace DefectChecker.View.widget
 {
     public partial class DisplayWindow : UserControl
     {
-        public DefectCell defectCell { get; set; }
+        private DefectCell _defectCell { get; set; }
 
         public DisplayWindow()
         {
@@ -97,13 +97,16 @@ namespace DefectChecker.View.widget
 
         private void RefreshAqDisplayOfCheck()
         {
+            this.aqDisplayOfCheck.Show();
             this.aqDisplayOfCheck.InteractiveGraphics.Clear();
-            if (null == defectCell || null == defectCell.DefectImage)
+            if (null == _defectCell || null == _defectCell.DefectImage)
             {
+                this.aqDisplayOfCheck.Hide();
+
                 return;
             }
-            this.aqDisplayOfCheck.Image = defectCell.DefectImage.Clone() as Bitmap;
-            ConvertRectanglesToAqShapes(defectCell.Info.SubDefectList, out var aqShapes);
+            this.aqDisplayOfCheck.Image = _defectCell.DefectImage.Clone() as Bitmap;
+            ConvertRectanglesToAqShapes(_defectCell.Info.SubDefectList, out var aqShapes);
             DisplayContour.Display(aqDisplayOfCheck, aqShapes);
             this.aqDisplayOfCheck.FitToScreen();
             this.aqDisplayOfCheck.Update();
@@ -113,29 +116,30 @@ namespace DefectChecker.View.widget
 
         private void RefreshAqDispayOfModel()
         {
+            this.aqDisplayOfModel.Show();
             this.aqDisplayOfModel.InteractiveGraphics.Clear();
-            if (null == defectCell || null == defectCell.TemplateImage)
+            if (null == _defectCell || null == _defectCell.TemplateImage)
             {
+                this.aqDisplayOfModel.Hide();
+
                 return;
             }
-            this.aqDisplayOfModel.Image = defectCell.TemplateImage.Clone() as Bitmap;
+            this.aqDisplayOfModel.Image = _defectCell.TemplateImage.Clone() as Bitmap;
             this.aqDisplayOfModel.FitToScreen();
             this.aqDisplayOfModel.Update();
 
             return;
         }
 
+        public void SetDefectCell(DefectCell defectCell)
+        {
+            _defectCell = null == defectCell ? new DefectCell() : defectCell;
+
+            return;
+        }
+
         public void RefreshWindow()
         {
-            // remove it or not is all ok.
-            /*
-            if (null == defectCell)
-            {
-                this.Hide();
-
-                return;
-            }
-            */
             RefreshAqDisplay();
             RefreshTitle();
             RefreshInfo();
