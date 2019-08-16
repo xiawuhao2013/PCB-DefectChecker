@@ -4,7 +4,7 @@ using HalconDotNet;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace DefectChecker.ImagerProc.Regions
+namespace DefectChecker.HImagerProc.HRegions
 {
     public class HTransformation
     {

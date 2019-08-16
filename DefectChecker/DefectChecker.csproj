@@ -101,7 +101,7 @@
     <Compile Include="DeviceModule\MachVision\DeviceMachVision.cs" />
     <Compile Include="Common\FolderHelper.cs" />
     <Compile Include="DeviceModule\MachVision\MachVisionFile.cs" />
-    <Compile Include="ImagerProc\Regions\HTransformation.cs" />
+    <Compile Include="HImagerProc\HRegions\HTransformation.cs" />
     <Compile Include="View\ConfigView.cs">
       <SubType>UserControl</SubType>
     </Compile>
