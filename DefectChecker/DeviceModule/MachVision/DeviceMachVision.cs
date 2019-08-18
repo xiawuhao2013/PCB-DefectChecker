@@ -16,7 +16,6 @@ namespace DefectChecker.DeviceModule.MachVision
 {
     class DeviceMachVision : DeviceInterface
     {
-        private const string _fileName = @"Panel.jpg";
         private const string _defectFileExtent = @"*.bmp";
         private const string _codeFileExtent = @"*.par";
         private const string _shotResultFileExtent = @"*.ini";
@@ -77,45 +76,6 @@ namespace DefectChecker.DeviceModule.MachVision
             }
 
             return side;
-        }
-
-        private bool TryGetTemplateImg(string side, string fileName, out Bitmap wholeImg)
-        {
-            wholeImg = null;
-            try
-            {
-                if (!FolderHelper.GetInstance().TryGetChildrenDirMap(_modelDir, out var pathMap))
-                {
-                    return false;
-                }
-                if (!pathMap.TryGetValue(side, out var path))
-                {
-                    return false;
-                }
-                FolderHelper.GetInstance().ResetFileExtension();
-                if (!FolderHelper.GetInstance().TryGetChildrenFileMap(path, out var fileMap))
-                {
-                    return false;
-                }
-                if (!fileMap.TryGetValue(fileName, out var filePath))
-                {
-                    return false;
-                }
-                if (!File.Exists(filePath))
-                {
-                    return false;
-                }
-                wholeImg = new Bitmap(filePath);
-            }
-            catch (Exception ex)
-            {
-                wholeImg = null;
-                MessageBox.Show(ex.Message);
-
-                return false;
-            }
-
-            return true;
         }
 
         private PathMap GetBoardPathInfo(string productName, string batchName)
@@ -180,137 +140,91 @@ namespace DefectChecker.DeviceModule.MachVision
             return codeFile;
         }
         
-        public void GetDefectCell(string productName, string batchName, string boardName, string sideName, string shotName, string defectName, out DefectCell defectCell)
+        private bool TryGetGerberImg(string side, out Bitmap wholeImg)
         {
-            defectCell = new DefectCell();
-            string defectPath = _dataDir +"\\" + productName + "\\" + batchName + "\\" + 
-                                boardName + "\\" + sideName + "\\" + shotName;
-            MachVisionFile machVisionFile = new MachVisionFile(defectPath, shotName);
-            defectName = Regex.Replace(defectName, @"(.bmp)$", "");
-            machVisionFile.ReadDefectInfo(defectName, out var defectInfo);
-            defectCell.Info = defectInfo;
-            defectCell.DefectImage = new Bitmap(defectPath+"\\"+defectName+".bmp");
-            Bitmap templateBitmap;
-            GetTemplateWholeImgA(out templateBitmap);
-            
-            Bitmap templateImage;
-            if (ImageOperateTools.BitmapCropImage(templateBitmap, defectInfo.RoiInTemplate, out templateImage))
-            {
-                defectCell.TemplateImage = templateImage;
-            }
-            else
-            {
-                defectCell.TemplateImage = null;
-            }
-
-        }
-
-        public int GetDefectListInShot(string productName, string batchName, string boardName, string sideName, string shotName, out List<string> defectList)
-        {
-            defectList = new List<string>();
+            wholeImg = null;
             try
             {
-                foreach (var defect in GetDefectPathInfo(productName, batchName, boardName, sideName, shotName))
+                string filePath = _modelDir + "\\"+ side + "\\Panel.jpg";
+                if (!File.Exists(filePath))
                 {
-                    defectList.Add(defect.Key);
+                    return false;
                 }
+                wholeImg = new Bitmap(filePath);
             }
             catch (Exception ex)
             {
-                defectList.Clear();
+                wholeImg = null;
                 MessageBox.Show(ex.Message);
 
-                return 0;
+                return false;
             }
 
-            return defectList.Count;
+            return true;
         }
 
-        public int GetShotList(string productName, string batchName, string boardName, string sideName, out List<string> shotList)
+        private bool TryGetTemplateImg(string sideName, string shotName, out Bitmap templateBitmap)
         {
-            shotList = new List<string>();
+            templateBitmap = null;
             try
             {
-                foreach (var shot in GetShotPathInfo(productName, batchName, boardName, sideName))
+                string filePath = _modelDir + "\\" + sideName + "\\"+shotName+".jpg";
+                if (!File.Exists(filePath))
                 {
-                    shotList.Add(shot.Key);
+                    return false;
                 }
+                templateBitmap = new Bitmap(filePath);
             }
             catch (Exception ex)
             {
-                shotList.Clear();
+                templateBitmap = null;
                 MessageBox.Show(ex.Message);
 
-                return 0;
+                return false;
             }
 
-            return shotList.Count;
+            return true;
         }
-
-        public int GetSideList(string productName, string batchName, string boardName, out List<string> sideList)
+        
+        private Dictionary<string, string> GetDefectPositionInfoOfShot(string productName, string batchName, string boardName, string sideName, string shotName, string shotResultFileName)
         {
-            sideList = new List<string>();
-            try
+            Dictionary<string, string> defectPositionOfShot = new Dictionary<string, string>();
+            IniHelper iniHelper = new IniHelper();
+            if (!GetShotPathInfo(productName, batchName, boardName, sideName).TryGetValue(shotName, out var shotPath))
             {
-                foreach (var side in GetSidePathInfo(productName, batchName, boardName))
-                {
-                    sideList.Add(side.Key);
-                }
+                return defectPositionOfShot;
             }
-            catch (Exception ex)
+            FolderHelper.GetInstance().SetFileExtension(_shotResultFileExtent);
+            if (!FolderHelper.GetInstance().TryGetChildrenFileMap(shotPath, out var shotResultFile))
             {
-                sideList.Clear();
-                MessageBox.Show(ex.Message);
-
-                return 0;
+                return defectPositionOfShot;
+            }
+            if (1 != shotResultFile.Count)
+            {
+                return defectPositionOfShot;
+            }
+            if (!shotResultFile.TryGetValue(shotResultFileName, out var shotResultFilePath))
+            {
+                return defectPositionOfShot;
+            }
+            var encodingType = EncodingHelper.GetInstance().GetEncodingType(shotResultFilePath);
+            foreach (var defect in GetDefectPathInfo(productName, batchName, boardName, sideName, shotName))
+            {
+                iniHelper.ReadValue(defect.Key, @"SD_0000", shotResultFilePath, out var position);
+                defectPositionOfShot.Add(defect.Key, position);
             }
 
-            return sideList.Count;
+            return defectPositionOfShot;
         }
 
-        public int GetBoardList(string productName, string batchName, out List<string> boardList)
+        #region Device Interface
+        
+        public void SetDataDir(string modelDir, string dataDir)
         {
-            boardList = new List<string>();
-            try
-            {
-                foreach (var board in GetBoardPathInfo(productName, batchName))
-                {
-                    boardList.Add(board.Key);
-                }
-            }
-            catch (Exception ex)
-            {
-                boardList.Clear();
-                MessageBox.Show(ex.Message);
-
-                return 0;
-            }
-
-            return boardList.Count;
+            _modelDir = modelDir;
+            _dataDir = dataDir;
         }
 
-        public int GetBatchList(string productName, out List<string> batchList)
-        {
-            batchList = new List<string>();
-            try
-            {
-                foreach (var batch in GetBatchPathInfo(productName))
-                {
-                    batchList.Add(batch.Key);
-                }
-            }
-            catch (Exception ex)
-            {
-                batchList.Clear();
-                MessageBox.Show(ex.Message);
-
-                return 0;
-            }
-
-            return batchList.Count;
-        }
-
-        // LABEL: some bugs to fix.
         public int GetCodeList(out Dictionary<int, string> codeList)
         {
             codeList = new Dictionary<int, string>();
@@ -327,7 +241,7 @@ namespace DefectChecker.DeviceModule.MachVision
                         if (Encoding.UTF8 == encodingType)
                         {
                             valueOfName = EncodingHelper.GetInstance().UTF8ToUnicode(valueOfName);
-                            valueOfID= EncodingHelper.GetInstance().UTF8ToUnicode(valueOfID);
+                            valueOfID = EncodingHelper.GetInstance().UTF8ToUnicode(valueOfID);
                         }
                         if (default(string) == valueOfName || default(string) == valueOfID || "" == valueOfName || "" == valueOfID)
                         {
@@ -370,14 +284,160 @@ namespace DefectChecker.DeviceModule.MachVision
             return procductList.Count;
         }
 
-        public void GetGerberWholeImgA(out Bitmap gerberWholeImg)
+        public int GetBatchList(string productName, out List<string> batchList)
+        {
+            batchList = new List<string>();
+            try
+            {
+                foreach (var batch in GetBatchPathInfo(productName))
+                {
+                    batchList.Add(batch.Key);
+                }
+            }
+            catch (Exception ex)
+            {
+                batchList.Clear();
+                MessageBox.Show(ex.Message);
+
+                return 0;
+            }
+
+            return batchList.Count;
+        }
+
+        public int GetBoardList(string productName, string batchName, out List<string> boardList)
+        {
+            boardList = new List<string>();
+            try
+            {
+                foreach (var board in GetBoardPathInfo(productName, batchName))
+                {
+                    boardList.Add(board.Key);
+                }
+            }
+            catch (Exception ex)
+            {
+                boardList.Clear();
+                MessageBox.Show(ex.Message);
+
+                return 0;
+            }
+
+            return boardList.Count;
+        }
+
+        public int GetSideList(string productName, string batchName, string boardName, out List<string> sideList)
+        {
+            sideList = new List<string>();
+            try
+            {
+                foreach (var side in GetSidePathInfo(productName, batchName, boardName))
+                {
+                    sideList.Add(side.Key);
+                }
+            }
+            catch (Exception ex)
+            {
+                sideList.Clear();
+                MessageBox.Show(ex.Message);
+
+                return 0;
+            }
+
+            return sideList.Count;
+        }
+
+        public int GetShotList(string productName, string batchName, string boardName, string sideName, out List<string> shotList)
+        {
+            shotList = new List<string>();
+            try
+            {
+                foreach (var shot in GetShotPathInfo(productName, batchName, boardName, sideName))
+                {
+                    shotList.Add(shot.Key);
+                }
+            }
+            catch (Exception ex)
+            {
+                shotList.Clear();
+                MessageBox.Show(ex.Message);
+
+                return 0;
+            }
+
+            return shotList.Count;
+        }
+
+        public int GetDefectListInShot(string productName, string batchName, string boardName, string sideName, string shotName, out List<string> defectList)
+        {
+            defectList = new List<string>();
+            try
+            {
+                foreach (var defect in GetDefectPathInfo(productName, batchName, boardName, sideName, shotName))
+                {
+                    defectList.Add(defect.Key);
+                }
+            }
+            catch (Exception ex)
+            {
+                defectList.Clear();
+                MessageBox.Show(ex.Message);
+
+                return 0;
+            }
+
+            return defectList.Count;
+        }
+
+        public void GetDefectCell(string productName, string batchName, string boardName, string sideName, string shotName, string defectName, out DefectCell defectCell)
+        {
+            defectCell = new DefectCell();
+            string defectPath = _dataDir + "\\" + productName + "\\" + batchName + "\\" +
+                                boardName + "\\" + sideName + "\\" + shotName;
+            MachVisionFile machVisionFile = new MachVisionFile(defectPath, shotName);
+            defectName = Regex.Replace(defectName, @"(.bmp)$", "");
+            machVisionFile.ReadDefectInfo(defectName, out var defectInfo);
+            defectCell.Info = defectInfo;
+            defectCell.DefectImage = new Bitmap(defectPath + "\\" + defectName + ".bmp");
+
+
+            Bitmap templateBitmap;
+            TryGetTemplateImg(sideName, shotName, out templateBitmap);
+
+            Bitmap templateImage;
+            if (ImageOperateTools.BitmapCropImage(templateBitmap, defectInfo.RoiInTemplate, out templateImage))
+            {
+                defectCell.TemplateImage = templateImage;
+            }
+            else
+            {
+                defectCell.TemplateImage = null;
+            }
+
+        }
+
+        public bool GetTemplateWholeImgA(out Bitmap wholeImg)
+        {
+            wholeImg = new Bitmap(1000, 1000);
+
+            return true;
+        }
+
+        public bool GetTemplateWholeImgB(out Bitmap wholeImg)
+        {
+            wholeImg = new Bitmap(1000, 1000);
+
+            return true;
+        }
+
+        public bool GetGerberWholeImgA(out Bitmap gerberWholeImg)
         {
             gerberWholeImg = null;
             try
             {
-                if (!TryGetTemplateImg("SideA", _fileName, out var image))
+                if (!TryGetGerberImg("SideA", out var image))
                 {
-                    return;
+                    return false;
                 }
                 gerberWholeImg = image.Clone() as Bitmap;
             }
@@ -386,20 +446,20 @@ namespace DefectChecker.DeviceModule.MachVision
                 gerberWholeImg = null;
                 MessageBox.Show(ex.Message);
 
-                return;
+                return false;
             }
 
-            return;
+            return true;
         }
 
-        public void GetGerberWholeImgB(out Bitmap gerberWholeImg)
+        public bool GetGerberWholeImgB(out Bitmap gerberWholeImg)
         {
             gerberWholeImg = null;
             try
             {
-                if (!TryGetTemplateImg("SideB", _fileName, out var image))
+                if (!TryGetGerberImg("SideB", out var image))
                 {
-                    return;
+                    return false;
                 }
                 gerberWholeImg = image.Clone() as Bitmap;
             }
@@ -408,57 +468,12 @@ namespace DefectChecker.DeviceModule.MachVision
                 gerberWholeImg = null;
                 MessageBox.Show(ex.Message);
 
-                return;
+                return false;
             }
 
-            return;
+            return true;
         }
-
-        public void GetTemplateWholeImgA(out Bitmap wholeImg)
-        {
-            wholeImg = new Bitmap(1000, 1000);
-        }
-
-        public void GetTemplateWholeImgB(out Bitmap wholeImg)
-        {
-            wholeImg = new Bitmap(1000, 1000);
-        }
-
-        private Dictionary<string, string> GetDefectPositionInfoOfShot(string productName, string batchName, string boardName, string sideName, string shotName, string shotResultFileName)
-        {
-            Dictionary<string, string> defectPositionOfShot = new Dictionary<string, string>();
-            IniHelper iniHelper = new IniHelper();
-            if (!GetShotPathInfo(productName, batchName, boardName, sideName).TryGetValue(shotName, out var shotPath))
-            {
-                return defectPositionOfShot;
-            }
-            FolderHelper.GetInstance().SetFileExtension(_shotResultFileExtent);
-            if (!FolderHelper.GetInstance().TryGetChildrenFileMap(shotPath, out var shotResultFile))
-            {
-                return defectPositionOfShot;
-            }
-            if (1 != shotResultFile.Count)
-            {
-                return defectPositionOfShot;
-            }
-            if (!shotResultFile.TryGetValue(shotResultFileName, out var shotResultFilePath))
-            {
-                return defectPositionOfShot;
-            }
-            var encodingType = EncodingHelper.GetInstance().GetEncodingType(shotResultFilePath);
-            foreach (var defect in GetDefectPathInfo(productName, batchName, boardName, sideName, shotName))
-            {
-                iniHelper.ReadValue(defect.Key, @"SD_0000", shotResultFilePath, out var position);
-                defectPositionOfShot.Add(defect.Key, position);
-            }
-
-            return defectPositionOfShot;
-        }
-
-        public void SetDataDir(string modelDir, string dataDir)
-        {
-            _modelDir = modelDir;
-            _dataDir = dataDir;
-        }
+        
+        #endregion
     }
 }

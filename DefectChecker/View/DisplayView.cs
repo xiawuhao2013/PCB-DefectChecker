@@ -13,7 +13,6 @@ namespace DefectChecker.View
     {
         private const int _maxNumberOfDisplayWindows = 10;
         private int _numberOfDispalyWindows = 1;
-        private bool _hasButtonPressed = false;
         // 
         private List<DefectCell> _defectCells = new List<DefectCell>(); // replace with DataBaseManager.xxx
         private List<DisplayWindow> _displayWindows = new List<DisplayWindow>(); // may need window number control.
@@ -171,42 +170,54 @@ namespace DefectChecker.View
         private void comboBoxProduct_TextChanged(object sender, EventArgs e)
         {
             _dataBaseManager.SwitchProduct(comboBoxProduct.Text);
-            _hasButtonPressed = true;
+            RefreshComboBox();
+            FocusCurrentDisplayWindow();
+            RefreshDisplayWindows();
             return;
         }
 
         private void comboBoxBatch_TextChanged(object sender, EventArgs e)
         {
             _dataBaseManager.SwitchBatch(comboBoxBatch.Text);
-            _hasButtonPressed = true;
+            RefreshComboBox();
+            FocusCurrentDisplayWindow();
+            RefreshDisplayWindows();
             return;
         }
 
         private void comboBoxBoard_TextChanged(object sender, EventArgs e)
         {
             _dataBaseManager.SwitchBoard(comboBoxBoard.Text);
-            _hasButtonPressed = true;
+            RefreshComboBox();
+            FocusCurrentDisplayWindow();
+            RefreshDisplayWindows();
             return;
         }
 
         private void comboBoxSide_TextChanged(object sender, EventArgs e)
         {
             _dataBaseManager.SwitchSide(comboBoxSide.Text);
-            _hasButtonPressed = true;
+            RefreshComboBox();
+            FocusCurrentDisplayWindow();
+            RefreshDisplayWindows();
             return;
         }
 
         private void comboBoxShot_TextChanged(object sender, EventArgs e)
         {
             _dataBaseManager.SwitchShot(comboBoxShot.Text);
-            _hasButtonPressed = true;
+            RefreshComboBox();
+            FocusCurrentDisplayWindow();
+            RefreshDisplayWindows();
             return;
         }
 
         private void comboBoxDefect_TextChanged(object sender, EventArgs e)
         {
             _dataBaseManager.SwitchDefect(comboBoxDefect.Text);
-            _hasButtonPressed = true;
+            RefreshComboBox();
+            FocusCurrentDisplayWindow();
+            RefreshDisplayWindows();
             return;
         }
 
@@ -268,10 +279,6 @@ namespace DefectChecker.View
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (_hasButtonPressed)
-            {
-                return base.ProcessCmdKey(ref msg, keyData);
-            }
             switch (keyData)
             {
                 // TODO: add manager codes.
@@ -280,7 +287,9 @@ namespace DefectChecker.View
                 case Keys.Right:
                     if (_dataBaseManager.TrySwitchBackward())
                     {
-                        _hasButtonPressed = true;
+                        RefreshComboBox();
+                        FocusCurrentDisplayWindow();
+                        RefreshDisplayWindows();
                     }
                     else
                     {
@@ -290,7 +299,9 @@ namespace DefectChecker.View
                 case Keys.Left:
                     if (_dataBaseManager.TrySwitchForward())
                     {
-                        _hasButtonPressed = true;
+                        RefreshComboBox();
+                        FocusCurrentDisplayWindow();
+                        RefreshDisplayWindows();
                     }
                     else
                     {
@@ -307,17 +318,17 @@ namespace DefectChecker.View
             return true;
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            if (_hasButtonPressed)
-            {
-                RefreshComboBox();
-                FocusCurrentDisplayWindow();
-                RefreshDisplayWindows();
-                _hasButtonPressed = false;
-            }
+        //private void timer1_Tick(object sender, EventArgs e)
+        //{
+        //    if (_hasButtonPressed)
+        //    {
+        //        RefreshComboBox();
+        //        FocusCurrentDisplayWindow();
+        //        RefreshDisplayWindows();
+        //        _hasButtonPressed = false;
+        //    }
 
-            return;
-        }
+        //    return;
+        //}
     }
 }
