@@ -21,9 +21,6 @@ namespace DefectChecker.DeviceModule.MachVision
         private const string _shotResultFileExtent = @"*.ini";
         private const string _shot0ResultFileName = @"ResultShot_0.ini";
         private const string _shot1ResultFileName = @"ResultShot_1.ini";
-        private const string _section = "Info";
-        private const string _keyOfName = "Name";
-        private const string _keyOfID = "ParamID";
         private string _dataDir = "";
         private string _modelDir = "";
         
@@ -118,27 +115,6 @@ namespace DefectChecker.DeviceModule.MachVision
 
             return product;
         }
-
-        // LABEL: need product name?
-        private PathMap GetCodeFileList()
-        {
-            PathMap codeFile = new PathMap();
-            try
-            {
-                FolderHelper.GetInstance().SetFileExtension(_codeFileExtent);
-                if (!FolderHelper.GetInstance().TryGetChildrenFileMap(_modelDir, out codeFile))
-                {
-                    codeFile.Clear();
-                }
-            }
-            catch (Exception ex)
-            {
-                codeFile.Clear();
-                MessageBox.Show(ex.Message);
-            }
-
-            return codeFile;
-        }
         
         private bool TryGetGerberImg(string side, out Bitmap wholeImg)
         {
@@ -230,26 +206,20 @@ namespace DefectChecker.DeviceModule.MachVision
             codeList = new Dictionary<int, string>();
             try
             {
+                string fileName = _modelDir + "\\DefectCodeList.ini";
                 IniHelper iniHelper = new IniHelper();
-                foreach (var codeFile in GetCodeFileList())
+                int i = 1;
+                while (true)
                 {
-                    if (File.Exists(codeFile.Value))
+                    iniHelper.ReadValue("Info", "Name" + i.ToString(), fileName, out string valueOfName);
+                    iniHelper.ReadValue("Info", "CodeID" + i.ToString(), fileName, out string valueOfID);
+                    i++;
+                    if (default(string) == valueOfName || default(string) == valueOfID || "" == valueOfName || "" == valueOfID)
                     {
-                        var encodingType = EncodingHelper.GetInstance().GetEncodingType(codeFile.Value);
-                        iniHelper.ReadValue(_section, _keyOfName, codeFile.Value, out string valueOfName);
-                        iniHelper.ReadValue(_section, _keyOfID, codeFile.Value, out string valueOfID);
-                        if (Encoding.UTF8 == encodingType)
-                        {
-                            valueOfName = EncodingHelper.GetInstance().UTF8ToUnicode(valueOfName);
-                            valueOfID = EncodingHelper.GetInstance().UTF8ToUnicode(valueOfID);
-                        }
-                        if (default(string) == valueOfName || default(string) == valueOfID || "" == valueOfName || "" == valueOfID)
-                        {
-                            continue;
-                        }
-                        var id = Convert.ToInt32(valueOfID);
-                        codeList.Add(id, valueOfName);
+                        break;
                     }
+                    var id = Convert.ToInt32(valueOfID);
+                    codeList.Add(id, valueOfName);
                 }
             }
             catch (Exception ex)
@@ -265,6 +235,8 @@ namespace DefectChecker.DeviceModule.MachVision
 
         public int GetProductList(out List<string> procductList)
         {
+            Dictionary<int, string> codeList;
+            GetCodeList(out codeList);
             procductList = new List<string>();
             try
             {
