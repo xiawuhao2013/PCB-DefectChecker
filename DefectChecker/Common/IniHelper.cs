@@ -42,7 +42,7 @@ namespace DefectChecker.Common
             try
             {
                 StringBuilder temp = new StringBuilder(1024);
-                strLen = GetPrivateProfileString(section, key, null, temp, 1024, path);
+                strLen = GetPrivateProfileString(section, key, null, temp, 4096, path);
                 value = temp.ToString();
             }
             catch (Exception ex)

@@ -39,15 +39,15 @@ namespace DefectChecker.View.widget
             foreach (var rectangle in rectangles)
             {
                 posYs.Add(rectangle.Y);
-                posYs.Add(rectangle.Y + rectangle.Width);
-                posYs.Add(rectangle.Y + rectangle.Width);
+                posYs.Add(rectangle.Y + rectangle.Height);
+                posYs.Add(rectangle.Y + rectangle.Height);
                 posYs.Add(rectangle.Y);
                 posYs.Add(rectangle.Y);
 
                 posXs.Add(rectangle.X);
                 posXs.Add(rectangle.X);
-                posXs.Add(rectangle.X + rectangle.Height);
-                posXs.Add(rectangle.X + rectangle.Height);
+                posXs.Add(rectangle.X + rectangle.Width);
+                posXs.Add(rectangle.X + rectangle.Width);
                 posXs.Add(rectangle.X);
 
                 pointsNums.Add(5);
