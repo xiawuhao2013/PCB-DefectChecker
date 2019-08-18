@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -56,10 +55,9 @@
             this.panel11 = new System.Windows.Forms.Panel();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.tableLayoutPanelTemplate = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanelGerber = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelImage = new System.Windows.Forms.TableLayoutPanel();
             this.splitter2 = new System.Windows.Forms.Splitter();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -355,7 +353,7 @@
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.tableLayoutPanelTemplate);
+            this.panel2.Controls.Add(this.tableLayoutPanelGerber);
             this.panel2.Controls.Add(this.splitter1);
             this.panel2.Controls.Add(this.panel1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
@@ -364,18 +362,18 @@
             this.panel2.Size = new System.Drawing.Size(571, 700);
             this.panel2.TabIndex = 5;
             // 
-            // tableLayoutPanelTemplate
+            // tableLayoutPanelGerber
             // 
-            this.tableLayoutPanelTemplate.ColumnCount = 2;
-            this.tableLayoutPanelTemplate.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanelTemplate.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanelTemplate.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanelTemplate.Location = new System.Drawing.Point(0, 275);
-            this.tableLayoutPanelTemplate.Name = "tableLayoutPanelTemplate";
-            this.tableLayoutPanelTemplate.RowCount = 1;
-            this.tableLayoutPanelTemplate.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanelTemplate.Size = new System.Drawing.Size(571, 425);
-            this.tableLayoutPanelTemplate.TabIndex = 6;
+            this.tableLayoutPanelGerber.ColumnCount = 2;
+            this.tableLayoutPanelGerber.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelGerber.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelGerber.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanelGerber.Location = new System.Drawing.Point(0, 275);
+            this.tableLayoutPanelGerber.Name = "tableLayoutPanelGerber";
+            this.tableLayoutPanelGerber.RowCount = 1;
+            this.tableLayoutPanelGerber.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelGerber.Size = new System.Drawing.Size(571, 425);
+            this.tableLayoutPanelGerber.TabIndex = 6;
             // 
             // tableLayoutPanelImage
             // 
@@ -398,10 +396,6 @@
             this.splitter2.TabIndex = 7;
             this.splitter2.TabStop = false;
             // 
-            // timer1
-            // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
             // DisplayView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -412,8 +406,6 @@
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "DisplayView";
             this.Size = new System.Drawing.Size(1248, 700);
-            this.Enter += new System.EventHandler(this.DisplayView_Enter);
-            this.Leave += new System.EventHandler(this.DisplayView_Leave);
             this.panel1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
@@ -456,9 +448,8 @@
         private System.Windows.Forms.Panel panel11;
         private System.Windows.Forms.Splitter splitter1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelTemplate;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelGerber;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelImage;
         private System.Windows.Forms.Splitter splitter2;
-        private System.Windows.Forms.Timer timer1;
     }
 }

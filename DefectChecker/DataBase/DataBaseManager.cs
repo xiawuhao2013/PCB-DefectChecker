@@ -45,33 +45,24 @@ namespace DefectChecker.DataBase
         public List<string> DefectNameList { get { return _defectNameList; } }
 
         // product name info
-        public string ProductName
-        {
-            get;
-            set;
-        }
-        public string BatchName
-        {
-            get;
-            set;
-        }
+        public string ProductName { get; set; }
+        public string BatchName { get; set; }
         public string BoardName { get; set; }
         public string SideName { get; set; }
         public string ShotName { get; set; }
         public string DefectName { get; set; }
 
-        //// index
-        //public int IndexOfProductNameList { get; set; }
-        //public int IndexOfBatchNameList { get; set; }
-        //public int IndexOfBoardNameList { get; set; }
-        //public int IndexOfSideNameList { get; set; }
-        //public int IndexOfShotNameList { get; set; }
-        //public int IndexOfDefectNameList { get; set; }
-
-        public DataBaseManager(MarkDataBase markDataBase)
+        public DataBaseManager()
         {
-            _markDataBase = markDataBase;
             Init();
+        }
+        
+        private void Init()
+        {
+            ResetProduct();
+            LoadProjectSetting();
+            LoadDataBaseInfo();
+            SaveDataBaseInfo();
         }
 
         private bool GetRangeOfDefectGroup(int groupSize, out int head, out int end)
@@ -111,14 +102,6 @@ namespace DefectChecker.DataBase
             } while (--iter > 0);
 
             return;
-        }
-
-        private void Init()
-        {
-            ResetProduct();
-            LoadProjectSetting();
-            LoadDataBaseInfo();
-            SaveDataBaseInfo();
         }
 
         private void LoadProjectSetting()
@@ -721,6 +704,18 @@ namespace DefectChecker.DataBase
             } while (!TrySelectDefect(--index));
 
             return true;
+        }
+
+        public void GetGerberImage(string side, out Bitmap gerberBitmap)
+        {
+            if (side == "SideA")
+            {
+                _device.GetGerberWholeImgA(out gerberBitmap);
+            }
+            else
+            {
+                _device.GetGerberWholeImgB(out gerberBitmap);
+            }
         }
 
         //

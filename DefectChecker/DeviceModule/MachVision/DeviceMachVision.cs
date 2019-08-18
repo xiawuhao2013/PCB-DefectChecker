@@ -16,8 +16,6 @@ namespace DefectChecker.DeviceModule.MachVision
 {
     class DeviceMachVision : DeviceInterface
     {
-        private const string _sideA = @"SideA";
-        private const string _sideB = @"SideB";
         private const string _fileName = @"Panel.jpg";
         private const string _defectFileExtent = @"*.bmp";
         private const string _codeFileExtent = @"*.par";
@@ -374,56 +372,56 @@ namespace DefectChecker.DeviceModule.MachVision
 
         public void GetGerberWholeImgA(out Bitmap gerberWholeImg)
         {
-            throw new NotImplementedException();
+            gerberWholeImg = null;
+            try
+            {
+                if (!TryGetTemplateImg("SideA", _fileName, out var image))
+                {
+                    return;
+                }
+                gerberWholeImg = image.Clone() as Bitmap;
+            }
+            catch (Exception ex)
+            {
+                gerberWholeImg = null;
+                MessageBox.Show(ex.Message);
+
+                return;
+            }
+
+            return;
         }
 
         public void GetGerberWholeImgB(out Bitmap gerberWholeImg)
         {
-            throw new NotImplementedException();
+            gerberWholeImg = null;
+            try
+            {
+                if (!TryGetTemplateImg("SideB", _fileName, out var image))
+                {
+                    return;
+                }
+                gerberWholeImg = image.Clone() as Bitmap;
+            }
+            catch (Exception ex)
+            {
+                gerberWholeImg = null;
+                MessageBox.Show(ex.Message);
+
+                return;
+            }
+
+            return;
         }
 
         public void GetTemplateWholeImgA(out Bitmap wholeImg)
         {
-            wholeImg = null;
-            try
-            {
-                if (!TryGetTemplateImg(_sideA, _fileName, out var image))
-                {
-                    return;
-                }
-                wholeImg = image.Clone() as Bitmap;
-            }
-            catch(Exception ex)
-            {
-                wholeImg = null;
-                MessageBox.Show(ex.Message);
-
-                return;
-            }
-
-            return;
+            wholeImg = new Bitmap(1000, 1000);
         }
 
         public void GetTemplateWholeImgB(out Bitmap wholeImg)
         {
-            wholeImg = null;
-            try
-            {
-                if (!TryGetTemplateImg(_sideB, _fileName, out var image))
-                {
-                    return;
-                }
-                wholeImg = image.Clone() as Bitmap;
-            }
-            catch (Exception ex)
-            {
-                wholeImg = null;
-                MessageBox.Show(ex.Message);
-
-                return;
-            }
-
-            return;
+            wholeImg = new Bitmap(1000, 1000);
         }
 
         private Dictionary<string, string> GetDefectPositionInfoOfShot(string productName, string batchName, string boardName, string sideName, string shotName, string shotResultFileName)
