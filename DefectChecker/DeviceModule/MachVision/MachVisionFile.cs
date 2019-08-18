@@ -43,73 +43,6 @@ namespace DefectChecker.DeviceModule.MachVision
             return false;
         }
 
-        private bool ReadRoiInTemplate(string defectName, out Rectangle roi)
-        {
-            int topLeftX, topLeftY, width, height;
-            string str;
-            IniHelper iniHelper = new IniHelper();
-            if (iniHelper.ReadValue(defectName, "DefectRoiGold ", _fileName, out str) > 0)
-            {
-                var array = str.Split(',');
-                if (array.Length == 4 &&
-                    int.TryParse(array[0], out topLeftX) &&
-                    int.TryParse(array[1], out topLeftY) &&
-                    int.TryParse(array[2], out width) &&
-                    int.TryParse(array[3], out height))
-                {
-                    roi = new Rectangle(topLeftX, topLeftY, width - 1, height - 1);
-                    return true;
-                }
-            }
-
-            roi = new Rectangle(0, 0, 0, 0);
-            return false;
-        }
-
-        private bool ReadSubDefects(string defectName, out List<Rectangle> subDefects)
-        {
-            subDefects = new List<Rectangle>();
-            IniHelper iniHelper = new IniHelper();
-            string str;
-            if (iniHelper.ReadValue(defectName, "NumSubDefect", _fileName, out str)<=0)
-            {
-                return false;
-            }
-            int subDefectNum;
-            if (!int.TryParse(str, out subDefectNum))
-            {
-                return false;
-            }
-
-            for (int i = 0; i < subDefectNum; i++)
-            {
-                string subDefectName = string.Format("SD_{0:0000}", i);
-                if (iniHelper.ReadValue(defectName, subDefectName, _fileName, out str)<=0)
-                {
-                    return false;
-                }
-
-                var array = str.Split('|');
-                foreach (var subStr in array)
-                {
-                    if (subStr==null || subStr.Length==0)
-                    {
-                        continue;
-                    }
-                    Rectangle subDefect;
-                    if (DecodeSubDefect(subStr, out subDefect))
-                    {
-                        subDefects.Add(subDefect);
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-
         private bool DecodeSubDefect(string str, out Rectangle subDefect)
         {
             var array = str.Split('#');
@@ -141,40 +74,80 @@ namespace DefectChecker.DeviceModule.MachVision
             return false;
         }
 
-        public bool ReadDefectInfo(string defectName, out DefectInfo defectInfo)
+        public bool ReadRoiInTemplate(string defectName, out Rectangle roi)
         {
-            defectInfo = new DefectInfo();
+            int topLeftX, topLeftY, width, height;
+            string str;
+            IniHelper iniHelper = new IniHelper();
+            if (iniHelper.ReadValue(defectName, "DefectRoiGold ", _fileName, out str) > 0)
+            {
+                var array = str.Split(',');
+                if (array.Length == 4 &&
+                    int.TryParse(array[0], out topLeftX) &&
+                    int.TryParse(array[1], out topLeftY) &&
+                    int.TryParse(array[2], out width) &&
+                    int.TryParse(array[3], out height))
+                {
+                    roi = new Rectangle(topLeftX, topLeftY, width - 1, height - 1);
+                    return true;
+                }
+            }
 
-            int codeNum;
-            if (!ReadCodeNum(defectName, out codeNum))
+            roi = new Rectangle(0, 0, 0, 0);
+            return false;
+        }
+
+        public bool ReadDefectInfos(string defectName, out List<DefectInfo> defectInfoList)
+        {
+            defectInfoList = new List<DefectInfo>();
+            IniHelper iniHelper = new IniHelper();
+            string str;
+            if (iniHelper.ReadValue(defectName, "NumSubDefect", _fileName, out str) <= 0)
             {
                 return false;
             }
-            else
-            {
-                defectInfo.CodeNum = codeNum;
-            }
-
-            Rectangle roi;
-            if (!ReadRoiInTemplate(defectName, out roi))
+            int subDefectNum;
+            if (!int.TryParse(str, out subDefectNum))
             {
                 return false;
             }
-            else
-            {
-                defectInfo.RoiInTemplate = roi;
-            }
 
-            List<Rectangle> subDefects;
-            if (!ReadSubDefects(defectName, out subDefects))
+            int codeNum = -1;
+            for (int i = 0; i < subDefectNum; i++)
             {
-                return false;
-            }
-            else
-            {
-                defectInfo.SubDefectList = subDefects;
-            }
+                string subDefectName = string.Format("SD_{0:0000}", i);
+                if (iniHelper.ReadValue(defectName, subDefectName, _fileName, out str) <= 0)
+                {
+                    return false;
+                }
 
+                var array = str.Split('#');
+                if (array != null && array.Length > 0)
+                {
+                    int.TryParse(array[0], out codeNum);
+                }
+
+                array = str.Split('|');
+                foreach (var subStr in array)
+                {
+                    if (subStr == null || subStr.Length == 0)
+                    {
+                        continue;
+                    }
+                    Rectangle rect;
+                    if (DecodeSubDefect(subStr, out rect))
+                    {
+                        DefectInfo defectInfo = new DefectInfo();
+                        defectInfo.CodeNum = codeNum;
+                        defectInfo.RectList.Add(rect);
+                        defectInfoList.Add(defectInfo);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
             return true;
         }
 

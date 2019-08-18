@@ -25,32 +25,40 @@ namespace DefectChecker.View.widget
             Refresh();
         }
 
-        private void ConvertRectanglesToAqShapes(List<Rectangle> rectangles, out List<AqShap> aqShapes)
+        private void ConvertRectanglesToAqShapes(List<DefectInfo> defectInfos, out List<AqShap> aqShapes)
         {
             aqShapes = new List<AqShap>();
             List<double> posYs = new List<double>();
             List<double> posXs = new List<double>();
             List<int> pointsNums = new List<int>();
 
-            if (null == rectangles)
+            if (null == defectInfos)
             {
                 return;
             }
-            foreach (var rectangle in rectangles)
+            foreach (var defectInfo in defectInfos)
             {
-                posYs.Add(rectangle.Y);
-                posYs.Add(rectangle.Y + rectangle.Height);
-                posYs.Add(rectangle.Y + rectangle.Height);
-                posYs.Add(rectangle.Y);
-                posYs.Add(rectangle.Y);
+                if (defectInfo==null || defectInfo.RectList==null)
+                {
+                    continue;
+                }
 
-                posXs.Add(rectangle.X);
-                posXs.Add(rectangle.X);
-                posXs.Add(rectangle.X + rectangle.Width);
-                posXs.Add(rectangle.X + rectangle.Width);
-                posXs.Add(rectangle.X);
+                foreach (var rectangle in defectInfo.RectList)
+                {
+                    posYs.Add(rectangle.Y);
+                    posYs.Add(rectangle.Y + rectangle.Height);
+                    posYs.Add(rectangle.Y + rectangle.Height);
+                    posYs.Add(rectangle.Y);
+                    posYs.Add(rectangle.Y);
 
-                pointsNums.Add(5);
+                    posXs.Add(rectangle.X);
+                    posXs.Add(rectangle.X);
+                    posXs.Add(rectangle.X + rectangle.Width);
+                    posXs.Add(rectangle.X + rectangle.Width);
+                    posXs.Add(rectangle.X);
+
+                    pointsNums.Add(5);
+                }
             }
             DisplayContour.GetContours(posYs, posXs, pointsNums, out aqShapes);
 
@@ -106,7 +114,7 @@ namespace DefectChecker.View.widget
                 return;
             }
             this.aqDisplayOfCheck.Image = _defectCell.DefectImage.Clone() as Bitmap;
-            ConvertRectanglesToAqShapes(_defectCell.Info.SubDefectList, out var aqShapes);
+            ConvertRectanglesToAqShapes(_defectCell.Info, out var aqShapes);
             DisplayContour.Display(aqDisplayOfCheck, aqShapes);
             this.aqDisplayOfCheck.FitToScreen();
             this.aqDisplayOfCheck.Update();
