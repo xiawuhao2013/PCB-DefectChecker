@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -58,6 +59,7 @@
             this.tableLayoutPanelGerber = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelImage = new System.Windows.Forms.TableLayoutPanel();
             this.splitter2 = new System.Windows.Forms.Splitter();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -396,6 +398,10 @@
             this.splitter2.TabIndex = 7;
             this.splitter2.TabStop = false;
             // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // DisplayView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -451,5 +457,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelGerber;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelImage;
         private System.Windows.Forms.Splitter splitter2;
+        private System.Windows.Forms.Timer timer1;
     }
 }

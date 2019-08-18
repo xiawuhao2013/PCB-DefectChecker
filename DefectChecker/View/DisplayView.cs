@@ -31,6 +31,7 @@ namespace DefectChecker.View
             InitDisplayWindows(this.tableLayoutPanelImage, _numberOfDispalyWindows);
             
             InitDataBase();
+            //timer1.Start();
         }
 
         #region Init
@@ -316,6 +317,20 @@ namespace DefectChecker.View
             }
 
             return true;
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (_dataBaseManager.TrySwitchBackward())
+            {
+                RefreshComboBox();
+                FocusCurrentDisplayWindow();
+                RefreshDisplayWindows();
+            }
+            else
+            {
+                MessageBox.Show("完了！");
+            }
         }
 
         //private void timer1_Tick(object sender, EventArgs e)
