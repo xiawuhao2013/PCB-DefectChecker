@@ -34,7 +34,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxModelDir = new System.Windows.Forms.TextBox();
             this.buttonSelectModelDir = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -100,21 +99,10 @@
             this.buttonSelectModelDir.UseVisualStyleBackColor = true;
             this.buttonSelectModelDir.Click += new System.EventHandler(this.buttonSelectModelDir_Click);
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(228, 242);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "留作测试";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // ConfigView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.buttonSelectModelDir);
             this.Controls.Add(this.buttonSelectDataDir);
             this.Controls.Add(this.textBoxModelDir);
@@ -125,7 +113,6 @@
             this.Size = new System.Drawing.Size(549, 320);
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
@@ -136,6 +123,5 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBoxModelDir;
         private System.Windows.Forms.Button buttonSelectModelDir;
-        private System.Windows.Forms.Button button1;
     }
 }
