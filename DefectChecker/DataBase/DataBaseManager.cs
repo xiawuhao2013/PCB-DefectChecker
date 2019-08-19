@@ -814,9 +814,9 @@ namespace DefectChecker.DataBase
             if (TryGetNextDefectNotEmpty() || TryGetNextShotNotEmpty() || TryGetNextSideNotEmpty() || TryGetNextBoardNotEmpty() || TryGetNextBatchNotEmpty() || TryGetNextProductNotEmpty())
             {
                 MarkDataInfo markDataInfo = new MarkDataInfo(ProductName, BatchName, BoardName, SideName, ShotName, DefectName);
-                markDataInfo.AddMarks(0, EMarkDataType.OK);
-                markDataInfo.AddMarks(1, EMarkDataType.NG);
-                markDataInfo.AddMarks(2, EMarkDataType.Undefined);
+                _sqliteDb.ReadMarkDataType(ref markDataInfo);
+                markDataInfo.AddMarks(7, EMarkDataType.OK);
+                markDataInfo.AddMarks(3, EMarkDataType.Undefined);
                 _sqliteDb.WriteMarkDataInfo(markDataInfo);
                 return true;
             }
