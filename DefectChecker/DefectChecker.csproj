@@ -109,6 +109,12 @@
     <Compile Include="View\ConfigView.Designer.cs">
       <DependentUpon>ConfigView.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\DataBaseView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\DataBaseView.Designer.cs">
+      <DependentUpon>DataBaseView.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\DisplayView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -140,6 +146,9 @@
     </Compile>
     <EmbeddedResource Include="View\ConfigView.resx">
       <DependentUpon>ConfigView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DataBaseView.resx">
+      <DependentUpon>DataBaseView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\DisplayView.resx">
       <DependentUpon>DisplayView.cs</DependentUpon>

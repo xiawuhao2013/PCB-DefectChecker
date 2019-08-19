@@ -34,9 +34,12 @@
             this.panelOfDisplayView = new System.Windows.Forms.Panel();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.panelConfigView = new System.Windows.Forms.Panel();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.panelDataBaseView = new System.Windows.Forms.Panel();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.tabPage4.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -44,6 +47,7 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tabControl1.ItemSize = new System.Drawing.Size(100, 30);
@@ -107,6 +111,25 @@
             this.panelConfigView.Size = new System.Drawing.Size(1276, 723);
             this.panelConfigView.TabIndex = 0;
             // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.panelDataBaseView);
+            this.tabPage4.Location = new System.Drawing.Point(4, 34);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(1276, 723);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "数据整理";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // panelDataBaseView
+            // 
+            this.panelDataBaseView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelDataBaseView.Location = new System.Drawing.Point(3, 3);
+            this.panelDataBaseView.Name = "panelDataBaseView";
+            this.panelDataBaseView.Size = new System.Drawing.Size(1270, 717);
+            this.panelDataBaseView.TabIndex = 0;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -121,6 +144,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
+            this.tabPage4.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -133,6 +157,8 @@
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Panel panelConfigView;
         private System.Windows.Forms.Panel panelOfDisplayView;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.Panel panelDataBaseView;
     }
 }
 

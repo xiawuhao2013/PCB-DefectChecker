@@ -14,6 +14,7 @@ namespace DefectChecker.View
     {
         private ConfigView _uiConfigView = new ConfigView();
         private DisplayView _displayView = new DisplayView();
+        private DataBaseView _uiDataBaseView = new DataBaseView();
 
         public MainForm()
         {
@@ -25,7 +26,9 @@ namespace DefectChecker.View
         {
             _uiConfigView.Dock = DockStyle.Fill;
             this.panelConfigView.Controls.Add(_uiConfigView);
-            this.tabControl1.SelectedIndex = 2;
+
+            _uiDataBaseView.Dock = DockStyle.Fill;
+            this.panelDataBaseView.Controls.Add(_uiDataBaseView);
 
             _displayView.Dock = DockStyle.Fill;
             this.panelOfDisplayView.Controls.Add(_displayView);
