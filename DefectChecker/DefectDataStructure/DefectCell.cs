@@ -46,7 +46,7 @@ namespace DefectChecker.DefectDataStructure
             List<double> xldYs;
             List<int> xldPointCount;
             List<List<int>> defectIndexList;
-            HImageProcess.GenDefectRegions(DefectImage, rects, out xldXs, out xldYs, out xldPointCount, out defectIndexList);
+            HImageProcess.GenDefectRegions(DefectImage, rects, 5.5, out xldXs, out xldYs, out xldPointCount, out defectIndexList);
             DefectRegionInfo.XldXs = xldXs;
             DefectRegionInfo.XldYs = xldYs;
             DefectRegionInfo.XldPointCount = xldPointCount;
