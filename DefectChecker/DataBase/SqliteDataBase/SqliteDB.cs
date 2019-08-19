@@ -24,7 +24,7 @@ namespace DefectChecker.DataBase.SqliteDataBase
         {
             // string productName, string batchName, string boardName, string sideName,
             // string shotName, string defectName, EMarkDataType markType
-            string sqlCmd = "CREATE TABLE IF NOT EXISTS " + _tableName + "(Time TIMESTAMP default (datetime('now', 'localtime')), Product varchar(50), Batch varchar(50), Board varchar(50), Side varchar(50), Shot varchar(50), Defect varchar(50), MarkInfo varchar(50));";
+            string sqlCmd = "CREATE TABLE IF NOT EXISTS " + _tableName + "(Time TIMESTAMP default (datetime('now', 'localtime')), Product varchar(50), Batch varchar(50), Board varchar(50), Side varchar(50), Shot varchar(50), Defect varchar(50), MarkInfo varchar(1024));";
             SqliteCMD(sqlCmd);
         }
 

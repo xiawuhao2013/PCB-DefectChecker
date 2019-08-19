@@ -17,8 +17,6 @@ namespace DefectChecker
         [STAThread]
         static void Main()
         {
-            SqliteDB sqliteDb = new SqliteDB("123", "ttt");
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());

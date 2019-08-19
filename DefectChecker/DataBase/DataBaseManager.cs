@@ -1,4 +1,5 @@
 ﻿using Aqrose.Framework.Utility.Tools;
+using DefectChecker.DataBase.SqliteDataBase;
 using DefectChecker.DefectDataStructure;
 using DefectChecker.DeviceModule.MachVision;
 using System;
@@ -14,7 +15,7 @@ namespace DefectChecker.DataBase
         private const string _fileProjectSetting = @"\config\ProjectSetting.xml";
         private const string _fileDataBaseManager = @"\config\DataBaseManager.xml";
 
-        private MarkDataBase _markDataBase = new MarkDataBase();
+        private SqliteDB _sqliteDb;
         private DeviceMachVision _device = new DeviceMachVision();
 
         private string _dataDir;
@@ -59,6 +60,7 @@ namespace DefectChecker.DataBase
         
         private void Init()
         {
+            _sqliteDb = new SqliteDB("MarkDatabase", "MarkTable");
             ResetProduct();
             LoadProjectSetting();
             LoadDataBaseInfo();
@@ -811,6 +813,11 @@ namespace DefectChecker.DataBase
         {
             if (TryGetNextDefectNotEmpty() || TryGetNextShotNotEmpty() || TryGetNextSideNotEmpty() || TryGetNextBoardNotEmpty() || TryGetNextBatchNotEmpty() || TryGetNextProductNotEmpty())
             {
+                MarkDataInfo markDataInfo = new MarkDataInfo(ProductName, BatchName, BoardName, SideName, ShotName, DefectName);
+                markDataInfo.AddMarks(0, EMarkDataType.OK);
+                markDataInfo.AddMarks(1, EMarkDataType.NG);
+                markDataInfo.AddMarks(2, EMarkDataType.Undefined);
+                _sqliteDb.WriteMarkDataInfo(markDataInfo);
                 return true;
             }
 
