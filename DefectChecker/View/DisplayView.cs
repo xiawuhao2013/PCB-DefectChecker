@@ -290,43 +290,48 @@ namespace DefectChecker.View
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
+            bool isCmdWork = true;
+            bool isForward = true;
+            EMarkDataType mark = new EMarkDataType();
             switch (keyData)
             {
                 // TODO: add manager codes.
                 // treate the _indexOfDisplayWindowOnSelected here.
                 // and determine whether to InitDisplayWindows() or not, according to _indexOfDisplayWindowOnSelected.
-                case Keys.Right:
-                    if (!IncreaseIndexOfDefectRegion())
-                    {
-                        if (!_dataBaseManager.TrySwitchBackward())
-                        {
-                            MessageBox.Show("完了！");
-                        }
-                        SetIndexOfDefectRegionToFirst();
-                    }
-                    RefreshComboBox();
-                    FocusCurrentDisplayWindow();
-                    RefreshDisplayWindows();
+                case Keys.Up:
+                    // return
+                    isForward = false;
+                    GoBackwardCmd();
+                    break;
+                case Keys.Down:
+                    // ok
+                    mark = EMarkDataType.OK;
                     break;
                 case Keys.Left:
-                    if (!DecreaseIndexOfDefectRegion())
-                    {
-                        if (!_dataBaseManager.TrySwitchForward())
-                        {
-                            MessageBox.Show("完了！");
-                        }
-                        SetIndexOfDefectRegionToLast();
-                    }
-                    RefreshComboBox();
-                    FocusCurrentDisplayWindow();
-                    RefreshDisplayWindows();
-
+                    // ng
+                    mark = EMarkDataType.NG;
                     break;
-                case Keys.Up:
-                case Keys.Down:
+                case Keys.Right:
+                    // undifned
+                    mark = EMarkDataType.Undefined;
                     break;
                 default:
-                    break;
+                    return false;
+            }
+            _dataBaseManager.SaveMarkInfo(_defectCells[_indexOfDisplayWindow].DefectRegions[_indexOfDefectRegion], mark);
+            if (isForward)
+            {
+                isCmdWork = GoForwardCmd();
+            }
+            else
+            {
+                isCmdWork = GoBackwardCmd();
+            }
+            if (isCmdWork)
+            {
+                RefreshComboBox();
+                FocusCurrentDisplayWindow();
+                RefreshDisplayWindows();
             }
 
             return true;
@@ -383,6 +388,40 @@ namespace DefectChecker.View
             _indexOfDefectRegion = defectCell.DefectRegions.Count - 1;
 
             return;
+        }
+
+        private bool GoForwardCmd()
+        {
+            if (IncreaseIndexOfDefectRegion())
+            {
+                return true;
+            }
+            if (!_dataBaseManager.TrySwitchBackward())
+            {
+                MessageBox.Show("完了！");
+
+                return false;
+            }
+            SetIndexOfDefectRegionToFirst();
+
+            return true;
+        }
+
+        private bool GoBackwardCmd()
+        {
+            if (DecreaseIndexOfDefectRegion())
+            {
+                return true;
+            }
+            if (!_dataBaseManager.TrySwitchForward())
+            {
+                MessageBox.Show("完了！");
+
+                return false;
+            }
+            SetIndexOfDefectRegionToLast();
+
+            return true;
         }
 
         //private void timer1_Tick(object sender, EventArgs e)
