@@ -24,7 +24,7 @@ namespace DefectChecker.DataBase.SqliteDataBase
         {
             // string productName, string batchName, string boardName, string sideName,
             // string shotName, string defectName, EMarkDataType markType
-            string sqlCmd = "CREATE TABLE IF NOT EXISTS " + _tableName + "(Time TIMESTAMP default (datetime('now', 'localtime')), Product varchar(50), Batch varchar(50), Board varchar(50), Side varchar(50), Shot varchar(50), Defect varchar(50), Type varchar(50));";
+            string sqlCmd = "CREATE TABLE IF NOT EXISTS " + _tableName + "(Time TIMESTAMP default (datetime('now', 'localtime')), Product varchar(50), Batch varchar(50), Board varchar(50), Side varchar(50), Shot varchar(50), Defect varchar(50), MarkInfo varchar(50));";
             SqliteCMD(sqlCmd);
         }
 
@@ -45,7 +45,7 @@ namespace DefectChecker.DataBase.SqliteDataBase
         {
             string sqlCmd = "insert into ";
             sqlCmd += _tableName;
-            sqlCmd += " (Product, Batch, Board, Side, Shot, Defect, Type)";
+            sqlCmd += " (Product, Batch, Board, Side, Shot, Defect, MarkInfo)";
             sqlCmd += " values(";
             sqlCmd += "'" + dataInfo.ProductName + "', ";
             sqlCmd += "'" + dataInfo.BatchName + "', ";
@@ -53,7 +53,7 @@ namespace DefectChecker.DataBase.SqliteDataBase
             sqlCmd += "'" + dataInfo.SideName + "', ";
             sqlCmd += "'" + dataInfo.ShotName + "', ";
             sqlCmd += "'" + dataInfo.DefectName + "', ";
-            sqlCmd += "'" + dataInfo.MarkType + "'";
+            sqlCmd += "'" + dataInfo.MarksToString() + "'";
             sqlCmd += ");";
             return SqliteCMD(sqlCmd);
         }
@@ -62,7 +62,7 @@ namespace DefectChecker.DataBase.SqliteDataBase
         {
             string sqlCmd = "update ";
             sqlCmd += _tableName;
-            sqlCmd += " set Type='" + dataInfo.MarkType + 
+            sqlCmd += " set MarkInfo='" + dataInfo.MarksToString() + 
                       "', Time=datetime('now','localtime') where ";
             sqlCmd += "Product='" + dataInfo.ProductName + "' ";
             sqlCmd += "and Batch='" + dataInfo.BatchName + "' ";
@@ -75,8 +75,8 @@ namespace DefectChecker.DataBase.SqliteDataBase
 
         public bool WriteMarkDataInfo(MarkDataInfo dataInfo)
         {
-            EMarkDataType markType;
-            if (ReadMarkDataType(dataInfo, out markType))
+            MarkDataInfo markDataTemp = new MarkDataInfo(dataInfo);
+            if (ReadMarkDataType(ref markDataTemp))
             {
                 return UpdateMarkDataInfo(dataInfo);
             }
@@ -86,7 +86,7 @@ namespace DefectChecker.DataBase.SqliteDataBase
             }
         }
 
-        public bool ReadMarkDataType(MarkDataInfo dataInfo, out EMarkDataType markType)
+        public bool ReadMarkDataType(ref MarkDataInfo dataInfo)
         {
             string sqlCmd = "select * from " + _tableName + " where ";
             sqlCmd += "Product='" + dataInfo.ProductName + "' ";
@@ -105,7 +105,8 @@ namespace DefectChecker.DataBase.SqliteDataBase
             bool isOK;
             if (reader.Read())
             {
-                EMarkDataType.TryParse((string)reader["Type"], out markType);
+                string marksString = (string) reader["MarkInfo"];
+                dataInfo.SetMarksByString(marksString);
                 isOK = true;
 
                 // multi line is the same data, return false
@@ -116,7 +117,7 @@ namespace DefectChecker.DataBase.SqliteDataBase
             }
             else
             {
-                markType = EMarkDataType.OK;
+                dataInfo.SetMarksByString("");
                 isOK = false;
             }
 
