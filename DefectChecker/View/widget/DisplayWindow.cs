@@ -25,13 +25,6 @@ namespace DefectChecker.View.widget
             Refresh();
         }
 
-        private void ConvertRectanglesToAqShapes(DefectRegion defectRegionInfo, out List<AqShap> aqShapes)
-        {
-            aqShapes = new List<AqShap>();
-            DisplayContour.GetContours(defectRegionInfo.XldYs, defectRegionInfo.XldXs, defectRegionInfo.XldPointCount, out aqShapes);
-            return;
-        }
-
         private bool IsModelWindowHiden()
         {
             return this.splitContainer1.SplitterDistance == this.splitContainer1.Width;
@@ -70,7 +63,7 @@ namespace DefectChecker.View.widget
             return;
         }
 
-        private void RefreshAqDisplayOfCheck()
+        private void RefreshAqDisplayOfCheck(int indexOfCurrentDefectRegion = 0)
         {
             this.aqDisplayOfCheck.Show();
             this.aqDisplayOfCheck.InteractiveGraphics.Clear();
@@ -81,8 +74,19 @@ namespace DefectChecker.View.widget
                 return;
             }
             this.aqDisplayOfCheck.Image = _defectCell.DefectImage.Clone() as Bitmap;
-            ConvertRectanglesToAqShapes(_defectCell.DefectRegionInfo, out var aqShapes);
-            DisplayContour.Display(aqDisplayOfCheck, aqShapes);
+            foreach (var defectRegion in _defectCell.DefectRegions)
+            {
+                List<AqShap> aqShape = new List<AqShap>();
+                if (indexOfCurrentDefectRegion == _defectCell.DefectRegions.IndexOf(defectRegion))
+                {
+                    DisplayContour.GetContours(defectRegion.XldYs, defectRegion.XldXs, defectRegion.XldPointCount, out aqShape, AqVision.Graphic.AqColorEnum.Red);
+                }
+                else
+                {
+                    DisplayContour.GetContours(defectRegion.XldYs, defectRegion.XldXs, defectRegion.XldPointCount, out aqShape, AqVision.Graphic.AqColorEnum.Green);
+                }
+                DisplayContour.Display(aqDisplayOfCheck, aqShape);
+            }
             this.aqDisplayOfCheck.FitToScreen();
             this.aqDisplayOfCheck.Update();
 
