@@ -821,11 +821,7 @@ namespace DefectChecker.DataBase
         {
             if (TryGetNextDefectNotEmpty() || TryGetNextShotNotEmpty() || TryGetNextSideNotEmpty() || TryGetNextBoardNotEmpty() || TryGetNextBatchNotEmpty() || TryGetNextProductNotEmpty())
             {
-                MarkDataInfo markDataInfo = new MarkDataInfo(ProductName, BatchName, BoardName, SideName, ShotName, DefectName);
-                _sqliteDb.ReadMarkDataType(ref markDataInfo);
-                markDataInfo.AddMarks(7, EMarkDataType.OK);
-                markDataInfo.AddMarks(3, EMarkDataType.Undefined);
-                _sqliteDb.WriteMarkDataInfo(markDataInfo);
+                
                 return true;
             }
 
@@ -840,6 +836,19 @@ namespace DefectChecker.DataBase
             }
 
             return false;
+        }
+
+        public void SaveMarkInfo(SingleDefectRegion singleDefectRegion, EMarkDataType mark)
+        {
+            MarkDataInfo markDataInfo = new MarkDataInfo(ProductName, BatchName, BoardName, SideName, ShotName, DefectName);
+            _sqliteDb.ReadMarkDataType(ref markDataInfo);
+            foreach (var defectInfoIndex in singleDefectRegion.DefectInfoIndexList)
+            {
+                markDataInfo.AddMarks(defectInfoIndex, mark);
+            }
+            _sqliteDb.WriteMarkDataInfo(markDataInfo);
+
+            return;
         }
 
     }
