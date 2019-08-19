@@ -13,6 +13,9 @@ namespace DefectChecker.View
     {
         private const int _maxNumberOfDisplayWindows = 10;
         private int _numberOfDispalyWindows = 1;
+        private int _indexOfDefectRegion = 0;
+        private int _indexOfDisplayWindow = 0;
+
         // 
         private List<DefectCell> _defectCells = new List<DefectCell>(); // replace with DataBaseManager.xxx
         private List<DisplayWindow> _displayWindows = new List<DisplayWindow>(); // may need window number control.
@@ -143,7 +146,6 @@ namespace DefectChecker.View
         
         private void RefreshDisplayWindows()
         {
-            _defectCells.Clear();
             _dataBaseManager.GetDefectGroup(_numberOfDispalyWindows, out _defectCells);
             if (null == _defectCells || null == _displayWindows)
             {
@@ -158,7 +160,7 @@ namespace DefectChecker.View
             for (int indexOfDisplayWindow = 0; indexOfDisplayWindow < _displayWindows.Count; ++indexOfDisplayWindow)
             {
                 _displayWindows[indexOfDisplayWindow].SetDefectCell(_defectCells[indexOfDisplayWindow]);
-                _displayWindows[indexOfDisplayWindow].RefreshWindow();
+                _displayWindows[indexOfDisplayWindow].RefreshWindow(indexOfDisplayWindow==_indexOfDisplayWindow, _indexOfDefectRegion);
             }
 
             return;
@@ -274,6 +276,14 @@ namespace DefectChecker.View
                 }
                 displayWindow.BorderStyle = BorderStyle.None;
             }
+            SetIndexOfDisplayWindow(focus);
+
+            return;
+        }
+
+        private void SetIndexOfDisplayWindow(int index)
+        {
+            _indexOfDisplayWindow = index;
 
             return;
         }
@@ -286,28 +296,31 @@ namespace DefectChecker.View
                 // treate the _indexOfDisplayWindowOnSelected here.
                 // and determine whether to InitDisplayWindows() or not, according to _indexOfDisplayWindowOnSelected.
                 case Keys.Right:
-                    if (_dataBaseManager.TrySwitchBackward())
+                    if (!IncreaseIndexOfDefectRegion())
                     {
-                        RefreshComboBox();
-                        FocusCurrentDisplayWindow();
-                        RefreshDisplayWindows();
+                        if (!_dataBaseManager.TrySwitchBackward())
+                        {
+                            MessageBox.Show("完了！");
+                        }
+                        SetIndexOfDefectRegionToFirst();
                     }
-                    else
-                    {
-                        MessageBox.Show("完了！");
-                    }
+                    RefreshComboBox();
+                    FocusCurrentDisplayWindow();
+                    RefreshDisplayWindows();
                     break;
                 case Keys.Left:
-                    if (_dataBaseManager.TrySwitchForward())
+                    if (!DecreaseIndexOfDefectRegion())
                     {
-                        RefreshComboBox();
-                        FocusCurrentDisplayWindow();
-                        RefreshDisplayWindows();
+                        if (!_dataBaseManager.TrySwitchForward())
+                        {
+                            MessageBox.Show("完了！");
+                        }
+                        SetIndexOfDefectRegionToLast();
                     }
-                    else
-                    {
-                        MessageBox.Show("完了！");
-                    }
+                    RefreshComboBox();
+                    FocusCurrentDisplayWindow();
+                    RefreshDisplayWindows();
+
                     break;
                 case Keys.Up:
                 case Keys.Down:
@@ -331,6 +344,45 @@ namespace DefectChecker.View
             {
                 MessageBox.Show("完了！");
             }
+        }
+
+        private bool IncreaseIndexOfDefectRegion()
+        {
+            _dataBaseManager.GetDefectCell(out var defectCell);
+            _indexOfDefectRegion++;
+            if (_indexOfDefectRegion >= defectCell.DefectRegions.Count)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool DecreaseIndexOfDefectRegion()
+        {
+            _indexOfDefectRegion--;
+            if (_indexOfDefectRegion < 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private void SetIndexOfDefectRegionToFirst()
+        {
+            _dataBaseManager.GetDefectCell(out var defectCell);
+            _indexOfDefectRegion = 0;
+
+            return;
+        }
+
+        private void SetIndexOfDefectRegionToLast()
+        {
+            _dataBaseManager.GetDefectCell(out var defectCell);
+            _indexOfDefectRegion = defectCell.DefectRegions.Count - 1;
+
+            return;
         }
 
         //private void timer1_Tick(object sender, EventArgs e)

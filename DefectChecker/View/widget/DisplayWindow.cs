@@ -52,9 +52,9 @@ namespace DefectChecker.View.widget
             return;
         }
 
-        private void RefreshAqDisplay()
+        private void RefreshAqDisplay(bool isSelected = false, int indexOfDefectRegion = 0)
         {
-            RefreshAqDisplayOfCheck();
+            RefreshAqDisplayOfCheck(isSelected, indexOfDefectRegion);
             if (!IsModelWindowHiden())
             {
                 RefreshAqDispayOfModel();
@@ -63,7 +63,7 @@ namespace DefectChecker.View.widget
             return;
         }
 
-        private void RefreshAqDisplayOfCheck(int indexOfCurrentDefectRegion = 0)
+        private void RefreshAqDisplayOfCheck(bool isSelected = false, int indexOfDefectRegion = 0)
         {
             this.aqDisplayOfCheck.Show();
             this.aqDisplayOfCheck.InteractiveGraphics.Clear();
@@ -77,13 +77,13 @@ namespace DefectChecker.View.widget
             foreach (var defectRegion in _defectCell.DefectRegions)
             {
                 List<AqShap> aqShape = new List<AqShap>();
-                if (indexOfCurrentDefectRegion == _defectCell.DefectRegions.IndexOf(defectRegion))
+                if (isSelected && indexOfDefectRegion == _defectCell.DefectRegions.IndexOf(defectRegion))
                 {
-                    DisplayContour.GetContours(defectRegion.XldYs, defectRegion.XldXs, defectRegion.XldPointCount, out aqShape, AqVision.Graphic.AqColorEnum.Red);
+                    DisplayContour.GetContours(defectRegion.XldYs, defectRegion.XldXs, defectRegion.XldPointCount, out aqShape, AqVision.Graphic.AqColorEnum.Green);
                 }
                 else
                 {
-                    DisplayContour.GetContours(defectRegion.XldYs, defectRegion.XldXs, defectRegion.XldPointCount, out aqShape, AqVision.Graphic.AqColorEnum.Green);
+                    DisplayContour.GetContours(defectRegion.XldYs, defectRegion.XldXs, defectRegion.XldPointCount, out aqShape, AqVision.Graphic.AqColorEnum.Red);
                 }
                 DisplayContour.Display(aqDisplayOfCheck, aqShape);
             }
@@ -117,9 +117,9 @@ namespace DefectChecker.View.widget
             return;
         }
 
-        public void RefreshWindow()
+        public void RefreshWindow(bool isSelected = false, int indexOfDefectRegion = 0)
         {
-            RefreshAqDisplay();
+            RefreshAqDisplay(isSelected, indexOfDefectRegion);
             RefreshTitle();
             RefreshInfo();
 

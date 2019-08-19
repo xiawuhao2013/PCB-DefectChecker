@@ -748,6 +748,14 @@ namespace DefectChecker.DataBase
             return;
         }
 
+        public void GetDefectCell(out DefectCell defectCell)
+        {
+            defectCell = new DefectCell();
+            _device.GetDefectCell(ProductName, BatchName, BoardName, SideName, ShotName, DefectName, out defectCell);
+
+            return;
+        }
+
         //
         public void SwitchProduct(string productName)
         {
