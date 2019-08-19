@@ -18,6 +18,7 @@ namespace DefectChecker.DefectDataStructure
         public Rectangle RoiInTemplate { get; set; }
         public List<DefectInfo> DefectInfos { get; set; }
         public DefectRegion DefectRegionInfo { get; set; }
+        public List<SingleDefectRegion> DefectRegions { get; set; }
 
         public DefectCell()
         {
@@ -27,6 +28,7 @@ namespace DefectChecker.DefectDataStructure
             RoiInTemplate = new Rectangle(0,0,0,0);
             DefectInfos = new List<DefectInfo>();
             DefectRegionInfo = new DefectRegion();
+            DefectRegions = new List<SingleDefectRegion>();
         }
 
         public bool GenRegionFromRect()
