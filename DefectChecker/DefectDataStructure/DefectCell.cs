@@ -11,14 +11,18 @@ namespace DefectChecker.DefectDataStructure
     public class DefectCell
     {
         private int _dilationPixel = 8;
+        private List<SingleDefectRegion> _defectRegions = new List<SingleDefectRegion>();
 
         public Bitmap DefectImage { get; set; }
         public Bitmap TemplateImage { get; set; }
         public Bitmap GerberImage { get; set; }
         public Rectangle RoiInTemplate { get; set; }
         public List<DefectInfo> DefectInfos { get; set; }
-        public DefectRegion DefectRegionInfo { get; set; }
-        public List<SingleDefectRegion> DefectRegions { get; set; }
+        public List<SingleDefectRegion> DefectRegions
+        {
+            get { return _defectRegions; }
+            set { _defectRegions = value; }
+        }
 
         public DefectCell()
         {
@@ -27,7 +31,6 @@ namespace DefectChecker.DefectDataStructure
             GerberImage = null;
             RoiInTemplate = new Rectangle(0,0,0,0);
             DefectInfos = new List<DefectInfo>();
-            DefectRegionInfo = new DefectRegion();
             DefectRegions = new List<SingleDefectRegion>();
         }
 
@@ -49,10 +52,7 @@ namespace DefectChecker.DefectDataStructure
             List<int> xldPointCount;
             List<List<int>> defectIndexList;
             HImageProcess.GenDefectRegions(DefectImage, rects, 5.5, out xldXs, out xldYs, out xldPointCount, out defectIndexList);
-            DefectRegionInfo.XldXs = xldXs;
-            DefectRegionInfo.XldYs = xldYs;
-            DefectRegionInfo.XldPointCount = xldPointCount;
-            DefectRegionInfo.DefectIndexList = defectIndexList;
+            HImageProcess.GenDefectRegions(DefectImage, rects, _dilationPixel, out _defectRegions);
             return true;
         }
     }
