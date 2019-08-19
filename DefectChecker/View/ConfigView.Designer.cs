@@ -40,6 +40,10 @@
             this.textBoxDilation = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.textBoxWindowNum = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.buttonSelectSaveFile = new System.Windows.Forms.Button();
+            this.textBoxSaveFile = new System.Windows.Forms.TextBox();
+            this.checkBoxIsJump = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -126,7 +130,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(19, 146);
+            this.label3.Location = new System.Drawing.Point(19, 195);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(53, 12);
             this.label3.TabIndex = 5;
@@ -134,7 +138,7 @@
             // 
             // textBoxDilation
             // 
-            this.textBoxDilation.Location = new System.Drawing.Point(76, 136);
+            this.textBoxDilation.Location = new System.Drawing.Point(76, 185);
             this.textBoxDilation.Name = "textBoxDilation";
             this.textBoxDilation.Size = new System.Drawing.Size(100, 21);
             this.textBoxDilation.TabIndex = 6;
@@ -142,7 +146,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(19, 184);
+            this.label4.Location = new System.Drawing.Point(19, 233);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(53, 12);
             this.label4.TabIndex = 5;
@@ -150,23 +154,67 @@
             // 
             // textBoxWindowNum
             // 
-            this.textBoxWindowNum.Location = new System.Drawing.Point(76, 174);
+            this.textBoxWindowNum.Location = new System.Drawing.Point(76, 223);
             this.textBoxWindowNum.Name = "textBoxWindowNum";
             this.textBoxWindowNum.Size = new System.Drawing.Size(100, 21);
             this.textBoxWindowNum.TabIndex = 6;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(17, 140);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(53, 12);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "保存路径";
+            // 
+            // buttonSelectSaveFile
+            // 
+            this.buttonSelectSaveFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonSelectSaveFile.AutoSize = true;
+            this.buttonSelectSaveFile.Location = new System.Drawing.Point(444, 135);
+            this.buttonSelectSaveFile.Name = "buttonSelectSaveFile";
+            this.buttonSelectSaveFile.Size = new System.Drawing.Size(33, 23);
+            this.buttonSelectSaveFile.TabIndex = 2;
+            this.buttonSelectSaveFile.Text = "...";
+            this.buttonSelectSaveFile.UseVisualStyleBackColor = true;
+            // 
+            // textBoxSaveFile
+            // 
+            this.textBoxSaveFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxSaveFile.Location = new System.Drawing.Point(76, 135);
+            this.textBoxSaveFile.Name = "textBoxSaveFile";
+            this.textBoxSaveFile.ReadOnly = true;
+            this.textBoxSaveFile.Size = new System.Drawing.Size(360, 21);
+            this.textBoxSaveFile.TabIndex = 1;
+            // 
+            // checkBoxIsJump
+            // 
+            this.checkBoxIsJump.AutoSize = true;
+            this.checkBoxIsJump.Location = new System.Drawing.Point(317, 189);
+            this.checkBoxIsJump.Name = "checkBoxIsJump";
+            this.checkBoxIsJump.Size = new System.Drawing.Size(132, 16);
+            this.checkBoxIsJump.TabIndex = 7;
+            this.checkBoxIsJump.Text = "是否跳过已标注数据";
+            this.checkBoxIsJump.UseVisualStyleBackColor = true;
             // 
             // ConfigView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.checkBoxIsJump);
             this.Controls.Add(this.textBoxWindowNum);
             this.Controls.Add(this.label4);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.textBoxDilation);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.buttonReload);
             this.Controls.Add(this.buttonSave);
+            this.Controls.Add(this.buttonSelectSaveFile);
             this.Controls.Add(this.buttonSelectModelDir);
             this.Controls.Add(this.buttonSelectDataDir);
+            this.Controls.Add(this.textBoxSaveFile);
             this.Controls.Add(this.textBoxModelDir);
             this.Controls.Add(this.textBoxDataDir);
             this.Controls.Add(this.label2);
@@ -192,5 +240,9 @@
         private System.Windows.Forms.TextBox textBoxDilation;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBoxWindowNum;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button buttonSelectSaveFile;
+        private System.Windows.Forms.TextBox textBoxSaveFile;
+        private System.Windows.Forms.CheckBox checkBoxIsJump;
     }
 }
