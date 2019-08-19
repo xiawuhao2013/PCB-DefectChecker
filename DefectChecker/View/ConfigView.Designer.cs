@@ -34,6 +34,12 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxModelDir = new System.Windows.Forms.TextBox();
             this.buttonSelectModelDir = new System.Windows.Forms.Button();
+            this.buttonSave = new System.Windows.Forms.Button();
+            this.buttonReload = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBoxDilation = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.textBoxWindowNum = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -99,10 +105,66 @@
             this.buttonSelectModelDir.UseVisualStyleBackColor = true;
             this.buttonSelectModelDir.Click += new System.EventHandler(this.buttonSelectModelDir_Click);
             // 
+            // buttonSave
+            // 
+            this.buttonSave.Location = new System.Drawing.Point(444, 277);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(75, 23);
+            this.buttonSave.TabIndex = 3;
+            this.buttonSave.Text = "保存";
+            this.buttonSave.UseVisualStyleBackColor = true;
+            // 
+            // buttonReload
+            // 
+            this.buttonReload.Location = new System.Drawing.Point(344, 277);
+            this.buttonReload.Name = "buttonReload";
+            this.buttonReload.Size = new System.Drawing.Size(75, 23);
+            this.buttonReload.TabIndex = 4;
+            this.buttonReload.Text = "重置";
+            this.buttonReload.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(19, 146);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(53, 12);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "膨胀系数";
+            // 
+            // textBoxDilation
+            // 
+            this.textBoxDilation.Location = new System.Drawing.Point(76, 136);
+            this.textBoxDilation.Name = "textBoxDilation";
+            this.textBoxDilation.Size = new System.Drawing.Size(100, 21);
+            this.textBoxDilation.TabIndex = 6;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(19, 184);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(53, 12);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "窗口数量";
+            // 
+            // textBoxWindowNum
+            // 
+            this.textBoxWindowNum.Location = new System.Drawing.Point(76, 174);
+            this.textBoxWindowNum.Name = "textBoxWindowNum";
+            this.textBoxWindowNum.Size = new System.Drawing.Size(100, 21);
+            this.textBoxWindowNum.TabIndex = 6;
+            // 
             // ConfigView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.textBoxWindowNum);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.textBoxDilation);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.buttonReload);
+            this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.buttonSelectModelDir);
             this.Controls.Add(this.buttonSelectDataDir);
             this.Controls.Add(this.textBoxModelDir);
@@ -113,6 +175,7 @@
             this.Size = new System.Drawing.Size(549, 320);
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion
@@ -123,5 +186,11 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBoxModelDir;
         private System.Windows.Forms.Button buttonSelectModelDir;
+        private System.Windows.Forms.Button buttonSave;
+        private System.Windows.Forms.Button buttonReload;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBoxDilation;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox textBoxWindowNum;
     }
 }

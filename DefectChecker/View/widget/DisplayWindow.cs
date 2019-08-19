@@ -25,43 +25,10 @@ namespace DefectChecker.View.widget
             Refresh();
         }
 
-        private void ConvertRectanglesToAqShapes(List<DefectInfo> defectInfos, out List<AqShap> aqShapes)
+        private void ConvertRectanglesToAqShapes(DefectRegion defectRegionInfo, out List<AqShap> aqShapes)
         {
             aqShapes = new List<AqShap>();
-            List<double> posYs = new List<double>();
-            List<double> posXs = new List<double>();
-            List<int> pointsNums = new List<int>();
-
-            if (null == defectInfos)
-            {
-                return;
-            }
-            foreach (var defectInfo in defectInfos)
-            {
-                if (defectInfo==null || defectInfo.RectList==null)
-                {
-                    continue;
-                }
-
-                foreach (var rectangle in defectInfo.RectList)
-                {
-                    posYs.Add(rectangle.Y);
-                    posYs.Add(rectangle.Y + rectangle.Height);
-                    posYs.Add(rectangle.Y + rectangle.Height);
-                    posYs.Add(rectangle.Y);
-                    posYs.Add(rectangle.Y);
-
-                    posXs.Add(rectangle.X);
-                    posXs.Add(rectangle.X);
-                    posXs.Add(rectangle.X + rectangle.Width);
-                    posXs.Add(rectangle.X + rectangle.Width);
-                    posXs.Add(rectangle.X);
-
-                    pointsNums.Add(5);
-                }
-            }
-            DisplayContour.GetContours(posYs, posXs, pointsNums, out aqShapes);
-
+            DisplayContour.GetContours(defectRegionInfo.XldYs, defectRegionInfo.XldXs, defectRegionInfo.XldPointCount, out aqShapes);
             return;
         }
 
@@ -114,7 +81,7 @@ namespace DefectChecker.View.widget
                 return;
             }
             this.aqDisplayOfCheck.Image = _defectCell.DefectImage.Clone() as Bitmap;
-            ConvertRectanglesToAqShapes(_defectCell.Info, out var aqShapes);
+            ConvertRectanglesToAqShapes(_defectCell.DefectRegionInfo, out var aqShapes);
             DisplayContour.Display(aqDisplayOfCheck, aqShapes);
             this.aqDisplayOfCheck.FitToScreen();
             this.aqDisplayOfCheck.Update();

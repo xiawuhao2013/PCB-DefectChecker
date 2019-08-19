@@ -97,10 +97,12 @@
     <Compile Include="DataBase\SqliteDataBase\SqliteDB.cs" />
     <Compile Include="DefectDataStructure\DefectCell.cs" />
     <Compile Include="DefectDataStructure\DefectInfo.cs" />
+    <Compile Include="DefectDataStructure\DefectRegion.cs" />
     <Compile Include="DeviceModule\DeviceInterface.cs" />
     <Compile Include="DeviceModule\MachVision\DeviceMachVision.cs" />
     <Compile Include="Common\FolderHelper.cs" />
     <Compile Include="DeviceModule\MachVision\MachVisionFile.cs" />
+    <Compile Include="HImagerProc\HImageProcess.cs" />
     <Compile Include="HImagerProc\HRegions\HTransformation.cs" />
     <Compile Include="View\ConfigView.cs">
       <SubType>UserControl</SubType>

@@ -139,7 +139,7 @@ namespace DefectChecker.DeviceModule.MachVision
                     {
                         DefectInfo defectInfo = new DefectInfo();
                         defectInfo.CodeNum = codeNum;
-                        defectInfo.RectList.Add(rect);
+                        defectInfo.DefectRect = rect;
                         defectInfoList.Add(defectInfo);
                     }
                     else

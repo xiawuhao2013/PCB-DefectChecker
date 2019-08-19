@@ -369,15 +369,14 @@ namespace DefectChecker.DeviceModule.MachVision
             MachVisionFile machVisionFile = new MachVisionFile(defectPath, shotName);
             defectName = Regex.Replace(defectName, @"(.bmp)$", "");
             machVisionFile.ReadRoiInTemplate(defectName, out var roi);
-            machVisionFile.ReadDefectInfos(defectName, out var defectInfo);
+            machVisionFile.ReadDefectInfos(defectName, out var defectInfos);
             defectCell.RoiInTemplate = roi;
-            defectCell.Info = defectInfo;
+            defectCell.DefectInfos = defectInfos;
             defectCell.DefectImage = new Bitmap(defectPath + "\\" + defectName + ".bmp");
             
             Bitmap templateBitmap;
-            TryGetTemplateImg(sideName, shotName, out templateBitmap);
-
             Bitmap templateImage;
+            TryGetTemplateImg(sideName, shotName, out templateBitmap);
             if (ImageOperateTools.BitmapCropImage(templateBitmap, roi, out templateImage))
             {
                 defectCell.TemplateImage = templateImage;
@@ -387,6 +386,7 @@ namespace DefectChecker.DeviceModule.MachVision
                 defectCell.TemplateImage = null;
             }
 
+            defectCell.GenRegionFromRect();
         }
 
         public bool GetTemplateWholeImgA(out Bitmap wholeImg)

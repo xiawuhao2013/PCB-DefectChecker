@@ -10,12 +10,12 @@ namespace DefectChecker.DefectDataStructure
     public class DefectInfo
     {
         public int CodeNum { get; set; }
-        public List<Rectangle> RectList { get; set; }
+        public Rectangle DefectRect { get; set; }
 
         public DefectInfo()
         {
             CodeNum = -1;
-            RectList = new List<Rectangle>();
+            DefectRect = new Rectangle();
         }
     }
 }
