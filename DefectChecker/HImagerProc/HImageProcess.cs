@@ -337,26 +337,32 @@ namespace DefectChecker.HImagerProc
             {
                 SingleDefectRegion defectRegion = new SingleDefectRegion();
                 HOperatorSet.SelectObj(ho_ConnectedDilations, out var ho_Dilation, index);
-                convert_single_region_to_points(ho_Dilation, out var hv_posYs, out var hv_posXs, out var hv_pointsNum);
+
+                // DefectRegion.DefectInfoIndexList
                 for (var cnt = 0; cnt < defectInfoNumberList[index-1]; ++cnt)
                 {
                     defectRegion.DefectInfoIndexList.Add(defectInfoIndexList[0]);
                     defectInfoIndexList.RemoveAt(0);
                 }
+
+                // DefectRegion.Xldxxx
+                convert_single_region_to_points(ho_Dilation, out var hv_posYs, out var hv_posXs, out var hv_pointsNum);
                 if (hv_posYs.TupleLength() > 0)
                 {
                     defectRegion.XldYs.AddRange(hv_posYs.ToDArr());
                 }
-
                 if (hv_posXs.TupleLength() > 0)
                 {
                     defectRegion.XldXs.AddRange(hv_posXs.ToDArr());
                 }
-
                 if (hv_pointsNum.TupleLength() > 0)
                 {
                     defectRegion.XldPointCount.AddRange(hv_pointsNum.ToIArr());
                 }
+
+                // DefectRegion.SmallestRect
+                HOperatorSet.SmallestRectangle1(ho_Dilation, out var hv_Row1, out var hv_Column1, out var hv_Row2, out var hv_Column2);
+                defectRegion.SmallestRect = Rectangle.FromLTRB(hv_Column1.I, hv_Row1.I, hv_Column2.I, hv_Row2.I);
 
                 defectRegions.Add(defectRegion);
             }
