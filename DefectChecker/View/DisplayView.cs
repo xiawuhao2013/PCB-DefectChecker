@@ -34,7 +34,7 @@ namespace DefectChecker.View
             InitDisplayWindows(this.tableLayoutPanelImage, _numberOfDispalyWindows);
             
             InitDataBase();
-            timer1.Start();
+            //timer1.Start();
         }
 
         #region Init

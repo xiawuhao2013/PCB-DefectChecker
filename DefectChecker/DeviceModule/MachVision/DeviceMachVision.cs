@@ -372,7 +372,12 @@ namespace DefectChecker.DeviceModule.MachVision
             machVisionFile.ReadDefectInfos(defectName, out var defectInfos);
             defectCell.RoiInTemplate = roi;
             defectCell.DefectInfos = defectInfos;
-            defectCell.DefectImage = new Bitmap(defectPath + "\\" + defectName + ".bmp");
+            string imageFile = defectPath + "\\" + defectName + ".bmp";
+            if (!File.Exists(imageFile))
+            {
+                return;
+            }
+            defectCell.DefectImage = new Bitmap(imageFile);
             
             Bitmap templateBitmap;
             Bitmap templateImage;
