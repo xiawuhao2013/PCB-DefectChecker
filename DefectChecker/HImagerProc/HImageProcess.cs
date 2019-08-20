@@ -322,22 +322,14 @@ namespace DefectChecker.HImagerProc
             dilate_regions_pro(ho_image, out ho_ConnectedDilations, hv_Row1OfRectangles, hv_Row2OfRectangles, hv_Column1OfRectangles, hv_Column2OfRectangles, hv_RadiusOfDilation, out hv_IndexOfRectangles, out hv_NumberListOfRectangles);
             List<int> defectInfoIndexList = new List<int>();
             List<int> defectInfoNumberList = new List<int>();
-            if (hv_IndexOfRectangles.TupleLength() > 0)
+            if (hv_IndexOfRectangles.TupleLength() > 0 && hv_NumberListOfRectangles.TupleLength() > 0)
             {
                 defectInfoIndexList.AddRange(hv_IndexOfRectangles.ToIArr());
-            }
-            else
-            {
-                defectInfoIndexList.Add(0);
-            }
-
-            if (hv_NumberListOfRectangles.TupleLength() > 0)
-            {
                 defectInfoNumberList.AddRange(hv_NumberListOfRectangles.ToIArr());
             }
             else
             {
-                defectInfoNumberList.Add(0);
+                return;
             }
 
             HOperatorSet.CountObj(ho_ConnectedDilations, out var hv_NumberOfDilations);
@@ -355,27 +347,15 @@ namespace DefectChecker.HImagerProc
                 {
                     defectRegion.XldYs.AddRange(hv_posYs.ToDArr());
                 }
-                else
-                {
-                    defectRegion.XldYs.Add(0.0);
-                }
 
                 if (hv_posXs.TupleLength() > 0)
                 {
                     defectRegion.XldXs.AddRange(hv_posXs.ToDArr());
                 }
-                else
-                {
-                    defectRegion.XldXs.Add(0.0);
-                }
 
                 if (hv_pointsNum.TupleLength() > 0)
                 {
                     defectRegion.XldPointCount.AddRange(hv_pointsNum.ToIArr());
-                }
-                else
-                {
-                    defectRegion.XldPointCount.Add(0);
                 }
 
                 defectRegions.Add(defectRegion);
@@ -387,9 +367,9 @@ namespace DefectChecker.HImagerProc
 
 
         static private void dilate_regions_pro(HObject ho_image, out HObject ho_ConnectedDilations,
-    HTuple hv_Row1OfRectangles, HTuple hv_Row2OfRectangles, HTuple hv_Column1OfRectangles,
-    HTuple hv_Column2OfRectangles, HTuple hv_RadiusOfDilation, out HTuple hv_IndexOfRectangles,
-    out HTuple hv_NumberListOfRectangles)
+      HTuple hv_Row1OfRectangles, HTuple hv_Row2OfRectangles, HTuple hv_Column1OfRectangles,
+      HTuple hv_Column2OfRectangles, HTuple hv_RadiusOfDilation, out HTuple hv_IndexOfRectangles,
+      out HTuple hv_NumberListOfRectangles)
         {
 
 
@@ -431,13 +411,13 @@ namespace DefectChecker.HImagerProc
             {
                 dev_update_off();
                 HOperatorSet.SetSystem("clip_region", "true");
-
+                //
                 ho_ConnectedDilations.Dispose();
                 HOperatorSet.GenEmptyObj(out ho_ConnectedDilations);
-
+                //
                 hv_IndexOfRectangles = new HTuple();
                 hv_NumberListOfRectangles = new HTuple();
-
+                //
                 try
                 {
                     if (HDevWindowStack.IsOpen())
@@ -483,14 +463,13 @@ namespace DefectChecker.HImagerProc
                     HOperatorSet.TupleMax2(1.5, hv_RadiusOfDilation_COPY_INP_TMP, out hv_RadiusOfDilation_COPY_INP_TMP);
                     ho_RegionDilation.Dispose();
                     HOperatorSet.DilationCircle(ho_OrgRectangles, out ho_RegionDilation, hv_RadiusOfDilation_COPY_INP_TMP);
-                    //HOperatorSet.SmallestRectangle1(ho_RegionDilation, out hv_Row1, out hv_Column1,
-                    //    out hv_Row2, out hv_Column2);
-                    //ho_RectanglesDilation.Dispose();
-                    //HOperatorSet.GenRectangle1(out ho_RectanglesDilation, hv_Row1, hv_Column1,
-                    //    hv_Row2, hv_Column2);
+                    HOperatorSet.SmallestRectangle1(ho_RegionDilation, out hv_Row1, out hv_Column1,
+                        out hv_Row2, out hv_Column2);
+                    ho_RectanglesDilation.Dispose();
+                    HOperatorSet.GenRectangle1(out ho_RectanglesDilation, hv_Row1, hv_Column1,
+                        hv_Row2, hv_Column2);
                     ho_RegionUnion.Dispose();
-                    //HOperatorSet.Union1(ho_RectanglesDilation, out ho_RegionUnion);
-                    HOperatorSet.Union1(ho_RegionDilation, out ho_RegionUnion);
+                    HOperatorSet.Union1(ho_RectanglesDilation, out ho_RegionUnion);
                     ho_ConnectedRegions.Dispose();
                     HOperatorSet.Connection(ho_RegionUnion, out ho_ConnectedRegions);
                     {
@@ -520,7 +499,7 @@ namespace DefectChecker.HImagerProc
                                 out hv_IsSubset);
                             if ((int)(hv_IsSubset) != 0)
                             {
-                                hv_IndexOfRectangles = hv_IndexOfRectangles.TupleConcat(hv_IndexOfOrgRectangles);
+                                hv_IndexOfRectangles = hv_IndexOfRectangles.TupleConcat(hv_IndexOfOrgRectangles - 1);
                                 hv_NumberOfRectangles = hv_NumberOfRectangles + 1;
                             }
                         }
@@ -535,7 +514,7 @@ namespace DefectChecker.HImagerProc
                     HDevExpDefaultException1.ToHTuple(out hv_Exception);
                     //do nothing.
                 }
-
+                //
                 ho_OrgRectangles.Dispose();
                 ho_RegionDilation.Dispose();
                 ho_RectanglesDilation.Dispose();

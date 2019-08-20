@@ -206,7 +206,7 @@
 <l>            select_obj (OrgRectangles, RectangleSelected, IndexOfOrgRectangles)</l>
 <l>            test_subset_region (RectangleSelected, RectangleDilationSelected, IsSubset)</l>
 <l>            if (IsSubset)</l>
-<l>                IndexOfRectangles := [IndexOfRectangles, IndexOfOrgRectangles]</l>
+<l>                IndexOfRectangles := [IndexOfRectangles, IndexOfOrgRectangles-1]</l>
 <l>                NumberOfRectangles := NumberOfRectangles+1</l>
 <l>            endif</l>
 <l>        endfor</l>
@@ -231,6 +231,7 @@
 <sem_type>object</sem_type>
 </parameter>
 <parameter id="IndexOfRectangles">
+<description lang="zh_CN">下标从0开始。</description>
 <sem_type>integer</sem_type>
 </parameter>
 <parameter id="NumberListOfRectangles">
