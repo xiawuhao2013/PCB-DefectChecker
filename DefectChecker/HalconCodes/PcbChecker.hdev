@@ -191,10 +191,8 @@
 <l>    tuple_max2 (Column1OfRectangles, Column2OfRectangles, Column2OfRectangles)</l>
 <l>    gen_rectangle1 (OrgRectangles, Row1OfRectangles, Column1OfRectangles, Row2OfRectangles, Column2OfRectangles)</l>
 <l>    tuple_max2 (1.5, RadiusOfDilation, RadiusOfDilation)</l>
-<l>    dilation_circle (OrgRectangles, RegionDilation, RadiusOfDilation)</l>
-<l>    smallest_rectangle1 (RegionDilation, Row1, Column1, Row2, Column2)</l>
-<l>    gen_rectangle1 (RectanglesDilation, Row1, Column1, Row2, Column2)</l>
-<l>    union1 (RectanglesDilation, RegionUnion)</l>
+<l>    dilation_circle (OrgRectangles, RegionDilation, RadiusOfDilation)    </l>
+<l>    union1 (RegionDilation, RegionUnion)</l>
 <l>    connection (RegionUnion, ConnectedRegions)</l>
 <l>    sort_region (ConnectedRegions, ConnectedRegions, 'first_point', 'true', 'row')</l>
 <l>    count_obj (ConnectedRegions, Number)</l>
