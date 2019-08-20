@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="13.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>read_image (Image, 'printer_chip/printer_chip_01')</l>
+<c></c>
+<l>Row1OfRectangles:=[10,20,30,40,50,100]</l>
+<l>Row2OfRectangles:=[15,25,35,45,55,115]</l>
+<l>Column1OfRectangles:=[50,70,90,110,130,250]</l>
+<l>Column2OfRectangles:=[60,80,100,120,140,260]</l>
+<l>RadiusOfExpansion:=5.5</l>
+<c></c>
+<l>gen_defect_regions (Image, Row1OfRectangles, Row2OfRectangles, Column1OfRectangles, Column2OfRectangles, RadiusOfExpansion, XldXs, XldYs, XldPointCount, DefectIndexList, SubDefectNumberList)</l>
+<c></c>
+<l>dilate_regions_pro (Image, ConnectedDilations, Row1OfRectangles, Row2OfRectangles, Column1OfRectangles, Column2OfRectangles, RadiusOfExpansion, indexOfRectangles, numberListOfRectangles)</l>
+<l>count_obj (ConnectedDilations, Number)</l>
+<l>for index:=1 to Number by 1</l>
+<l>    select_obj (ConnectedDilations, ObjectSelected, index)</l>
+<l>    convert_single_region_to_points (ObjectSelected, posYs, posXs, pointsNum)</l>
+<l>endfor</l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="gen_defect_regions">
+<interface>
+<io>
+<par name="image" base_type="iconic" dimension="0"/>
+</io>
+<ic>
+<par name="Row1OfRectangles" base_type="ctrl" dimension="0"/>
+<par name="Row2OfRectangles" base_type="ctrl" dimension="0"/>
+<par name="Column1OfRectangles" base_type="ctrl" dimension="0"/>
+<par name="Column2OfRectangles" base_type="ctrl" dimension="0"/>
+<par name="RadiusOfExpansion" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="XldXs" base_type="ctrl" dimension="0"/>
+<par name="XldYs" base_type="ctrl" dimension="0"/>
+<par name="XldPointCount" base_type="ctrl" dimension="0"/>
+<par name="DefectIndexList" base_type="ctrl" dimension="0"/>
+<par name="SubDefectNumberList" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>dev_update_off ()</l>
+<l>set_system ('clip_region', 'true')</l>
+<c>* </c>
+<l>XldXs := []</l>
+<l>XldYs := []</l>
+<l>XldPointCount := []</l>
+<l>DefectIndexList := []</l>
+<l>SubDefectNumberList := []</l>
+<l>try</l>
+<l>    numOfRectangles := 0</l>
+<l>    tuple_length (Row1OfRectangles, numOfRectangles)</l>
+<l>    if (numOfRectangles&lt;=0)</l>
+<l>        return ()</l>
+<l>    endif</l>
+<c>    * </c>
+<l>    if (numOfRectangles!=|Row2OfRectangles| or numOfRectangles!=|Column1OfRectangles| or numOfRectangles!=|Column2OfRectangles|)</l>
+<l>        return ()</l>
+<l>    endif</l>
+<l>    tuple_max2 (Row1OfRectangles, Row2OfRectangles, Row2OfRectangles)</l>
+<l>    tuple_max2 (Column1OfRectangles, Column2OfRectangles, Column2OfRectangles)</l>
+<l>    gen_rectangle1 (OrgRectangles, Row1OfRectangles, Column1OfRectangles, Row2OfRectangles, Column2OfRectangles)</l>
+<l>    tuple_max2 (1.5, RadiusOfExpansion, RadiusOfExpansion)</l>
+<l>    dilation_circle (OrgRectangles, RegionDilation, RadiusOfExpansion)</l>
+<l>    smallest_rectangle1 (RegionDilation, Row1, Column1, Row2, Column2)</l>
+<l>    gen_rectangle1 (RectanglesDilation, Row1, Column1, Row2, Column2)</l>
+<l>    union1 (RectanglesDilation, RegionUnion)</l>
+<l>    connection (RegionUnion, ConnectedRegions)</l>
+<l>    count_obj (ConnectedRegions, Number)</l>
+<l>    for indexOfConnectedRegions := 1 to Number by 1</l>
+<l>        select_obj (ConnectedRegions, RectangleDilationSelected, indexOfConnectedRegions)</l>
+<l>        SubDefectIndexList := []</l>
+<l>        for indexOfOrgRectangles := 1 to numOfRectangles by 1</l>
+<l>            select_obj (OrgRectangles, RectangleSelected, indexOfOrgRectangles)</l>
+<l>            test_subset_region (RectangleSelected, RectangleDilationSelected, IsSubset)</l>
+<l>            if (IsSubset)</l>
+<l>                SubDefectIndexList := [SubDefectIndexList, indexOfOrgRectangles]</l>
+<l>            endif</l>
+<l>        endfor</l>
+<l>        gen_contour_region_xld (RectangleDilationSelected, Contours, 'border')</l>
+<l>        get_contour_xld (Contours, Rows, Columns)</l>
+<l>        XldXs := [XldXs,Columns]</l>
+<l>        XldYs := [XldYs,Rows]</l>
+<l>        XldPointCount := [XldPointCount,|Columns|]</l>
+<l>        SubDefectNumberList := [SubDefectNumberList, |SubDefectIndexList|]</l>
+<l>        DefectIndexList := [DefectIndexList,SubDefectIndexList]</l>
+<l>    endfor</l>
+<l>catch (Exception)</l>
+<c>    * do nothing.</c>
+<l>endtry</l>
+<c>* </c>
+<l>return ()</l>
+</body>
+<docu id="gen_defect_regions">
+<parameters>
+<parameter id="Column1OfRectangles">
+<sem_type>real</sem_type>
+</parameter>
+<parameter id="Column2OfRectangles">
+<sem_type>real</sem_type>
+</parameter>
+<parameter id="DefectIndexList">
+<default_type>integer</default_type>
+<sem_type>integer</sem_type>
+<type_list>
+<item>integer</item>
+</type_list>
+</parameter>
+<parameter id="RadiusOfExpansion">
+<sem_type>real</sem_type>
+</parameter>
+<parameter id="Row1OfRectangles">
+<sem_type>real</sem_type>
+</parameter>
+<parameter id="Row2OfRectangles">
+<sem_type>real</sem_type>
+</parameter>
+<parameter id="SubDefectNumberList">
+<default_type>integer</default_type>
+<sem_type>integer</sem_type>
+<type_list>
+<item>integer</item>
+</type_list>
+</parameter>
+<parameter id="XldPointCount">
+<default_type>integer</default_type>
+<sem_type>integer</sem_type>
+<type_list>
+<item>integer</item>
+</type_list>
+</parameter>
+<parameter id="XldXs">
+<sem_type>real</sem_type>
+</parameter>
+<parameter id="XldYs">
+<sem_type>real</sem_type>
+</parameter>
+<parameter id="image">
+<sem_type>image</sem_type>
+</parameter>
+</parameters>
+</docu>
+</procedure>
+<procedure name="dilate_regions_pro">
+<interface>
+<io>
+<par name="image" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ConnectedDilations" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Row1OfRectangles" base_type="ctrl" dimension="0"/>
+<par name="Row2OfRectangles" base_type="ctrl" dimension="0"/>
+<par name="Column1OfRectangles" base_type="ctrl" dimension="0"/>
+<par name="Column2OfRectangles" base_type="ctrl" dimension="0"/>
+<par name="RadiusOfDilation" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="IndexOfRectangles" base_type="ctrl" dimension="0"/>
+<par name="NumberListOfRectangles" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>dev_update_off ()</l>
+<l>set_system ('clip_region', 'true')</l>
+<c>* </c>
+<l>gen_empty_obj (ConnectedDilations)</l>
+<c>* </c>
+<l>IndexOfRectangles := []</l>
+<l>NumberListOfRectangles := []</l>
+<c>* </c>
+<l>try</l>
+<l>    dev_display (image)</l>
+<l>    numOfRectangles := 0</l>
+<l>    tuple_length (Row1OfRectangles, numOfRectangles)</l>
+<l>    if (numOfRectangles&lt;=0)</l>
+<l>        return ()</l>
+<l>    endif</l>
+<l>    if (numOfRectangles!=|Row2OfRectangles| or numOfRectangles!=|Column1OfRectangles| or numOfRectangles!=|Column2OfRectangles|)</l>
+<l>        return ()</l>
+<l>    endif</l>
+<l>    tuple_max2 (Row1OfRectangles, Row2OfRectangles, Row2OfRectangles)</l>
+<l>    tuple_max2 (Column1OfRectangles, Column2OfRectangles, Column2OfRectangles)</l>
+<l>    gen_rectangle1 (OrgRectangles, Row1OfRectangles, Column1OfRectangles, Row2OfRectangles, Column2OfRectangles)</l>
+<l>    tuple_max2 (1.5, RadiusOfDilation, RadiusOfDilation)</l>
+<l>    dilation_circle (OrgRectangles, RegionDilation, RadiusOfDilation)</l>
+<l>    smallest_rectangle1 (RegionDilation, Row1, Column1, Row2, Column2)</l>
+<l>    gen_rectangle1 (RectanglesDilation, Row1, Column1, Row2, Column2)</l>
+<l>    union1 (RectanglesDilation, RegionUnion)</l>
+<l>    connection (RegionUnion, ConnectedRegions)</l>
+<l>    sort_region (ConnectedRegions, ConnectedRegions, 'first_point', 'true', 'row')</l>
+<l>    count_obj (ConnectedRegions, Number)</l>
+<l>    for IndexOfConnectedRegions := 1 to Number by 1</l>
+<l>        NumberOfRectangles := 0</l>
+<l>        select_obj (ConnectedRegions, RectangleDilationSelected, IndexOfConnectedRegions)</l>
+<l>        SubDefectIndexList := []</l>
+<l>        for IndexOfOrgRectangles := 1 to numOfRectangles by 1</l>
+<l>            select_obj (OrgRectangles, RectangleSelected, IndexOfOrgRectangles)</l>
+<l>            test_subset_region (RectangleSelected, RectangleDilationSelected, IsSubset)</l>
+<l>            if (IsSubset)</l>
+<l>                IndexOfRectangles := [IndexOfRectangles, IndexOfOrgRectangles]</l>
+<l>                NumberOfRectangles := NumberOfRectangles+1</l>
+<l>            endif</l>
+<l>        endfor</l>
+<l>        NumberListOfRectangles := [NumberListOfRectangles, NumberOfRectangles]</l>
+<l>    endfor</l>
+<l>    ConnectedDilations := ConnectedRegions</l>
+<l>catch (Exception)</l>
+<c>    * do nothing.</c>
+<l>endtry</l>
+<c>* </c>
+<l>return ()</l>
+</body>
+<docu id="dilate_regions_pro">
+<parameters>
+<parameter id="Column1OfRectangles">
+<sem_type>real</sem_type>
+</parameter>
+<parameter id="Column2OfRectangles">
+<sem_type>real</sem_type>
+</parameter>
+<parameter id="ConnectedDilations">
+<sem_type>object</sem_type>
+</parameter>
+<parameter id="IndexOfRectangles">
+<sem_type>integer</sem_type>
+</parameter>
+<parameter id="NumberListOfRectangles">
+<sem_type>integer</sem_type>
+</parameter>
+<parameter id="RadiusOfDilation">
+<sem_type>real</sem_type>
+</parameter>
+<parameter id="Row1OfRectangles">
+<sem_type>real</sem_type>
+</parameter>
+<parameter id="Row2OfRectangles">
+<sem_type>real</sem_type>
+</parameter>
+<parameter id="image"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="convert_single_region_to_points">
+<interface>
+<io>
+<par name="singleRegion" base_type="iconic" dimension="0"/>
+</io>
+<oc>
+<par name="posYs" base_type="ctrl" dimension="0"/>
+<par name="posXs" base_type="ctrl" dimension="0"/>
+<par name="pointsNum" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>dev_update_off ()</l>
+<l>set_system ('clip_region', 'false')</l>
+<c>* </c>
+<l>try</l>
+<l>    gen_contour_region_xld (singleRegion, Contours, 'border')</l>
+<l>    get_contour_xld (Contours, posYs, posXs)</l>
+<l>    pointsNum := |posYs|</l>
+<l>catch (Exception)</l>
+<l>    posYs := []</l>
+<l>    posXs := []</l>
+<l>    pointsNum := []</l>
+<l>endtry</l>
+<c>* </c>
+<l>return ()</l>
+</body>
+<docu id="convert_single_region_to_points">
+<parameters>
+<parameter id="pointsNum">
+<default_type>real</default_type>
+<sem_type>real</sem_type>
+<type_list>
+<item>real</item>
+</type_list>
+</parameter>
+<parameter id="posXs">
+<default_type>real</default_type>
+<sem_type>real</sem_type>
+<type_list>
+<item>real</item>
+</type_list>
+</parameter>
+<parameter id="posYs">
+<default_type>real</default_type>
+<sem_type>real</sem_type>
+<type_list>
+<item>real</item>
+</type_list>
+</parameter>
+<parameter id="singleRegion">
+<multivalue>false</multivalue>
+<sem_type>object</sem_type>
+</parameter>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
