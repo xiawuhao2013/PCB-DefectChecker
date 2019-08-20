@@ -381,15 +381,12 @@ namespace DefectChecker.HImagerProc
             // Local iconic variables 
 
             HObject ho_OrgRectangles = null, ho_RegionDilation = null;
-            HObject ho_RectanglesDilation = null, ho_RegionUnion = null;
-            HObject ho_ConnectedRegions = null, ho_RectangleDilationSelected = null;
+            HObject ho_RegionUnion = null, ho_ConnectedRegions = null, ho_RectangleDilationSelected = null;
             HObject ho_RectangleSelected = null;
 
             // Local control variables 
 
             HTuple hv_numOfRectangles = new HTuple();
-            HTuple hv_Row1 = new HTuple(), hv_Column1 = new HTuple();
-            HTuple hv_Row2 = new HTuple(), hv_Column2 = new HTuple();
             HTuple hv_Number = new HTuple(), hv_IndexOfConnectedRegions = new HTuple();
             HTuple hv_NumberOfRectangles = new HTuple(), hv_SubDefectIndexList = new HTuple();
             HTuple hv_IndexOfOrgRectangles = new HTuple(), hv_IsSubset = new HTuple();
@@ -402,7 +399,6 @@ namespace DefectChecker.HImagerProc
             HOperatorSet.GenEmptyObj(out ho_ConnectedDilations);
             HOperatorSet.GenEmptyObj(out ho_OrgRectangles);
             HOperatorSet.GenEmptyObj(out ho_RegionDilation);
-            HOperatorSet.GenEmptyObj(out ho_RectanglesDilation);
             HOperatorSet.GenEmptyObj(out ho_RegionUnion);
             HOperatorSet.GenEmptyObj(out ho_ConnectedRegions);
             HOperatorSet.GenEmptyObj(out ho_RectangleDilationSelected);
@@ -430,7 +426,6 @@ namespace DefectChecker.HImagerProc
                     {
                         ho_OrgRectangles.Dispose();
                         ho_RegionDilation.Dispose();
-                        ho_RectanglesDilation.Dispose();
                         ho_RegionUnion.Dispose();
                         ho_ConnectedRegions.Dispose();
                         ho_RectangleDilationSelected.Dispose();
@@ -445,7 +440,6 @@ namespace DefectChecker.HImagerProc
                     {
                         ho_OrgRectangles.Dispose();
                         ho_RegionDilation.Dispose();
-                        ho_RectanglesDilation.Dispose();
                         ho_RegionUnion.Dispose();
                         ho_ConnectedRegions.Dispose();
                         ho_RectangleDilationSelected.Dispose();
@@ -463,13 +457,8 @@ namespace DefectChecker.HImagerProc
                     HOperatorSet.TupleMax2(1.5, hv_RadiusOfDilation_COPY_INP_TMP, out hv_RadiusOfDilation_COPY_INP_TMP);
                     ho_RegionDilation.Dispose();
                     HOperatorSet.DilationCircle(ho_OrgRectangles, out ho_RegionDilation, hv_RadiusOfDilation_COPY_INP_TMP);
-                    HOperatorSet.SmallestRectangle1(ho_RegionDilation, out hv_Row1, out hv_Column1,
-                        out hv_Row2, out hv_Column2);
-                    ho_RectanglesDilation.Dispose();
-                    HOperatorSet.GenRectangle1(out ho_RectanglesDilation, hv_Row1, hv_Column1,
-                        hv_Row2, hv_Column2);
                     ho_RegionUnion.Dispose();
-                    HOperatorSet.Union1(ho_RectanglesDilation, out ho_RegionUnion);
+                    HOperatorSet.Union1(ho_RegionDilation, out ho_RegionUnion);
                     ho_ConnectedRegions.Dispose();
                     HOperatorSet.Connection(ho_RegionUnion, out ho_ConnectedRegions);
                     {
@@ -480,18 +469,18 @@ namespace DefectChecker.HImagerProc
                         ho_ConnectedRegions = ExpTmpOutVar_0;
                     }
                     HOperatorSet.CountObj(ho_ConnectedRegions, out hv_Number);
-                    HTuple end_val29 = hv_Number;
-                    HTuple step_val29 = 1;
-                    for (hv_IndexOfConnectedRegions = 1; hv_IndexOfConnectedRegions.Continue(end_val29, step_val29); hv_IndexOfConnectedRegions = hv_IndexOfConnectedRegions.TupleAdd(step_val29))
+                    HTuple end_val27 = hv_Number;
+                    HTuple step_val27 = 1;
+                    for (hv_IndexOfConnectedRegions = 1; hv_IndexOfConnectedRegions.Continue(end_val27, step_val27); hv_IndexOfConnectedRegions = hv_IndexOfConnectedRegions.TupleAdd(step_val27))
                     {
                         hv_NumberOfRectangles = 0;
                         ho_RectangleDilationSelected.Dispose();
                         HOperatorSet.SelectObj(ho_ConnectedRegions, out ho_RectangleDilationSelected,
                             hv_IndexOfConnectedRegions);
                         hv_SubDefectIndexList = new HTuple();
-                        HTuple end_val33 = hv_numOfRectangles;
-                        HTuple step_val33 = 1;
-                        for (hv_IndexOfOrgRectangles = 1; hv_IndexOfOrgRectangles.Continue(end_val33, step_val33); hv_IndexOfOrgRectangles = hv_IndexOfOrgRectangles.TupleAdd(step_val33))
+                        HTuple end_val31 = hv_numOfRectangles;
+                        HTuple step_val31 = 1;
+                        for (hv_IndexOfOrgRectangles = 1; hv_IndexOfOrgRectangles.Continue(end_val31, step_val31); hv_IndexOfOrgRectangles = hv_IndexOfOrgRectangles.TupleAdd(step_val31))
                         {
                             ho_RectangleSelected.Dispose();
                             HOperatorSet.SelectObj(ho_OrgRectangles, out ho_RectangleSelected, hv_IndexOfOrgRectangles);
@@ -517,7 +506,6 @@ namespace DefectChecker.HImagerProc
                 //
                 ho_OrgRectangles.Dispose();
                 ho_RegionDilation.Dispose();
-                ho_RectanglesDilation.Dispose();
                 ho_RegionUnion.Dispose();
                 ho_ConnectedRegions.Dispose();
                 ho_RectangleDilationSelected.Dispose();
@@ -529,7 +517,6 @@ namespace DefectChecker.HImagerProc
             {
                 ho_OrgRectangles.Dispose();
                 ho_RegionDilation.Dispose();
-                ho_RectanglesDilation.Dispose();
                 ho_RegionUnion.Dispose();
                 ho_ConnectedRegions.Dispose();
                 ho_RectangleDilationSelected.Dispose();
