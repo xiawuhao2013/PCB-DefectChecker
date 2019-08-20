@@ -301,7 +301,6 @@ namespace DefectChecker.View
                 case Keys.Up:
                     // return
                     isForward = false;
-                    GoBackwardCmd();
                     break;
                 case Keys.Down:
                     // ok
@@ -318,13 +317,14 @@ namespace DefectChecker.View
                 default:
                     return false;
             }
-            _dataBaseManager.SaveMarkInfo(_defectCells[_indexOfDisplayWindow].DefectRegions[_indexOfDefectRegion], mark);
+            
             if (isForward)
             {
                 isCmdWork = GoForwardCmd();
             }
             else
             {
+                _dataBaseManager.SaveMarkInfo(_defectCells[_indexOfDisplayWindow].DefectRegions[_indexOfDefectRegion], mark);
                 isCmdWork = GoBackwardCmd();
             }
             if (isCmdWork)
@@ -416,7 +416,7 @@ namespace DefectChecker.View
             if (!_dataBaseManager.TrySwitchForward())
             {
                 MessageBox.Show("完了！");
-
+                _indexOfDefectRegion = 0;
                 return false;
             }
             SetIndexOfDefectRegionToLast();
