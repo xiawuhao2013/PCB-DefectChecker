@@ -838,16 +838,14 @@ namespace DefectChecker.DataBase
             return false;
         }
 
-        public void SaveMarkInfo(SingleDefectRegion singleDefectRegion, EMarkDataType mark)
+        public void SaveMarkInfo(DefectCell defectCell, int regionIndex, EMarkDataType markType)
         {
             MarkDataInfo markDataInfo = new MarkDataInfo(ProductName, BatchName, BoardName, SideName, ShotName, DefectName);
             _sqliteDb.ReadMarkDataType(ref markDataInfo);
-            foreach (var defectInfoIndex in singleDefectRegion.DefectInfoIndexList)
-            {
-                markDataInfo.AddMarks(defectInfoIndex, mark);
-            }
+            MarkRegionInfo markRegionInfo = new MarkRegionInfo();
+            markRegionInfo.SetByDefectCell(defectCell, regionIndex, markType);
+            markDataInfo.AddMarks(regionIndex, markRegionInfo);
             _sqliteDb.WriteMarkDataInfo(markDataInfo);
-
             return;
         }
 

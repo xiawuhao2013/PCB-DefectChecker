@@ -7,13 +7,6 @@ using System.Threading.Tasks;
 
 namespace DefectChecker.DataBase
 {
-    public enum EMarkDataType
-    {
-        OK = 0,
-        NG,
-        Undefined
-    };
-
     public class MarkDataInfo
     {
         public string ProductName { get; set; }
@@ -22,7 +15,7 @@ namespace DefectChecker.DataBase
         public string SideName { get; set; }
         public string ShotName { get; set; }
         public string DefectName { get; set; }
-        public Dictionary<int, EMarkDataType>  RegionMarkTypes { get; set; }
+        public Dictionary<int, MarkRegionInfo> MarkRegionInfos { get; set; }
 
         public MarkDataInfo(string productName, string batchName, string boardName, string sideName,
             string shotName, string defectName)
@@ -33,7 +26,7 @@ namespace DefectChecker.DataBase
             SideName = sideName;
             ShotName = shotName;
             DefectName = defectName;
-            RegionMarkTypes = new Dictionary<int, EMarkDataType>();
+            MarkRegionInfos = new Dictionary<int, MarkRegionInfo>();
         }
 
         public MarkDataInfo(MarkDataInfo markDataInfo)
@@ -44,8 +37,8 @@ namespace DefectChecker.DataBase
             SideName = markDataInfo.SideName;
             ShotName = markDataInfo.ShotName;
             DefectName = markDataInfo.DefectName;
-            RegionMarkTypes = new Dictionary<int, EMarkDataType>();
-            foreach (var regionMarkType in markDataInfo.RegionMarkTypes)
+            MarkRegionInfos = new Dictionary<int, MarkRegionInfo>();
+            foreach (var regionMarkType in markDataInfo.MarkRegionInfos)
             {
                 AddMarks(regionMarkType.Key, regionMarkType.Value);
             }
@@ -53,43 +46,43 @@ namespace DefectChecker.DataBase
 
         public void ClearMarks()
         {
-            if (RegionMarkTypes!=null)
+            if (MarkRegionInfos != null)
             {
-                RegionMarkTypes.Clear();
+                MarkRegionInfos.Clear();
             }
-            RegionMarkTypes = new Dictionary<int, EMarkDataType>();
+            MarkRegionInfos = new Dictionary<int, MarkRegionInfo>();
         }
 
-        public void AddMarks(int regionIndex, EMarkDataType markType)
+        public void AddMarks(int regionIndex, MarkRegionInfo markRegionInfo)
         {
-            if (RegionMarkTypes==null)
+            if (MarkRegionInfos == null)
             {
-                RegionMarkTypes = new Dictionary<int, EMarkDataType>();
+                MarkRegionInfos = new Dictionary<int, MarkRegionInfo>();
             }
 
-            if (RegionMarkTypes.ContainsKey(regionIndex))
+            if (MarkRegionInfos.ContainsKey(regionIndex))
             {
-                RegionMarkTypes[regionIndex] = markType;
+                MarkRegionInfos[regionIndex] = markRegionInfo;
             }
             else
             {
-                RegionMarkTypes.Add(regionIndex, markType);
+                MarkRegionInfos.Add(regionIndex, markRegionInfo);
             }
         }
 
         public string MarksToString()
         {
-            if (RegionMarkTypes == null)
+            if (MarkRegionInfos == null)
             {
-                RegionMarkTypes = new Dictionary<int, EMarkDataType>();
+                MarkRegionInfos = new Dictionary<int, MarkRegionInfo>();
             }
 
             string marksString = "";
-            foreach (var regionMarkType in RegionMarkTypes)
+            foreach (var regionMarkType in MarkRegionInfos)
             {
                 int regionIndex = regionMarkType.Key;
-                EMarkDataType markType = regionMarkType.Value;
-                marksString += regionIndex.ToString() + "," + markType.ToString()+"#";
+                MarkRegionInfo markType = regionMarkType.Value;
+                marksString += regionIndex.ToString() + ":" + markType.GenString()+"#";
             }
 
             return marksString;
@@ -101,13 +94,13 @@ namespace DefectChecker.DataBase
             var array = markStr.Split('#');
             foreach (var s in array)
             {
-                var mark = s.Split(',');
+                var mark = s.Split(':');
                 if (mark!=null && mark.Length==2)
                 {
                     int regionIndex;
-                    EMarkDataType markType;
+                    MarkRegionInfo markType;
                     if (int.TryParse(mark[0], out regionIndex) &&
-                        EMarkDataType.TryParse(mark[1], out markType))
+                        MarkRegionInfo.TryParse(mark[1], out markType))
                     {
                         AddMarks(regionIndex, markType);
                     }

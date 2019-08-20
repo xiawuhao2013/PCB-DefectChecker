@@ -320,11 +320,11 @@ namespace DefectChecker.View
             
             if (isForward)
             {
+                _dataBaseManager.SaveMarkInfo(_defectCells[_indexOfDisplayWindow], _indexOfDefectRegion, mark);
                 isCmdWork = GoForwardCmd();
             }
             else
             {
-                _dataBaseManager.SaveMarkInfo(_defectCells[_indexOfDisplayWindow].DefectRegions[_indexOfDefectRegion], mark);
                 isCmdWork = GoBackwardCmd();
             }
             if (isCmdWork)

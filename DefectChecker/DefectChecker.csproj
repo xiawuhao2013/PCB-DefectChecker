@@ -93,6 +93,7 @@
     <Compile Include="Common\IniHelper.cs" />
     <Compile Include="DataBase\MarkDataInfo.cs" />
     <Compile Include="DataBase\DataBaseManager.cs" />
+    <Compile Include="DataBase\MarkRegionInfo.cs" />
     <Compile Include="DataBase\SqliteDataBase\SqliteDB.cs" />
     <Compile Include="DefectDataStructure\DefectCell.cs" />
     <Compile Include="DefectDataStructure\DefectInfo.cs" />
