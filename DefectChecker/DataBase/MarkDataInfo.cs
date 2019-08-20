@@ -92,8 +92,14 @@ namespace DefectChecker.DataBase
         {
             ClearMarks();
             var array = markStr.Split('#');
-            foreach (var s in array)
+            if (array==null)
             {
+                return;
+            }
+
+            for (int i = 0; i < array.Length-1; i++)
+            {
+                var s = array[i];
                 var mark = s.Split(':');
                 if (mark!=null && mark.Length==2)
                 {

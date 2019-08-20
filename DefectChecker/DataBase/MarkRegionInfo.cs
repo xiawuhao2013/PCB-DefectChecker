@@ -75,7 +75,7 @@ namespace DefectChecker.DataBase
         {
             markRegionInfo = new MarkRegionInfo();
             var array = str.Split(';');
-            if (array==null || array.Length<2)
+            if (array==null || array.Length<3)
             {
                 return false;
             }
@@ -96,7 +96,7 @@ namespace DefectChecker.DataBase
             markRegionInfo.MarkRegionType = markType;
             markRegionInfo.SmallestRect = new Rectangle(x, y, w, h);
             markRegionInfo.DefectInfos = new Dictionary<int, DefectInfo>();
-            for (int i = 1; i < array.Length; i++)
+            for (int i = 1; i < array.Length-1; i++)
             {
                 var infoArray = array[i].Split(',');
                 int index, codeNum;
