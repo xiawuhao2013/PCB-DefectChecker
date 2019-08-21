@@ -79,11 +79,11 @@ namespace DefectChecker.View.widget
                 List<AqShap> aqShape = new List<AqShap>();
                 if (isSelected && indexOfDefectRegion == _defectCell.DefectRegions.IndexOf(defectRegion))
                 {
-                    DisplayContour.GetContours(defectRegion.XldYs, defectRegion.XldXs, defectRegion.XldPointCount, out aqShape, AqVision.Graphic.AqColorEnum.Green);
+                    DisplayContour.GetContours(defectRegion.XldYs, defectRegion.XldXs, defectRegion.XldPointCount, out aqShape, AqVision.Graphic.AqColorEnum.Green, 3);
                 }
                 else
                 {
-                    DisplayContour.GetContours(defectRegion.XldYs, defectRegion.XldXs, defectRegion.XldPointCount, out aqShape, AqVision.Graphic.AqColorEnum.Red);
+                    DisplayContour.GetContours(defectRegion.XldYs, defectRegion.XldXs, defectRegion.XldPointCount, out aqShape, AqVision.Graphic.AqColorEnum.Red, 1);
                 }
                 DisplayContour.Display(aqDisplayOfCheck, aqShape);
             }
