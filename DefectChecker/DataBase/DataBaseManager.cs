@@ -66,21 +66,6 @@ namespace DefectChecker.DataBase
             SaveDataBaseInfo();
         }
 
-        private bool GetRangeOfDefectGroup(int groupSize, out int head, out int end)
-        {
-            head = -1;
-            end = -1;
-            if (groupSize <= 0 || (!DefectNameList.Contains(DefectName)))
-            {
-                return false;
-            }
-            int indexOfGroup = DefectNameList.IndexOf(DefectName) / groupSize;
-            head = indexOfGroup * groupSize;
-            end = head + groupSize - 1;
-
-            return true;
-        }
-
         private bool TryGetDefectCellByIndex(int index, out DefectCell defectCell)
         {
             defectCell = new DefectCell();
@@ -729,11 +714,18 @@ namespace DefectChecker.DataBase
             {
                 return;
             }
-            if (!GetRangeOfDefectGroup(groupSize, out var head, out var end))
+
+            int head = -1;
+            int end = -1;
+            if (!DefectNameList.Contains(DefectName))
             {
                 InitializeDefectGroup(groupSize, out defectCells);
+                return;
             }
-
+            int indexOfGroup = DefectNameList.IndexOf(DefectName) / groupSize;
+            head = indexOfGroup * groupSize;
+            end = head + groupSize - 1;
+            
             for (var iter = head; iter <= end; ++iter)
             {
                 if (TryGetDefectCellByIndex(iter, out var defectCell))
