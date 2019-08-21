@@ -78,18 +78,6 @@ namespace DefectChecker.DataBase
             return true;
         }
 
-        private void InitializeDefectGroup(int groupSize, out List<DefectCell> defectCells)
-        {
-            defectCells = new List<DefectCell>();
-            int iter = groupSize;
-            do
-            {
-                defectCells.Add(new DefectCell());
-            } while (--iter > 0);
-
-            return;
-        }
-
         private void LoadProjectSetting()
         {
             XmlParameter xmlParameter = new XmlParameter();
@@ -719,7 +707,12 @@ namespace DefectChecker.DataBase
             int end = -1;
             if (!DefectNameList.Contains(DefectName))
             {
-                InitializeDefectGroup(groupSize, out defectCells);
+                defectCells = new List<DefectCell>();
+                int iter = groupSize;
+                do
+                {
+                    defectCells.Add(new DefectCell());
+                } while (--iter > 0);
                 return;
             }
             int indexOfGroup = DefectNameList.IndexOf(DefectName) / groupSize;
