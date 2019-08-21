@@ -32,22 +32,22 @@ namespace DefectChecker.View.widget
 
         private void RefreshTitle()
         {
-            this.labelOfCheckTitle.Text = @"AAAAA";
-            if (!IsModelWindowHiden())
-            {
-                this.labelOfModelTitle.Text = @"BBBBB";
-            }
+            //this.labelOfCheckTitle.Text = @"AAAAA";
+            //if (!IsModelWindowHiden())
+            //{
+            //    this.labelOfModelTitle.Text = @"BBBBB";
+            //}
 
             return;
         }
 
         private void RefreshInfo()
         {
-            this.labelOfCheckInfo.Text = @"aaaaa";
-            if (!IsModelWindowHiden())
-            {
-                this.labelOfModelInfo.Text = @"bbbbb";
-            }
+            //this.labelOfCheckInfo.Text = @"aaaaa";
+            //if (!IsModelWindowHiden())
+            //{
+            //    this.labelOfModelInfo.Text = @"bbbbb";
+            //}
 
             return;
         }

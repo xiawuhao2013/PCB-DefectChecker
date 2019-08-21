@@ -24,8 +24,6 @@ namespace DefectChecker.View
 
         private bool _isLogDisplay = true;
 
-        private Point _point = new Point();
-
         private delegate void AcquisitionFinishedDelegate(object objUserparam);
         private delegate void CaptureFinishedDelegate(object objUserparam, Bitmap bitmap);
 

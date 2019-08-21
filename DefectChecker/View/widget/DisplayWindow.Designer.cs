@@ -29,42 +29,27 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.aqDisplayOfModel = new AqVision.Controls.AqDisplay();
-            this.panel6 = new System.Windows.Forms.Panel();
-            this.panel5 = new System.Windows.Forms.Panel();
             this.aqDisplayOfCheck = new AqVision.Controls.AqDisplay();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.labelOfCheckInfo = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.labelOfCheckTitle = new System.Windows.Forms.Label();
+            this.aqDisplayOfModel = new AqVision.Controls.AqDisplay();
+            this.panel5 = new System.Windows.Forms.Panel();
             this.labelOfModelTitle = new System.Windows.Forms.Label();
-            this.labelOfCheckInfo = new System.Windows.Forms.Label();
-            this.labelOfModelInfo = new System.Windows.Forms.Label();
-            this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.panel6.SuspendLayout();
-            this.panel5.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
+            this.panel5.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.panel3);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(600, 492);
-            this.panel2.TabIndex = 1;
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.labelOfCheckInfo);
             this.panel3.Controls.Add(this.splitContainer1);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(0, 0);
@@ -83,63 +68,18 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.aqDisplayOfCheck);
-            this.splitContainer1.Panel1.Controls.Add(this.panel1);
             this.splitContainer1.Panel1.Controls.Add(this.panel4);
             this.splitContainer1.Panel1MinSize = 0;
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.aqDisplayOfModel);
-            this.splitContainer1.Panel2.Controls.Add(this.panel6);
             this.splitContainer1.Panel2.Controls.Add(this.panel5);
             this.splitContainer1.Panel2MinSize = 0;
             this.splitContainer1.Size = new System.Drawing.Size(600, 492);
             this.splitContainer1.SplitterDistance = 300;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 0;
-            // 
-            // aqDisplayOfModel
-            // 
-            this.aqDisplayOfModel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.aqDisplayOfModel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.aqDisplayOfModel.GroupName = "";
-            this.aqDisplayOfModel.Image = null;
-            this.aqDisplayOfModel.IsAddDynamicPoint = false;
-            this.aqDisplayOfModel.IsBeginAddImageMask = false;
-            this.aqDisplayOfModel.IsBeginDrawDynamicPolygon = false;
-            this.aqDisplayOfModel.IsInteractiveFlag = true;
-            this.aqDisplayOfModel.IsSaveResultImage = false;
-            this.aqDisplayOfModel.IsScrollBar = true;
-            this.aqDisplayOfModel.IsShowCenterLine = false;
-            this.aqDisplayOfModel.IsShowStatusBar = false;
-            this.aqDisplayOfModel.IsTransformRGB = false;
-            this.aqDisplayOfModel.IsUsedEraser = false;
-            this.aqDisplayOfModel.Location = new System.Drawing.Point(0, 36);
-            this.aqDisplayOfModel.Margin = new System.Windows.Forms.Padding(2);
-            this.aqDisplayOfModel.Name = "aqDisplayOfModel";
-            this.aqDisplayOfModel.OriginMaskImage = null;
-            this.aqDisplayOfModel.Radius = 1F;
-            this.aqDisplayOfModel.Size = new System.Drawing.Size(299, 420);
-            this.aqDisplayOfModel.TabIndex = 9;
-            // 
-            // panel6
-            // 
-            this.panel6.Controls.Add(this.labelOfModelInfo);
-            this.panel6.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel6.Location = new System.Drawing.Point(0, 456);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(299, 36);
-            this.panel6.TabIndex = 8;
-            // 
-            // panel5
-            // 
-            this.panel5.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.panel5.Controls.Add(this.labelOfModelTitle);
-            this.panel5.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel5.Location = new System.Drawing.Point(0, 0);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(299, 36);
-            this.panel5.TabIndex = 7;
             // 
             // aqDisplayOfCheck
             // 
@@ -162,17 +102,19 @@
             this.aqDisplayOfCheck.Name = "aqDisplayOfCheck";
             this.aqDisplayOfCheck.OriginMaskImage = null;
             this.aqDisplayOfCheck.Radius = 1F;
-            this.aqDisplayOfCheck.Size = new System.Drawing.Size(300, 420);
+            this.aqDisplayOfCheck.Size = new System.Drawing.Size(300, 456);
             this.aqDisplayOfCheck.TabIndex = 12;
             // 
-            // panel1
+            // labelOfCheckInfo
             // 
-            this.panel1.Controls.Add(this.labelOfCheckInfo);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 456);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(300, 36);
-            this.panel1.TabIndex = 11;
+            this.labelOfCheckInfo.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.labelOfCheckInfo.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.labelOfCheckInfo.Location = new System.Drawing.Point(0, 456);
+            this.labelOfCheckInfo.Name = "labelOfCheckInfo";
+            this.labelOfCheckInfo.Size = new System.Drawing.Size(600, 36);
+            this.labelOfCheckInfo.TabIndex = 1;
+            this.labelOfCheckInfo.Text = "label1";
+            this.labelOfCheckInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // panel4
             // 
@@ -187,78 +129,86 @@
             // labelOfCheckTitle
             // 
             this.labelOfCheckTitle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelOfCheckTitle.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.labelOfCheckTitle.Location = new System.Drawing.Point(0, 0);
             this.labelOfCheckTitle.Name = "labelOfCheckTitle";
             this.labelOfCheckTitle.Size = new System.Drawing.Size(300, 36);
             this.labelOfCheckTitle.TabIndex = 0;
-            this.labelOfCheckTitle.Text = "label1";
-            this.labelOfCheckTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelOfCheckTitle.Text = "结果图";
+            this.labelOfCheckTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // aqDisplayOfModel
+            // 
+            this.aqDisplayOfModel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.aqDisplayOfModel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.aqDisplayOfModel.GroupName = "";
+            this.aqDisplayOfModel.Image = null;
+            this.aqDisplayOfModel.IsAddDynamicPoint = false;
+            this.aqDisplayOfModel.IsBeginAddImageMask = false;
+            this.aqDisplayOfModel.IsBeginDrawDynamicPolygon = false;
+            this.aqDisplayOfModel.IsInteractiveFlag = true;
+            this.aqDisplayOfModel.IsSaveResultImage = false;
+            this.aqDisplayOfModel.IsScrollBar = true;
+            this.aqDisplayOfModel.IsShowCenterLine = false;
+            this.aqDisplayOfModel.IsShowStatusBar = false;
+            this.aqDisplayOfModel.IsTransformRGB = false;
+            this.aqDisplayOfModel.IsUsedEraser = false;
+            this.aqDisplayOfModel.Location = new System.Drawing.Point(0, 36);
+            this.aqDisplayOfModel.Margin = new System.Windows.Forms.Padding(2);
+            this.aqDisplayOfModel.Name = "aqDisplayOfModel";
+            this.aqDisplayOfModel.OriginMaskImage = null;
+            this.aqDisplayOfModel.Radius = 1F;
+            this.aqDisplayOfModel.Size = new System.Drawing.Size(299, 456);
+            this.aqDisplayOfModel.TabIndex = 9;
+            // 
+            // panel5
+            // 
+            this.panel5.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.panel5.Controls.Add(this.labelOfModelTitle);
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel5.Location = new System.Drawing.Point(0, 0);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(299, 36);
+            this.panel5.TabIndex = 7;
             // 
             // labelOfModelTitle
             // 
             this.labelOfModelTitle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelOfModelTitle.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.labelOfModelTitle.Location = new System.Drawing.Point(0, 0);
             this.labelOfModelTitle.Name = "labelOfModelTitle";
             this.labelOfModelTitle.Size = new System.Drawing.Size(299, 36);
             this.labelOfModelTitle.TabIndex = 1;
-            this.labelOfModelTitle.Text = "label1";
-            this.labelOfModelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // labelOfCheckInfo
-            // 
-            this.labelOfCheckInfo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelOfCheckInfo.Location = new System.Drawing.Point(0, 0);
-            this.labelOfCheckInfo.Name = "labelOfCheckInfo";
-            this.labelOfCheckInfo.Size = new System.Drawing.Size(300, 36);
-            this.labelOfCheckInfo.TabIndex = 1;
-            this.labelOfCheckInfo.Text = "label1";
-            this.labelOfCheckInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // labelOfModelInfo
-            // 
-            this.labelOfModelInfo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelOfModelInfo.Location = new System.Drawing.Point(0, 0);
-            this.labelOfModelInfo.Name = "labelOfModelInfo";
-            this.labelOfModelInfo.Size = new System.Drawing.Size(299, 36);
-            this.labelOfModelInfo.TabIndex = 1;
-            this.labelOfModelInfo.Text = "label1";
-            this.labelOfModelInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelOfModelTitle.Text = "OK图";
+            this.labelOfModelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // DisplayWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panel3);
             this.Name = "DisplayWindow";
             this.Size = new System.Drawing.Size(600, 492);
-            this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.panel6.ResumeLayout(false);
-            this.panel5.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
+            this.panel5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private AqVision.Controls.AqDisplay aqDisplayOfCheck;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel4;
         private AqVision.Controls.AqDisplay aqDisplayOfModel;
-        private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Label labelOfCheckTitle;
         private System.Windows.Forms.Label labelOfModelTitle;
         private System.Windows.Forms.Label labelOfCheckInfo;
-        private System.Windows.Forms.Label labelOfModelInfo;
     }
 }
