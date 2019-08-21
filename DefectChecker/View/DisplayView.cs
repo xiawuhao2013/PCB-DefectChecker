@@ -14,11 +14,10 @@ namespace DefectChecker.View
     {
         private const int _maxNumberOfDisplayWindows = 10;
         private int _numberOfDispalyWindows = 1;
-        private int _indexOfDefectRegion = 0;
-        private int _indexOfDisplayWindow = 0;
+        //private int _indexOfDefectRegion = 0;
+        //private int _indexOfDisplayWindow = 0;
 
         // 
-        private List<DefectCell> _defectCells = new List<DefectCell>(); // replace with DataBaseManager.xxx
         private List<DisplayWindow> _displayWindows = new List<DisplayWindow>(); // may need window number control.
 
         private Bitmap _bitmapGerberSideA;
@@ -91,6 +90,7 @@ namespace DefectChecker.View
 
         private void InitDataBase()
         {
+            _dataBaseManager.ChangeDisplayWindowNum(_numberOfDispalyWindows);
             RefreshComboBox();
             RefreshGerberWindows();
             RefreshDisplayWindows();
@@ -147,21 +147,23 @@ namespace DefectChecker.View
         
         private void RefreshDisplayWindows()
         {
-            _dataBaseManager.GetDefectGroup(_numberOfDispalyWindows, out _defectCells);
-            if (null == _defectCells || null == _displayWindows)
+            List<DefectCell> defectCells = _dataBaseManager.DefectCells;
+            if (null == defectCells || null == _displayWindows)
             {
                 return;
             }
-            if (_defectCells.Count != _displayWindows.Count)
+            if (defectCells.Count != _displayWindows.Count)
             {
                 MessageBox.Show("数量异常!");
-
                 return;
             }
-            for (int indexOfDisplayWindow = 0; indexOfDisplayWindow < _displayWindows.Count; ++indexOfDisplayWindow)
+
+            int displayWindowIndex = _dataBaseManager.DisplayWindowIndex;
+            int defectRegionIndex = _dataBaseManager.DefectRegionIndex;
+            for (int index = 0; index < _displayWindows.Count; ++index)
             {
-                _displayWindows[indexOfDisplayWindow].SetDefectCell(_defectCells[indexOfDisplayWindow]);
-                _displayWindows[indexOfDisplayWindow].RefreshWindow(indexOfDisplayWindow==_indexOfDisplayWindow, _indexOfDefectRegion);
+                _displayWindows[index].SetDefectCell(defectCells[index]);
+                _displayWindows[index].RefreshWindow(index== displayWindowIndex, defectRegionIndex);
             }
 
             return;
@@ -277,14 +279,6 @@ namespace DefectChecker.View
                 }
                 displayWindow.BorderStyle = BorderStyle.None;
             }
-            SetIndexOfDisplayWindow(focus);
-
-            return;
-        }
-
-        private void SetIndexOfDisplayWindow(int index)
-        {
-            _indexOfDisplayWindow = index;
 
             return;
         }
@@ -323,7 +317,7 @@ namespace DefectChecker.View
             MessageManager.Instance().Info("Start Switch");
             if (isForward)
             {
-                _dataBaseManager.SaveMarkInfo(_defectCells[_indexOfDisplayWindow], _indexOfDefectRegion, mark);
+                _dataBaseManager.SaveMarkInfo(mark);
                 MessageManager.Instance().Info("Write Splite Success");
                 isCmdWork = GoForwardCmd();
                 MessageManager.Instance().Info("End Switch");
@@ -347,7 +341,7 @@ namespace DefectChecker.View
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            _dataBaseManager.SaveMarkInfo(_defectCells[_indexOfDisplayWindow], _indexOfDefectRegion, EMarkDataType.OK);
+            _dataBaseManager.SaveMarkInfo(EMarkDataType.OK);
             bool isCmdWork = GoForwardCmd();
             if (isCmdWork)
             {
@@ -359,37 +353,23 @@ namespace DefectChecker.View
 
         private bool IncreaseIndexOfDefectRegion()
         {
-            _indexOfDefectRegion++;
-            if (_indexOfDefectRegion >= _dataBaseManager.DefectCellInstance.DefectRegions.Count)
-            {
-                return false;
-            }
-
-            return true;
+            return _dataBaseManager.IncreaseDefectRegionIndex();
         }
 
         private bool DecreaseIndexOfDefectRegion()
         {
-            _indexOfDefectRegion--;
-            if (_indexOfDefectRegion < 0)
-            {
-                return false;
-            }
-
-            return true;
+            return _dataBaseManager.DecreaseDefectRegionIndex();
         }
 
         private void SetIndexOfDefectRegionToFirst()
         {
-            _indexOfDefectRegion = 0;
-
+            _dataBaseManager.DefectRegionIndex = 0;
             return;
         }
 
         private void SetIndexOfDefectRegionToLast()
         {
-            _indexOfDefectRegion = _dataBaseManager.DefectCellInstance.DefectRegions.Count - 1;
-
+            _dataBaseManager.SetDefectRegionIndexLast();
             return;
         }
 
@@ -418,7 +398,6 @@ namespace DefectChecker.View
             if (!_dataBaseManager.TrySwitchForward())
             {
                 MessageBox.Show("完了！");
-                _indexOfDefectRegion = 0;
                 return false;
             }
             SetIndexOfDefectRegionToLast();

@@ -30,7 +30,6 @@ namespace DefectChecker.DataBase
         private List<string> _sideNameList = new List<string>();
         private List<string> _shotNameList = new List<string>();
         private List<string> _defectNameList = new List<string>();
-        private DefectCell _defectCellInstance = new DefectCell();
 
         // product dictionary - 2
         public List<string> ProductNameList { get { return _productNameList; } }
@@ -47,13 +46,8 @@ namespace DefectChecker.DataBase
         public string SideName { get; set; }
         public string ShotName { get; set; }
         public string DefectName { get; set; }
-        public DefectCell DefectCellInstance
-        {
-            get { return _defectCellInstance; }
-            set { _defectCellInstance = value; }
-        }
         public List<DefectCell> DefectCells { get; set; }
-        public int DefectRegionIndex { get; private set; }
+        public int DefectRegionIndex { get; set; }
         public int DisplayWindowIndex { get; private set; }
 
         public DataBaseManager()
@@ -440,6 +434,38 @@ namespace DefectChecker.DataBase
             return true;
         }
 
+        public bool DecreaseDefectRegionIndex()
+        {
+            int index = DefectRegionIndex;
+            index--;
+            if (index < 0)
+            {
+                return false;
+            }
+            DefectRegionIndex = index;
+
+            return true;
+        }
+
+        public void SetDefectRegionIndexLast()
+        {
+            DefectRegionIndex = DefectCells[DisplayWindowIndex].DefectRegions.Count - 1;
+        }
+
+        public bool IncreaseDefectRegionIndex()
+        {
+            int index = DefectRegionIndex;
+            index++;
+            if (index >= DefectCells[DisplayWindowIndex].DefectRegions.Count)
+            {
+                return false;
+            }
+
+            DefectRegionIndex++;
+
+            return true;
+        }
+
         private bool TryGetNextBatchNotEmpty(bool isHead = false)
         {
             int index = -1;
@@ -749,48 +775,6 @@ namespace DefectChecker.DataBase
                 _device.GetGerberWholeImgB(out gerberBitmap);
             }
         }
-
-        //
-        public void GetDefectGroup(int groupSize, out List<DefectCell> defectCells)
-        {
-            defectCells = new List<DefectCell>();
-            if (groupSize <= 0)
-            {
-                return;
-            }
-
-            int head = -1;
-            int end = -1;
-            if (!DefectNameList.Contains(DefectName))
-            {
-                defectCells = new List<DefectCell>();
-                int iter = groupSize;
-                do
-                {
-                    defectCells.Add(new DefectCell());
-                } while (--iter > 0);
-                return;
-            }
-            int indexOfGroup = DefectNameList.IndexOf(DefectName) / groupSize;
-            head = indexOfGroup * groupSize;
-            end = head + groupSize - 1;
-            
-            for (var iter = head; iter <= end; ++iter)
-            {
-                var defectCell = new DefectCell();
-                if (null == DefectNameList || 0 == DefectNameList.Count || iter >= DefectNameList.Count || iter < 0)
-                {
-                    defectCells.Add(new DefectCell());
-                }
-                else
-                {
-                    _device.GetDefectCell(ProductName, BatchName, BoardName, SideName, ShotName, DefectNameList[iter], out defectCell);
-                    defectCells.Add(defectCell);
-                }
-            }
-
-            return;
-        }
         
         //
         public void SwitchProduct(string productName)
@@ -874,15 +858,21 @@ namespace DefectChecker.DataBase
             return false;
         }
 
-        public void SaveMarkInfo(DefectCell defectCell, int regionIndex, EMarkDataType markType)
+        public void SaveMarkInfo(EMarkDataType markType)
         {
             MarkDataInfo markDataInfo = new MarkDataInfo(ProductName, BatchName, BoardName, SideName, ShotName, DefectName);
             _sqliteDb.ReadMarkDataType(ref markDataInfo);
             MarkRegionInfo markRegionInfo = new MarkRegionInfo();
-            markRegionInfo.SetByDefectCell(defectCell, regionIndex, markType);
-            markDataInfo.AddMarks(regionIndex, markRegionInfo);
+            markRegionInfo.SetByDefectCell(DefectCells[DisplayWindowIndex], DefectRegionIndex, markType);
+            markDataInfo.AddMarks(DefectRegionIndex, markRegionInfo);
             _sqliteDb.WriteMarkDataInfo(markDataInfo);
             return;
+        }
+
+        public void ChangeDisplayWindowNum(int num)
+        {
+            _displayWindowNum = num;
+            UpdateDataCells();
         }
 
     }
