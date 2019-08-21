@@ -21,6 +21,8 @@ namespace DefectChecker.DataBase
         private string _dataDir;
         private string _modelDir;
 
+        public int _displayWindowNum;
+
         // product dictionary - 1
         private List<string> _productNameList = new List<string>();
         private List<string> _batchNameList = new List<string>();
@@ -50,7 +52,9 @@ namespace DefectChecker.DataBase
             get { return _defectCellInstance; }
             set { _defectCellInstance = value; }
         }
-        public int DefectRegionIndex { get; set; }
+        public List<DefectCell> DefectCells { get; set; }
+        public int DefectRegionIndex { get; private set; }
+        public int DisplayWindowIndex { get; private set; }
 
         public DataBaseManager()
         {
@@ -60,9 +64,11 @@ namespace DefectChecker.DataBase
         private void Init()
         {
             _sqliteDb = new SqliteDB("MarkDatabase", "MarkTable");
+            _displayWindowNum = 1;
             ResetProduct();
             LoadProjectSetting();
             LoadDataBaseInfo();
+            UpdateDataCells();
             SaveDataBaseInfo();
         }
 
@@ -118,8 +124,7 @@ namespace DefectChecker.DataBase
             {
                 TrySelectDefect(0);
             }
-            _device.GetDefectCell(ProductName, BatchName, BoardName, SideName, ShotName, DefectName, out _defectCellInstance);
-            DefectRegionIndex = 0;
+            UpdateDataCells();
 
             return;
         }
@@ -134,6 +139,50 @@ namespace DefectChecker.DataBase
             xmlParameter.Add("ShotName", ShotName);
             xmlParameter.Add("DefectName", DefectName);
             xmlParameter.WriteParameter(Application.StartupPath + _fileDataBaseManager);
+        }
+
+        private void UpdateDataCells()
+        {
+            DefectCells = new List<DefectCell>();
+            if (_displayWindowNum <= 0)
+            {
+                return;
+            }
+
+            int head = -1;
+            int end = -1;
+            if (!DefectNameList.Contains(DefectName))
+            {
+                int iter = _displayWindowNum;
+                do
+                {
+                    DefectCells.Add(new DefectCell());
+                } while (--iter > 0);
+                return;
+            }
+
+            int indexOfGroup = DefectNameList.IndexOf(DefectName) / _displayWindowNum;
+            head = indexOfGroup * _displayWindowNum;
+            end = head + _displayWindowNum - 1;
+
+            for (var iter = head; iter <= end; ++iter)
+            {
+                var defectCell = new DefectCell();
+                if (null == DefectNameList || 0 == DefectNameList.Count || iter >= DefectNameList.Count || iter < 0)
+                {
+                    DefectCells.Add(new DefectCell());
+                }
+                else
+                {
+                    _device.GetDefectCell(ProductName, BatchName, BoardName, SideName, ShotName, DefectNameList[iter], out defectCell);
+                    DefectCells.Add(defectCell);
+                }
+            }
+
+            DisplayWindowIndex = DefectNameList.IndexOf(DefectName) - head;
+            DefectRegionIndex = 0;
+
+            return;
         }
 
         //
@@ -151,6 +200,9 @@ namespace DefectChecker.DataBase
             _shotNameList = new List<string>();
             DefectName = "";
             _defectNameList = new List<string>();
+            DefectCells = new List<DefectCell>();
+            DefectRegionIndex = 0;
+            DisplayWindowIndex = 0;
 
             return;
         }
@@ -167,6 +219,9 @@ namespace DefectChecker.DataBase
             _shotNameList = new List<string>();
             DefectName = "";
             _defectNameList = new List<string>();
+            DefectCells = new List<DefectCell>();
+            DefectRegionIndex = 0;
+            DisplayWindowIndex = 0;
 
             return;
         }
@@ -181,6 +236,9 @@ namespace DefectChecker.DataBase
             _shotNameList = new List<string>();
             DefectName = "";
             _defectNameList = new List<string>();
+            DefectCells = new List<DefectCell>();
+            DefectRegionIndex = 0;
+            DisplayWindowIndex = 0;
 
             return;
         }
@@ -193,6 +251,9 @@ namespace DefectChecker.DataBase
             _shotNameList = new List<string>();
             DefectName = "";
             _defectNameList = new List<string>();
+            DefectCells = new List<DefectCell>();
+            DefectRegionIndex = 0;
+            DisplayWindowIndex = 0;
 
             return;
         }
@@ -203,6 +264,9 @@ namespace DefectChecker.DataBase
             _shotNameList = new List<string>();
             DefectName = "";
             _defectNameList = new List<string>();
+            DefectCells = new List<DefectCell>();
+            DefectRegionIndex = 0;
+            DisplayWindowIndex = 0;
 
             return;
         }
@@ -211,6 +275,9 @@ namespace DefectChecker.DataBase
         {
             DefectName = "";
             _defectNameList = new List<string>();
+            DefectCells = new List<DefectCell>();
+            DefectRegionIndex = 0;
+            DisplayWindowIndex = 0;
 
             return;
         }
@@ -339,6 +406,7 @@ namespace DefectChecker.DataBase
                 return false;
             }
             DefectName = DefectNameList[index];
+            UpdateDataCells();
 
             return true;
         }
