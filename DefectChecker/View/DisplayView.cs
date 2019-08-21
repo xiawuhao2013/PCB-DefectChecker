@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using Aqrose.Framework.Utility.MessageManager;
 using AqVision.Controls;
 using DefectChecker.DataBase;
 using DefectChecker.DefectDataStructure;
@@ -290,6 +291,7 @@ namespace DefectChecker.View
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
+            MessageManager.Instance().Info("Cmd Coming: " + keyData.ToString());
             bool isCmdWork = true;
             bool isForward = true;
             EMarkDataType mark = new EMarkDataType();
@@ -317,11 +319,14 @@ namespace DefectChecker.View
                 default:
                     return false;
             }
-            
+
+            MessageManager.Instance().Info("Start Switch");
             if (isForward)
             {
                 _dataBaseManager.SaveMarkInfo(_defectCells[_indexOfDisplayWindow], _indexOfDefectRegion, mark);
+                MessageManager.Instance().Info("Write Splite Success");
                 isCmdWork = GoForwardCmd();
+                MessageManager.Instance().Info("End Switch");
             }
             else
             {
@@ -330,8 +335,11 @@ namespace DefectChecker.View
             if (isCmdWork)
             {
                 RefreshComboBox();
+                MessageManager.Instance().Info("RefreshComboBox");
                 FocusCurrentDisplayWindow();
+                MessageManager.Instance().Info("FocusCurrentDisplayWindow");
                 RefreshDisplayWindows();
+                MessageManager.Instance().Info("RefreshDisplayWindows");
             }
 
             return true;

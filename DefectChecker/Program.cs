@@ -1,11 +1,6 @@
 ﻿using DefectChecker.View;
 using System;
-using System.Collections.Generic;
-using System.Data.SQLite;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using DefectChecker.DataBase.SqliteDataBase;
 using System.Diagnostics;
 using System.Threading;
 using Aqrose.Framework.Utility.MessageManager;
@@ -23,7 +18,7 @@ namespace DefectChecker
             Application.ThreadException += OnGlobalError;
             AppDomain.CurrentDomain.UnhandledException += OnDomainError;
 
-            Process[] app = Process.GetProcessesByName("VisionDesign");
+            Process[] app = Process.GetProcessesByName("DefectChecker");
             if (app.Length > 1)
             {
                 MessageBox.Show("软件已运行，本次启动将退出");
