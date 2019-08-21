@@ -28,14 +28,7 @@ namespace DefectChecker.DataBase
         private List<string> _sideNameList = new List<string>();
         private List<string> _shotNameList = new List<string>();
         private List<string> _defectNameList = new List<string>();
-
-        //// skip
-        //private int _indexOfProductNameList = 0;
-        //private int _indexOfBatchNameList = 0;
-        //private int _indexOfBoardNameList = 0;
-        //private int _indexOfSideNameList = 0;
-        //private int _indexOfShotNameList = 0;
-        //private int _indexOfDefectNameList = 0;
+        private DefectCell _defectCellInstance = new DefectCell();
 
         // product dictionary - 2
         public List<string> ProductNameList { get { return _productNameList; } }
@@ -52,6 +45,12 @@ namespace DefectChecker.DataBase
         public string SideName { get; set; }
         public string ShotName { get; set; }
         public string DefectName { get; set; }
+        public DefectCell DefectCellInstance
+        {
+            get { return _defectCellInstance; }
+            set { _defectCellInstance = value; }
+        }
+        public int DefectRegionIndex { get; set; }
 
         public DataBaseManager()
         {
@@ -158,6 +157,8 @@ namespace DefectChecker.DataBase
             {
                 TrySelectDefect(0);
             }
+            _device.GetDefectCell(ProductName, BatchName, BoardName, SideName, ShotName, DefectName, out _defectCellInstance);
+            DefectRegionIndex = 0;
 
             return;
         }
@@ -747,15 +748,7 @@ namespace DefectChecker.DataBase
 
             return;
         }
-
-        public void GetDefectCell(out DefectCell defectCell)
-        {
-            defectCell = new DefectCell();
-            _device.GetDefectCell(ProductName, BatchName, BoardName, SideName, ShotName, DefectName, out defectCell);
-
-            return;
-        }
-
+        
         //
         public void SwitchProduct(string productName)
         {

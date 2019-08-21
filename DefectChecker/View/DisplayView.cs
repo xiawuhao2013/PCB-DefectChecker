@@ -359,9 +359,8 @@ namespace DefectChecker.View
 
         private bool IncreaseIndexOfDefectRegion()
         {
-            _dataBaseManager.GetDefectCell(out var defectCell);
             _indexOfDefectRegion++;
-            if (_indexOfDefectRegion >= defectCell.DefectRegions.Count)
+            if (_indexOfDefectRegion >= _dataBaseManager.DefectCellInstance.DefectRegions.Count)
             {
                 return false;
             }
@@ -382,7 +381,6 @@ namespace DefectChecker.View
 
         private void SetIndexOfDefectRegionToFirst()
         {
-            _dataBaseManager.GetDefectCell(out var defectCell);
             _indexOfDefectRegion = 0;
 
             return;
@@ -390,8 +388,7 @@ namespace DefectChecker.View
 
         private void SetIndexOfDefectRegionToLast()
         {
-            _dataBaseManager.GetDefectCell(out var defectCell);
-            _indexOfDefectRegion = defectCell.DefectRegions.Count - 1;
+            _indexOfDefectRegion = _dataBaseManager.DefectCellInstance.DefectRegions.Count - 1;
 
             return;
         }
@@ -409,7 +406,6 @@ namespace DefectChecker.View
                 return false;
             }
             SetIndexOfDefectRegionToFirst();
-
             return true;
         }
 
