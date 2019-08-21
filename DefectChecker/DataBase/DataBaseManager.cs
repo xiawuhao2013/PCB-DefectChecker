@@ -66,18 +66,6 @@ namespace DefectChecker.DataBase
             SaveDataBaseInfo();
         }
 
-        private bool TryGetDefectCellByIndex(int index, out DefectCell defectCell)
-        {
-            defectCell = new DefectCell();
-            if (null == DefectNameList || 0 == DefectNameList.Count || index >= DefectNameList.Count || index < 0)
-            {
-                return false;
-            }
-            _device.GetDefectCell(ProductName, BatchName, BoardName, SideName, ShotName, DefectNameList[index], out defectCell);
-
-            return true;
-        }
-
         private void LoadProjectSetting()
         {
             XmlParameter xmlParameter = new XmlParameter();
@@ -721,13 +709,15 @@ namespace DefectChecker.DataBase
             
             for (var iter = head; iter <= end; ++iter)
             {
-                if (TryGetDefectCellByIndex(iter, out var defectCell))
+                var defectCell = new DefectCell();
+                if (null == DefectNameList || 0 == DefectNameList.Count || iter >= DefectNameList.Count || iter < 0)
                 {
-                    defectCells.Add(defectCell);
+                    defectCells.Add(new DefectCell());
                 }
                 else
                 {
-                    defectCells.Add(new DefectCell());
+                    _device.GetDefectCell(ProductName, BatchName, BoardName, SideName, ShotName, DefectNameList[iter], out defectCell);
+                    defectCells.Add(defectCell);
                 }
             }
 
