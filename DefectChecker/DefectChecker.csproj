@@ -122,6 +122,12 @@
     <Compile Include="View\DisplayView.Designer.cs">
       <DependentUpon>DisplayView.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\ErrorMessage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\ErrorMessage.Designer.cs">
+      <DependentUpon>ErrorMessage.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -144,6 +150,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="View\ConfigView.resx">
       <DependentUpon>ConfigView.cs</DependentUpon>
@@ -180,6 +187,17 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\restore.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\max.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AQlogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AQlogoBlueSmall.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
