@@ -37,13 +37,17 @@
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonReload = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBoxDilation = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBoxWindowNum = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.buttonSelectSaveFile = new System.Windows.Forms.Button();
-            this.textBoxSaveFile = new System.Windows.Forms.TextBox();
+            this.textBoxDataBaseDir = new System.Windows.Forms.TextBox();
             this.checkBoxIsJump = new System.Windows.Forms.CheckBox();
+            this.upDownDilationNum = new System.Windows.Forms.NumericUpDown();
+            this.upDownWindowNum = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
+            this.textBoxDataBaseName = new System.Windows.Forms.TextBox();
+            ((System.ComponentModel.ISupportInitialize)(this.upDownDilationNum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.upDownWindowNum)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -81,7 +85,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(17, 90);
+            this.label2.Location = new System.Drawing.Point(17, 95);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 12);
             this.label2.TabIndex = 0;
@@ -91,7 +95,7 @@
             // 
             this.textBoxModelDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxModelDir.Location = new System.Drawing.Point(76, 86);
+            this.textBoxModelDir.Location = new System.Drawing.Point(78, 90);
             this.textBoxModelDir.Name = "textBoxModelDir";
             this.textBoxModelDir.ReadOnly = true;
             this.textBoxModelDir.Size = new System.Drawing.Size(360, 21);
@@ -101,7 +105,7 @@
             // 
             this.buttonSelectModelDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSelectModelDir.AutoSize = true;
-            this.buttonSelectModelDir.Location = new System.Drawing.Point(444, 84);
+            this.buttonSelectModelDir.Location = new System.Drawing.Point(444, 90);
             this.buttonSelectModelDir.Name = "buttonSelectModelDir";
             this.buttonSelectModelDir.Size = new System.Drawing.Size(33, 23);
             this.buttonSelectModelDir.TabIndex = 2;
@@ -117,6 +121,7 @@
             this.buttonSave.TabIndex = 3;
             this.buttonSave.Text = "保存";
             this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // buttonReload
             // 
@@ -126,38 +131,25 @@
             this.buttonReload.TabIndex = 4;
             this.buttonReload.Text = "重置";
             this.buttonReload.UseVisualStyleBackColor = true;
+            this.buttonReload.Click += new System.EventHandler(this.buttonReload_Click);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(19, 195);
+            this.label3.Location = new System.Drawing.Point(300, 188);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(53, 12);
             this.label3.TabIndex = 5;
             this.label3.Text = "膨胀系数";
             // 
-            // textBoxDilation
-            // 
-            this.textBoxDilation.Location = new System.Drawing.Point(76, 185);
-            this.textBoxDilation.Name = "textBoxDilation";
-            this.textBoxDilation.Size = new System.Drawing.Size(100, 21);
-            this.textBoxDilation.TabIndex = 6;
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(19, 233);
+            this.label4.Location = new System.Drawing.Point(300, 227);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(53, 12);
             this.label4.TabIndex = 5;
             this.label4.Text = "窗口数量";
-            // 
-            // textBoxWindowNum
-            // 
-            this.textBoxWindowNum.Location = new System.Drawing.Point(76, 223);
-            this.textBoxWindowNum.Name = "textBoxWindowNum";
-            this.textBoxWindowNum.Size = new System.Drawing.Size(100, 21);
-            this.textBoxWindowNum.TabIndex = 6;
             // 
             // label5
             // 
@@ -178,49 +170,109 @@
             this.buttonSelectSaveFile.TabIndex = 2;
             this.buttonSelectSaveFile.Text = "...";
             this.buttonSelectSaveFile.UseVisualStyleBackColor = true;
+            this.buttonSelectSaveFile.Click += new System.EventHandler(this.buttonSelectSaveFile_Click);
             // 
-            // textBoxSaveFile
+            // textBoxDataBaseDir
             // 
-            this.textBoxSaveFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.textBoxDataBaseDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxSaveFile.Location = new System.Drawing.Point(76, 135);
-            this.textBoxSaveFile.Name = "textBoxSaveFile";
-            this.textBoxSaveFile.ReadOnly = true;
-            this.textBoxSaveFile.Size = new System.Drawing.Size(360, 21);
-            this.textBoxSaveFile.TabIndex = 1;
+            this.textBoxDataBaseDir.Location = new System.Drawing.Point(78, 137);
+            this.textBoxDataBaseDir.Name = "textBoxDataBaseDir";
+            this.textBoxDataBaseDir.ReadOnly = true;
+            this.textBoxDataBaseDir.Size = new System.Drawing.Size(360, 21);
+            this.textBoxDataBaseDir.TabIndex = 1;
             // 
             // checkBoxIsJump
             // 
             this.checkBoxIsJump.AutoSize = true;
-            this.checkBoxIsJump.Location = new System.Drawing.Point(317, 189);
+            this.checkBoxIsJump.Location = new System.Drawing.Point(74, 230);
             this.checkBoxIsJump.Name = "checkBoxIsJump";
             this.checkBoxIsJump.Size = new System.Drawing.Size(132, 16);
             this.checkBoxIsJump.TabIndex = 7;
             this.checkBoxIsJump.Text = "是否跳过已标注数据";
             this.checkBoxIsJump.UseVisualStyleBackColor = true;
             // 
+            // upDownDilationNum
+            // 
+            this.upDownDilationNum.Location = new System.Drawing.Point(357, 182);
+            this.upDownDilationNum.Maximum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.upDownDilationNum.Name = "upDownDilationNum";
+            this.upDownDilationNum.Size = new System.Drawing.Size(120, 21);
+            this.upDownDilationNum.TabIndex = 9;
+            this.upDownDilationNum.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // upDownWindowNum
+            // 
+            this.upDownWindowNum.Location = new System.Drawing.Point(357, 225);
+            this.upDownWindowNum.Maximum = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
+            this.upDownWindowNum.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.upDownWindowNum.Name = "upDownWindowNum";
+            this.upDownWindowNum.Size = new System.Drawing.Size(120, 21);
+            this.upDownWindowNum.TabIndex = 10;
+            this.upDownWindowNum.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(17, 188);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(53, 12);
+            this.label6.TabIndex = 5;
+            this.label6.Text = "数据库名";
+            // 
+            // textBoxDataBaseName
+            // 
+            this.textBoxDataBaseName.Location = new System.Drawing.Point(78, 185);
+            this.textBoxDataBaseName.Name = "textBoxDataBaseName";
+            this.textBoxDataBaseName.Size = new System.Drawing.Size(100, 21);
+            this.textBoxDataBaseName.TabIndex = 11;
+            // 
             // ConfigView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.textBoxDataBaseName);
+            this.Controls.Add(this.upDownWindowNum);
+            this.Controls.Add(this.upDownDilationNum);
             this.Controls.Add(this.checkBoxIsJump);
-            this.Controls.Add(this.textBoxWindowNum);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.textBoxDilation);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.buttonReload);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.buttonSelectSaveFile);
             this.Controls.Add(this.buttonSelectModelDir);
             this.Controls.Add(this.buttonSelectDataDir);
-            this.Controls.Add(this.textBoxSaveFile);
+            this.Controls.Add(this.textBoxDataBaseDir);
             this.Controls.Add(this.textBoxModelDir);
             this.Controls.Add(this.textBoxDataDir);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "ConfigView";
             this.Size = new System.Drawing.Size(549, 320);
+            ((System.ComponentModel.ISupportInitialize)(this.upDownDilationNum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.upDownWindowNum)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -237,12 +289,14 @@
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.Button buttonReload;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBoxDilation;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBoxWindowNum;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button buttonSelectSaveFile;
-        private System.Windows.Forms.TextBox textBoxSaveFile;
+        private System.Windows.Forms.TextBox textBoxDataBaseDir;
         private System.Windows.Forms.CheckBox checkBoxIsJump;
+        private System.Windows.Forms.NumericUpDown upDownDilationNum;
+        private System.Windows.Forms.NumericUpDown upDownWindowNum;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox textBoxDataBaseName;
     }
 }
