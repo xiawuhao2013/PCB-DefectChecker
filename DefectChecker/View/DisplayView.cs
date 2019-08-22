@@ -142,12 +142,15 @@ namespace DefectChecker.View
 
         private void RefreshGerberWindows()
         {
+            this.tableLayoutPanelGerber.SizeChanged -= new System.EventHandler(this.tableLayoutPanelGerber_SizeChanged);
             _dataBaseManager.GetGerberImage("SideA", out _bitmapGerberSideA);
             _dataBaseManager.GetGerberImage("SideB", out _bitmapGerberSideB);
             _aqDisplayGerberSideA.Image = _bitmapGerberSideA;
             _aqDisplayGerberSideB.Image = _bitmapGerberSideB;
             _aqDisplayGerberSideA.FitToScreen();
             _aqDisplayGerberSideB.FitToScreen();
+
+            this.tableLayoutPanelGerber.SizeChanged += new System.EventHandler(this.tableLayoutPanelGerber_SizeChanged);
         }
         
         private void RefreshDisplayWindows()
@@ -231,6 +234,24 @@ namespace DefectChecker.View
             RefreshDisplayWindows();
             return;
         }
+
+        private void tableLayoutPanelGerber_SizeChanged(object sender, EventArgs e)
+        {
+            if(_aqDisplayGerberSideA.Image != null)
+            {
+                _aqDisplayGerberSideA.FitToScreen();
+                _aqDisplayGerberSideA.Update();
+            }
+                
+            if(_aqDisplayGerberSideB.Image != null)
+            {
+                _aqDisplayGerberSideB.FitToScreen();
+                _aqDisplayGerberSideB.Update();
+            }
+               
+            return;
+        }
+
 
         #endregion
 
