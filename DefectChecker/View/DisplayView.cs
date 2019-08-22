@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using Aqrose.Framework.Utility.MessageManager;
+using Aqrose.Framework.Utility.Tools;
 using AqVision.Controls;
 using DefectChecker.DataBase;
 using DefectChecker.DefectDataStructure;
@@ -12,10 +13,15 @@ namespace DefectChecker.View
 {
     public partial class DisplayView : UserControl
     {
-        private const int _maxNumberOfDisplayWindows = 10;
-        private int _numberOfDispalyWindows = 1;
-        //private int _indexOfDefectRegion = 0;
-        //private int _indexOfDisplayWindow = 0;
+        private const string _fileProjectSetting = @"\config\ProjectSetting.xml";
+
+        private string _dataDir;
+        private string _modelDir;
+        private string _dataBaseDir;
+        private string _dataBaseName;
+        private int _dilationPixel;
+        private int _displayWindowNum;
+        private bool _isJumpMarkedData;
 
         // 
         private List<DisplayWindow> _displayWindows = new List<DisplayWindow>(); // may need window number control.
@@ -25,19 +31,39 @@ namespace DefectChecker.View
         private AqDisplay _aqDisplayGerberSideA = new AqDisplay();
         private AqDisplay _aqDisplayGerberSideB = new AqDisplay();
 
-        private DataBaseManager _dataBaseManager = new DataBaseManager();
+        private DataBaseManager _dataBaseManager;
 
         public DisplayView()
         {
             InitializeComponent();
+
+            LoadProjectSetting();
             InitGerberWindows();
-            InitDisplayWindows(this.tableLayoutPanelImage, _numberOfDispalyWindows);
+            InitDisplayWindows(this.tableLayoutPanelImage, _displayWindowNum);
             
             InitDataBase();
             //timer1.Start();
         }
 
         #region Init
+
+        private void LoadProjectSetting()
+        {
+            string str;
+            XmlParameter xmlParameter = new XmlParameter();
+            xmlParameter.ReadParameter(Application.StartupPath + _fileProjectSetting);
+            _dataDir = xmlParameter.GetParamData("DataDir");
+            _modelDir = xmlParameter.GetParamData("ModelDir");
+
+            _dataBaseDir = xmlParameter.GetParamData("DataBaseDir");
+            _dataBaseName = xmlParameter.GetParamData("DataBaseName");
+            str = xmlParameter.GetParamData("DilationPixel");
+            int.TryParse(str, out _dilationPixel);
+            str = xmlParameter.GetParamData("DisplayWindowNum");
+            int.TryParse(str, out _displayWindowNum);
+            str = xmlParameter.GetParamData("IsJumpMarkedData");
+            bool.TryParse(str, out _isJumpMarkedData);
+        }
 
         private void InitGerberWindows()
         {
@@ -63,7 +89,6 @@ namespace DefectChecker.View
             table.ColumnStyles.Clear();
 
             number = Math.Max(1, number);
-            number = Math.Min(_maxNumberOfDisplayWindows, number);
             table.RowCount = Convert.ToInt32(Math.Round(Math.Sqrt(number)));
             table.ColumnCount = Convert.ToInt32(Math.Ceiling(Math.Sqrt(number)));
 
@@ -90,7 +115,8 @@ namespace DefectChecker.View
 
         private void InitDataBase()
         {
-            _dataBaseManager.ChangeDisplayWindowNum(_numberOfDispalyWindows);
+            _dataBaseManager = new DataBaseManager(_dataDir, _modelDir, _dataBaseDir,
+                _dataBaseName, _dilationPixel, _displayWindowNum, _isJumpMarkedData);
             RefreshComboBox();
             RefreshGerberWindows();
             RefreshDisplayWindows();
@@ -274,7 +300,7 @@ namespace DefectChecker.View
             }
             if (_dataBaseManager.DefectNameList != null && _dataBaseManager.DefectNameList.Contains(_dataBaseManager.DefectName))
             {
-                focus = _dataBaseManager.DefectNameList.IndexOf(_dataBaseManager.DefectName) % _numberOfDispalyWindows;
+                focus = _dataBaseManager.DefectNameList.IndexOf(_dataBaseManager.DefectName) % _displayWindowNum;
             }
 
             foreach (var displayWindow in _displayWindows)

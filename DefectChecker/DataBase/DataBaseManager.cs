@@ -12,7 +12,6 @@ namespace DefectChecker.DataBase
     public class DataBaseManager
     {
         // config files
-        private const string _fileProjectSetting = @"\config\ProjectSetting.xml";
         private const string _fileDataBaseManager = @"\config\DataBaseManager.xml";
 
         private SqliteDB _sqliteDb;
@@ -20,9 +19,12 @@ namespace DefectChecker.DataBase
 
         private string _dataDir;
         private string _modelDir;
-
-        public int _displayWindowNum;
-
+        private string _dataBaseDir;
+        private string _dataBaseName;
+        private int _dilationPixel;
+        private int _displayWindowNum;
+        private bool _isJumpMarkedData;
+        
         // product dictionary - 1
         private List<string> _productNameList = new List<string>();
         private List<string> _batchNameList = new List<string>();
@@ -50,28 +52,28 @@ namespace DefectChecker.DataBase
         public int DefectRegionIndex { get; set; }
         public int DisplayWindowIndex { get; private set; }
 
-        public DataBaseManager()
+        public DataBaseManager(string dataDir, string modelDir, string dataBaseDir, 
+            string dataBaseName, int dilationPixel, int displayWindowNum, bool isJumpMarkedData)
         {
-            Init();
+            Init(dataDir, modelDir, dataBaseDir, dataBaseName, dilationPixel, displayWindowNum, isJumpMarkedData);
         }
         
-        private void Init()
+        private void Init(string dataDir, string modelDir, string dataBaseDir,
+            string dataBaseName, int dilationPixel, int displayWindowNum, bool isJumpMarkedData)
         {
-            _sqliteDb = new SqliteDB("MarkDatabase", "MarkTable");
-            _displayWindowNum = 1;
+            _dataDir = dataDir;
+            _modelDir = modelDir;
+            _dataBaseDir = dataBaseDir;
+            _dataBaseName = dataBaseName;
+            _dilationPixel = dilationPixel;
+            _displayWindowNum = displayWindowNum;
+            _isJumpMarkedData = isJumpMarkedData;
+
+            _sqliteDb = new SqliteDB(_dataBaseDir, _dataBaseName, "MarkTable");
             ResetProduct();
-            LoadProjectSetting();
             LoadDataBaseInfo();
             UpdateDataCells();
             SaveDataBaseInfo();
-        }
-
-        private void LoadProjectSetting()
-        {
-            XmlParameter xmlParameter = new XmlParameter();
-            xmlParameter.ReadParameter(Application.StartupPath + _fileProjectSetting);
-            _dataDir = xmlParameter.GetParamData("DataDir");
-            _modelDir = xmlParameter.GetParamData("ModelDir");
         }
 
         private void LoadDataBaseInfo()
@@ -169,6 +171,7 @@ namespace DefectChecker.DataBase
                 else
                 {
                     _device.GetDefectCell(ProductName, BatchName, BoardName, SideName, ShotName, DefectNameList[iter], out defectCell);
+                    defectCell.GenRegionFromRect(_dilationPixel);
                     DefectCells.Add(defectCell);
                 }
             }
@@ -867,12 +870,6 @@ namespace DefectChecker.DataBase
             markDataInfo.AddMarks(DefectRegionIndex, markRegionInfo);
             _sqliteDb.WriteMarkDataInfo(markDataInfo);
             return;
-        }
-
-        public void ChangeDisplayWindowNum(int num)
-        {
-            _displayWindowNum = num;
-            UpdateDataCells();
         }
 
     }

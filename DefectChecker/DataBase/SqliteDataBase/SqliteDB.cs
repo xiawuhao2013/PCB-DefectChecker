@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.IO;
 using System.Linq;
 using System.Net.Mime;
 using System.Text;
@@ -11,10 +12,12 @@ namespace DefectChecker.DataBase.SqliteDataBase
 {
     class SqliteDB
     {
+        private string _dataBaseDir;
         private string _dataBaseName;
         private string _tableName;
-        public SqliteDB(string dataBaseName, string tableName)
+        public SqliteDB(string dataBaseDir, string dataBaseName, string tableName)
         {
+            _dataBaseDir = dataBaseDir;
             _dataBaseName = dataBaseName;
             _tableName = tableName;
             CreateDateBaseAndTable();
@@ -30,7 +33,11 @@ namespace DefectChecker.DataBase.SqliteDataBase
 
         private bool SqliteCMD(string sqlCmd)
         {
-            string dbPath = "Data Source = " + Application.StartupPath + "\\" + _dataBaseName + ".db";
+            if (!Directory.Exists(_dataBaseDir))
+            {
+                return false;
+            }
+            string dbPath = "Data Source = " + _dataBaseDir + "\\" + _dataBaseName + ".db";
             SQLiteConnection connect = new SQLiteConnection(dbPath);
             connect.Open();
             
@@ -96,7 +103,7 @@ namespace DefectChecker.DataBase.SqliteDataBase
             sqlCmd += "and Shot='" + dataInfo.ShotName + "' ";
             sqlCmd += "and Defect='" + dataInfo.DefectName + "';";
 
-            string dbPath = "Data Source = " + Application.StartupPath + "\\" + _dataBaseName + ".db";
+            string dbPath = "Data Source = " + _dataBaseDir + "\\" + _dataBaseName + ".db";
             SQLiteConnection connect = new SQLiteConnection(dbPath);
             connect.Open();
 

@@ -390,8 +390,6 @@ namespace DefectChecker.DeviceModule.MachVision
             {
                 defectCell.TemplateImage = null;
             }
-
-            defectCell.GenRegionFromRect();
         }
 
         public bool GetTemplateWholeImgA(out Bitmap wholeImg)
