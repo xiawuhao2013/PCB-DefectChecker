@@ -42,7 +42,7 @@ namespace DefectChecker.View
             InitDisplayWindows(this.tableLayoutPanelImage, _displayWindowNum);
             
             InitDataBase();
-            timer1.Start();
+            //timer1.Start();
         }
 
         #region Init
