@@ -128,6 +128,7 @@ namespace DefectChecker.View
 
             _uiDisplayView.Dock = DockStyle.Fill;
             this.panelDisplayView.Controls.Add(_uiDisplayView);
+
             this.tabControl1.SelectedIndex = 1;
 
             return;
