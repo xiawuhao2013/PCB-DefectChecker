@@ -1,4 +1,5 @@
-﻿using Aqrose.Framework.Utility.Tools;
+﻿using Aqrose.Framework.Utility.MessageManager;
+using Aqrose.Framework.Utility.Tools;
 using DefectChecker.DataBase.SqliteDataBase;
 using DefectChecker.DefectDataStructure;
 using DefectChecker.DeviceModule.MachVision;
@@ -600,7 +601,7 @@ namespace DefectChecker.DataBase
                 }
                 isHead = false;
             } while (!TrySelectDefect(++index));
-
+            
             return true;
         }
 

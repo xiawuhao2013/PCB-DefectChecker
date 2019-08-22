@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using Aqrose.Framework.Utility.MessageManager;
 using Aqrose.Framework.Utility.Tools;
 using DefectChecker.Common;
 using DefectChecker.DefectDataStructure;
@@ -23,10 +24,12 @@ namespace DefectChecker.DeviceModule.MachVision
         private const string _shot1ResultFileName = @"ResultShot_1.ini";
         private string _dataDir = "";
         private string _modelDir = "";
+
+        private Dictionary<string, Bitmap> _templateBitmapDirectory;
         
         public DeviceMachVision()
         {
-
+            _templateBitmapDirectory = new Dictionary<string, Bitmap>();
         }
 
         private PathMap GetDefectPathInfo(string productName, string batchName, string boardName, string sideName, string shotName)
@@ -139,27 +142,22 @@ namespace DefectChecker.DeviceModule.MachVision
             return true;
         }
 
-        private bool TryGetTemplateImg(string sideName, string shotName, out Bitmap templateBitmap)
+        private bool TryGetTemplateImg(string sideName, string shotName, Rectangle roi, out Bitmap templateBitmap)
         {
-            templateBitmap = null;
-            try
+            if (_templateBitmapDirectory.ContainsKey(sideName+shotName))
             {
-                string filePath = _modelDir + "\\" + sideName + "\\"+shotName+".jpg";
-                if (!File.Exists(filePath))
+                Bitmap bitmap = _templateBitmapDirectory[sideName + shotName];
+                if (ImageOperateTools.BitmapCropImage(bitmap, roi, out templateBitmap))
                 {
-                    return false;
+                    return true;
                 }
-                templateBitmap = new Bitmap(filePath);
             }
-            catch (Exception ex)
+            else
             {
                 templateBitmap = null;
-                MessageBox.Show(ex.Message);
-
-                return false;
             }
 
-            return true;
+            return false;
         }
         
         private Dictionary<string, string> GetDefectPositionInfoOfShot(string productName, string batchName, string boardName, string sideName, string shotName, string shotResultFileName)
@@ -193,12 +191,72 @@ namespace DefectChecker.DeviceModule.MachVision
             return defectPositionOfShot;
         }
 
+        private bool GetTemplateBitmap(string sideName, string shotName, out Bitmap templateBitmap)
+        {
+            templateBitmap = null;
+            try
+            {
+                string filePath = _modelDir + "\\" + sideName + "\\" + shotName + ".jpg";
+                if (!File.Exists(filePath))
+                {
+                    return false;
+                }
+                templateBitmap = ImageOperateTools.GetImageFromFile(filePath);
+            }
+            catch (Exception ex)
+            {
+                templateBitmap = null;
+                MessageBox.Show(ex.Message);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private void InitTemplateBitmap()
+        {
+            _templateBitmapDirectory = new Dictionary<string, Bitmap>();
+
+            string sideName = "SideA";
+            string shotName = "Shot0";
+            Bitmap bitmap;
+            if (GetTemplateBitmap(sideName, shotName, out bitmap))
+            {
+                _templateBitmapDirectory.Add(sideName+shotName, bitmap);
+            }
+
+            sideName = "SideA";
+            shotName = "Shot1";
+            if (GetTemplateBitmap(sideName, shotName, out bitmap))
+            {
+                _templateBitmapDirectory.Add(sideName + shotName, bitmap);
+            }
+
+            sideName = "SideB";
+            shotName = "Shot0";
+            if (GetTemplateBitmap(sideName, shotName, out bitmap))
+            {
+                _templateBitmapDirectory.Add(sideName + shotName, bitmap);
+            }
+
+            sideName = "SideB";
+            shotName = "Shot1";
+            if (GetTemplateBitmap(sideName, shotName, out bitmap))
+            {
+                _templateBitmapDirectory.Add(sideName + shotName, bitmap);
+            }
+        }
+
         #region Device Interface
         
         public void SetDataDir(string modelDir, string dataDir)
         {
             _modelDir = modelDir;
             _dataDir = dataDir;
+
+            InitTemplateBitmap();
+
         }
 
         public int GetCodeList(out Dictionary<int, string> codeList)
@@ -377,12 +435,10 @@ namespace DefectChecker.DeviceModule.MachVision
             {
                 return;
             }
-            defectCell.DefectImage = new Bitmap(imageFile);
+            defectCell.DefectImage = ImageOperateTools.GetImageFromFile(imageFile);
             
-            Bitmap templateBitmap;
             Bitmap templateImage;
-            TryGetTemplateImg(sideName, shotName, out templateBitmap);
-            if (ImageOperateTools.BitmapCropImage(templateBitmap, roi, out templateImage))
+            if (TryGetTemplateImg(sideName, shotName, roi, out templateImage))
             {
                 defectCell.TemplateImage = templateImage;
             }

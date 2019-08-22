@@ -46,10 +46,6 @@ namespace DefectChecker.DefectDataStructure
                 rects.Add(defectInfo.DefectRect);
             }
 
-            List<double> xldXs;
-            List<double> xldYs;
-            List<int> xldPointCount;
-            List<List<int>> defectIndexList;
             HImageProcess.GenDefectRegions(DefectImage, rects, dilationPixel, out _defectRegions);
             return true;
         }
