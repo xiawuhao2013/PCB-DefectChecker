@@ -135,6 +135,11 @@ namespace DefectChecker.View
             this.comboBoxDefect.TextChanged += new System.EventHandler(this.comboBoxDefect_TextChanged);
         }
 
+        public void SaveDataBaseInfo()
+        {
+            _dataBaseManager.SaveDataBaseInfo();
+        }
+
         private void RefreshGerberWindows()
         {
             _dataBaseManager.GetGerberImage("SideA", out _bitmapGerberSideA);

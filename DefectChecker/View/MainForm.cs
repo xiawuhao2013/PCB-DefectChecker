@@ -149,6 +149,7 @@ namespace DefectChecker.View
         
         private void buttonClose_Click(object sender, EventArgs e)
         {
+            _uiDisplayView.SaveDataBaseInfo();
             Close();
         }
 

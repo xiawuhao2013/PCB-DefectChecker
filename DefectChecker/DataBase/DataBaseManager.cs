@@ -123,7 +123,7 @@ namespace DefectChecker.DataBase
             return;
         }
 
-        private void SaveDataBaseInfo()
+        public void SaveDataBaseInfo()
         {
             XmlParameter xmlParameter = new XmlParameter();
             xmlParameter.Add("ProductName", ProductName);
