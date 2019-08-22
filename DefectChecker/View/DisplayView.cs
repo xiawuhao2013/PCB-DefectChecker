@@ -148,6 +148,8 @@ namespace DefectChecker.View
             _aqDisplayGerberSideB.Image = _bitmapGerberSideB;
             _aqDisplayGerberSideA.FitToScreen();
             _aqDisplayGerberSideB.FitToScreen();
+            _aqDisplayGerberSideA.Update();
+            _aqDisplayGerberSideB.Update();
         }
         
         private void RefreshDisplayWindows()
