@@ -31,8 +31,7 @@ namespace DefectChecker.View
         {
             InitializeComponent();
             InitGerberWindows();
-            InitDisplayWindows(this.tableLayoutPanelImage, _numberOfDispalyWindows);
-            
+            InitDisplayWindows(this.tableLayoutPanelImage, _numberOfDispalyWindows);        
             InitDataBase();
             //timer1.Start();
         }
@@ -84,7 +83,6 @@ namespace DefectChecker.View
                 _displayWindows.Add(widget);
                 table.Controls.Add(widget, index % number, index / number);
             }
-
             return;
         }
 
@@ -151,6 +149,8 @@ namespace DefectChecker.View
             _aqDisplayGerberSideB.FitToScreen();
 
             this.tableLayoutPanelGerber.SizeChanged += new System.EventHandler(this.tableLayoutPanelGerber_SizeChanged);
+
+            this.tableLayoutPanelImage.SizeChanged += new System.EventHandler(this.tableLayoutPanelImage_SizeChanged);
         }
         
         private void RefreshDisplayWindows()
@@ -252,9 +252,17 @@ namespace DefectChecker.View
             return;
         }
 
+        private void tableLayoutPanelImage_SizeChanged(object sender, EventArgs e)
+        {
+            if(_displayWindows != null && _displayWindows.Count > 0)
+            {
+                foreach (var tempWindows in _displayWindows)
+                    tempWindows.FitSizeChange();
+            }
+            return;
+        }
 
         #endregion
-
 
         private void ShowModelOnDisplayWindows(List<DisplayWindow> displayWindows)
         {

@@ -30,9 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.labelOfCheckInfo = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.aqDisplayOfCheck = new AqVision.Controls.AqDisplay();
-            this.labelOfCheckInfo = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.labelOfCheckTitle = new System.Windows.Forms.Label();
             this.aqDisplayOfModel = new AqVision.Controls.AqDisplay();
@@ -56,6 +56,17 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(600, 492);
             this.panel3.TabIndex = 2;
+            // 
+            // labelOfCheckInfo
+            // 
+            this.labelOfCheckInfo.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.labelOfCheckInfo.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.labelOfCheckInfo.Location = new System.Drawing.Point(0, 456);
+            this.labelOfCheckInfo.Name = "labelOfCheckInfo";
+            this.labelOfCheckInfo.Size = new System.Drawing.Size(600, 36);
+            this.labelOfCheckInfo.TabIndex = 1;
+            this.labelOfCheckInfo.Text = "label1";
+            this.labelOfCheckInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // splitContainer1
             // 
@@ -104,17 +115,6 @@
             this.aqDisplayOfCheck.Radius = 1F;
             this.aqDisplayOfCheck.Size = new System.Drawing.Size(300, 456);
             this.aqDisplayOfCheck.TabIndex = 12;
-            // 
-            // labelOfCheckInfo
-            // 
-            this.labelOfCheckInfo.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.labelOfCheckInfo.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.labelOfCheckInfo.Location = new System.Drawing.Point(0, 456);
-            this.labelOfCheckInfo.Name = "labelOfCheckInfo";
-            this.labelOfCheckInfo.Size = new System.Drawing.Size(600, 36);
-            this.labelOfCheckInfo.TabIndex = 1;
-            this.labelOfCheckInfo.Text = "label1";
-            this.labelOfCheckInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // panel4
             // 

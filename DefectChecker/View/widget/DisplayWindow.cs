@@ -21,8 +21,22 @@ namespace DefectChecker.View.Widget
         public DisplayWindow()
         {
             InitializeComponent();
-            ShowModelWindow();
-            Refresh();
+            ShowModelWindow();      
+            Refresh();     
+        }
+
+        public void FitSizeChange()
+        {
+            if (this.aqDisplayOfCheck.Image != null)
+            {
+                this.aqDisplayOfCheck.FitToScreen();
+                this.aqDisplayOfCheck.Update();
+            }
+            if (this.aqDisplayOfModel.Image != null)
+            {
+                this.aqDisplayOfModel.FitToScreen();
+                this.aqDisplayOfModel.Update();
+            }
         }
 
         private bool IsModelWindowHiden()
