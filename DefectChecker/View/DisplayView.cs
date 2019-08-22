@@ -6,7 +6,7 @@ using Aqrose.Framework.Utility.MessageManager;
 using AqVision.Controls;
 using DefectChecker.DataBase;
 using DefectChecker.DefectDataStructure;
-using DefectChecker.View.widget;
+using DefectChecker.View.Widget;
 
 namespace DefectChecker.View
 {
@@ -324,12 +324,12 @@ namespace DefectChecker.View
             {
                 _dataBaseManager.SaveMarkInfo(mark);
                 MessageManager.Instance().Info("Write Splite Success");
-                isCmdWork = GoForwardCmd();
+                isCmdWork = GoNextRegionCmd();
                 MessageManager.Instance().Info("End Switch");
             }
             else
             {
-                isCmdWork = GoBackwardCmd();
+                isCmdWork = GoBackRegionCmd();
             }
             if (isCmdWork)
             {
@@ -347,23 +347,13 @@ namespace DefectChecker.View
         private void timer1_Tick(object sender, EventArgs e)
         {
             _dataBaseManager.SaveMarkInfo(EMarkDataType.OK);
-            bool isCmdWork = GoForwardCmd();
+            bool isCmdWork = GoNextRegionCmd();
             if (isCmdWork)
             {
                 RefreshComboBox();
                 FocusCurrentDisplayWindow();
                 RefreshDisplayWindows();
             }
-        }
-
-        private bool IncreaseIndexOfDefectRegion()
-        {
-            return _dataBaseManager.IncreaseDefectRegionIndex();
-        }
-
-        private bool DecreaseIndexOfDefectRegion()
-        {
-            return _dataBaseManager.DecreaseDefectRegionIndex();
         }
 
         private void SetIndexOfDefectRegionToFirst()
@@ -378,13 +368,13 @@ namespace DefectChecker.View
             return;
         }
 
-        private bool GoForwardCmd()
+        private bool GoNextRegionCmd()
         {
-            if (IncreaseIndexOfDefectRegion())
+            if (_dataBaseManager.IncreaseDefectRegionIndex())
             {
                 return true;
             }
-            if (!_dataBaseManager.TrySwitchBackward())
+            if (!_dataBaseManager.TrySwitchNextRegion())
             {
                 MessageBox.Show("完了！");
 
@@ -394,9 +384,9 @@ namespace DefectChecker.View
             return true;
         }
 
-        private bool GoBackwardCmd()
+        private bool GoBackRegionCmd()
         {
-            if (DecreaseIndexOfDefectRegion())
+            if (_dataBaseManager.DecreaseDefectRegionIndex())
             {
                 return true;
             }
@@ -409,18 +399,5 @@ namespace DefectChecker.View
 
             return true;
         }
-
-        //private void timer1_Tick(object sender, EventArgs e)
-        //{
-        //    if (_hasButtonPressed)
-        //    {
-        //        RefreshComboBox();
-        //        FocusCurrentDisplayWindow();
-        //        RefreshDisplayWindows();
-        //        _hasButtonPressed = false;
-        //    }
-
-        //    return;
-        //}
     }
 }

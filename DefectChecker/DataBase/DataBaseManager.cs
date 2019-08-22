@@ -837,7 +837,7 @@ namespace DefectChecker.DataBase
             return;
         }
 
-        public bool TrySwitchBackward()
+        public bool TrySwitchNextRegion()
         {
             if (TryGetNextDefectNotEmpty() || TryGetNextShotNotEmpty() || TryGetNextSideNotEmpty() || TryGetNextBoardNotEmpty() || TryGetNextBatchNotEmpty() || TryGetNextProductNotEmpty())
             {

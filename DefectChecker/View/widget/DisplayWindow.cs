@@ -12,7 +12,7 @@ using Aqrose.Framework.Utility.Tools;
 using DefectChecker.DefectDataStructure;
 using AqVision.Graphic.AqVision.shape;
 
-namespace DefectChecker.View.widget
+namespace DefectChecker.View.Widget
 {
     public partial class DisplayWindow : UserControl
     {

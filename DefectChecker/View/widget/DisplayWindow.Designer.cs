@@ -1,4 +1,4 @@
-﻿namespace DefectChecker.View.widget
+﻿namespace DefectChecker.View.Widget
 {
     partial class DisplayWindow
     {
